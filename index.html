@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/circles-logo-main.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circles - Own the stories you love</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    
+    <!-- Google tag (gtag.js) -->
+    <script>
+      // Defer GA load to idle to prioritize rendering
+      (function(){
+        if (!('requestIdleCallback' in window)) {
+          window.requestIdleCallback = function(cb){ return setTimeout(cb, 1); };
+        }
+        requestIdleCallback(function(){
+          if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            return; // Skip GA in local dev to avoid blocking and noise
+          }
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-SBWLVKVMCN';
+          s.onload = function(){
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-SBWLVKVMCN');
+          };
+          document.head.appendChild(s);
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
