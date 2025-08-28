@@ -1,6 +1,6 @@
+import type { Database } from '../config/database.types';
 import { supabase } from '../config/supabase';
 import { collectDeviceInfo, getIPInfo } from '../utils/deviceDetection';
-import type { Database } from '../config/database.types';
 
 type ContactMessage = Database['public']['Tables']['contact_messages']['Insert'];
 
@@ -220,7 +220,7 @@ export class ContactMessageService {
       const canvas = document.createElement('canvas');
       return !!(window.WebGLRenderingContext && 
         (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
@@ -261,7 +261,7 @@ export class ContactMessageService {
   private static checkActiveXSupport(): boolean {
     try {
       return !!(('ActiveXObject' in window) || (window as any).ActiveXObject);
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
@@ -271,7 +271,7 @@ export class ContactMessageService {
    */
   private static detectAdBlocker(): boolean {
     try {
-      const testAd = document.createElement('div');
+      const testAd = document.createElement('canvas');
       testAd.innerHTML = '&nbsp;';
       testAd.className = 'adsbox';
       document.body.appendChild(testAd);
@@ -280,7 +280,7 @@ export class ContactMessageService {
       document.body.removeChild(testAd);
       
       return isAdBlocked;
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }

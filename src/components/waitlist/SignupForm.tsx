@@ -1,11 +1,13 @@
-import * as React from 'react';
-import { useState } from 'react';
+import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { Crown } from 'lucide-react';
-import confetti from 'canvas-confetti';
-import { handleWaitlistSignup } from '../../api/waitlistSupabase';
-import PremiumInput from './PremiumInput';
+import React, { useState, useEffect } from 'react';
 import { collectDeviceInfo, getIPInfo } from '../../utils/deviceDetection';
+
+import { handleWaitlistSignup } from '../../api/waitlistSupabase';
+import LoadingSpinner from '../LoadingSpinner';
+
+import PremiumInput from './PremiumInput';
 
 interface SignupFormData {
   name: string;
@@ -16,8 +18,8 @@ interface SignupFormData {
 }
 
 interface SignupFormProps {
-  onSuccess?: (data: SignupFormData) => void;
-  onError?: (error: string) => void;
+  onSuccess?: (_data: SignupFormData) => void;
+  onError?: (_error: string) => void;
 }
 
 const SignupForm: React.FC<SignupFormProps> = ({ onSuccess, onError }) => {
@@ -212,9 +214,13 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess, onError }) => {
           className="w-full py-4 px-6 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
         >
           {isSubmitting ? (
-            <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-              <span className="text-lg">Joining Waitlist...</span>
+            <div className="flex items-center gap-2">
+              <LoadingSpinner 
+                variant="entertainment" 
+                size="sm" 
+                text="" 
+              />
+              <span>Joining Waitlist...</span>
             </div>
           ) : (
             <div className="flex items-center justify-center">

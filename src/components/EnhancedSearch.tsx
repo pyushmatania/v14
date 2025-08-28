@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowDown, 
@@ -20,12 +19,16 @@ import {
   X,
   ArrowLeft
 } from 'lucide-react';
-import { useTheme } from './ThemeContext';
+import React, { useState, useEffect, useCallback } from 'react';
+
+
 import { projects } from '../data/projects';
 import { Project } from '../types';
 
+import { useTheme } from './ThemeContext';
+
 interface EnhancedSearchProps {
-  onSelectProject?: (project: Project) => void;
+  onSelectProject?: (_project: Project) => void;
   initialSearchTerm?: string;
   onBack?: () => void;
 }

@@ -48,7 +48,7 @@ const DebugPanel: React.FC = () => {
         data: args.length > 0 ? JSON.stringify(args) : undefined
       }]);
       if ('requestIdleCallback' in window) {
-        (window as { requestIdleCallback?: (callback: () => void) => number }).requestIdleCallback?.(update);
+        (window as { requestIdleCallback?: (_callback: () => void) => number }).requestIdleCallback?.(update);
       } else {
         setTimeout(update, 0);
       }

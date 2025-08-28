@@ -1,4 +1,3 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Heart, 
@@ -15,9 +14,12 @@ import {
   Mic,
   BarChart3,
 } from 'lucide-react';
-import { getUserAvatar } from '../utils/imageUtils';
-import OptimizedImage from './OptimizedImage';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+
 import { celebrityService, CelebrityInfo } from '../services/celebrityService';
+import { getUserAvatar } from '../utils/imageUtils';
+
+import OptimizedImage from './OptimizedImage';
 import './Feed.css';
 
 interface Comment {
@@ -896,7 +898,7 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
 
     // Use requestIdleCallback if available, otherwise execute immediately
     if ('requestIdleCallback' in window) {
-      (window as { requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void }).requestIdleCallback(loadTask, { timeout: 1000 });
+      (window as { requestIdleCallback: (_callback: () => void, _options?: { timeout: number }) => void }).requestIdleCallback(loadTask, { timeout: 1000 });
     } else {
       loadTask();
     }

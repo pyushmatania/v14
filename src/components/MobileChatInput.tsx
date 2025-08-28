@@ -1,9 +1,9 @@
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+import { Paperclip, Smile, Image as ImageIcon, Send } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 // Full emoji picker
-import Picker from '@emoji-mart/react';
-import data from '@emoji-mart/data';
-import { Paperclip, Smile, Image as ImageIcon, Send } from 'lucide-react';
 
 interface EmojiData {
   native?: string;
@@ -12,13 +12,13 @@ interface EmojiData {
 
 export interface MobileChatInputProps {
   value: string;
-  onChange: (next: string) => void;
+  onChange: (_next: string) => void;
   onSend: () => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
-  onFilesSelected?: (files: FileList) => void;
-  onImagesSelected?: (files: FileList) => void;
+  onFilesSelected?: (_files: FileList) => void;
+  onImagesSelected?: (_files: FileList) => void;
 }
 
 

@@ -1,4 +1,3 @@
-import React, { useEffect, useRef, useState } from "react";
 import {
   animate,
   motion,
@@ -6,6 +5,7 @@ import {
   useMotionValueEvent,
   useTransform,
 } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
 
 const MAX_OVERFLOW = 50;
 
@@ -58,7 +58,7 @@ interface SliderProps {
   stepSize: number;
   leftIcon: React.ReactNode;
   rightIcon: React.ReactNode;
-  onValueChange?: (value: number) => void;
+  onValueChange?: (_value: number) => void;
 }
 
 const Slider: React.FC<SliderProps> = ({

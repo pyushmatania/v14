@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bell,
@@ -20,9 +19,13 @@ import {
   Award,
   Hash
 } from 'lucide-react';
-import { useTheme } from './ThemeContext';
-import generateRealNotifications from '../utils/notificationsAggregator';
+import React, { useState, useEffect, useRef } from 'react';
+
+
 import { getUserAvatar } from '../utils/imageUtils';
+import generateRealNotifications from '../utils/notificationsAggregator';
+
+import { useTheme } from './ThemeContext';
 
 // Add channel avatar mapping function
 const getChannelAvatar = (name: string) => {

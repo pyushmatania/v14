@@ -1,4 +1,3 @@
-import React, { useState, useCallback, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 import { 
   DollarSign, 
@@ -18,16 +17,20 @@ import {
   ShoppingBag,
   Ticket
 } from 'lucide-react';
-import { useTheme } from './ThemeContext';
-import { getTextColor, getBgColor, getBorderColor } from '../utils/themeUtils';
+import React, { useState, useCallback, useMemo, memo } from 'react';
+
+
+import { comprehensiveCommunityData } from '../data/comprehensiveCommunityData';
 import { dashboardStats, recentActivities } from '../data/dashboard';
-import { superstars } from '../data/superstars';
 import { portfolioData } from '../data/portfolio';
 import { projects } from '../data/projects';
-import { comprehensiveCommunityData } from '../data/comprehensiveCommunityData';
-import ProfilePage from './profile/ProfilePage';
-import PortfolioAnalytics from './PortfolioAnalytics';
+import { superstars } from '../data/superstars';
 import { getUserAvatar } from '../utils/imageUtils';
+import { getTextColor, getBgColor, getBorderColor } from '../utils/themeUtils';
+
+import PortfolioAnalytics from './PortfolioAnalytics';
+import ProfilePage from './profile/ProfilePage';
+import { useTheme } from './ThemeContext';
 
 // 🛡️ Type definitions for better type safety
 interface PerkMetadata {
@@ -66,13 +69,13 @@ interface Circle {
 interface Tab {
   id: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<any>;
 }
 
 type TabType = 'overview' | 'investments' | 'perks' | 'circles' | 'portfolio' | 'profile';
 
 interface DashboardProps {
-  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail') => void;
+  setCurrentView?: (view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist') => void;
 }
 
 /**

@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, TrendingDown, Users, ArrowRight, Zap, DollarSign, Award } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+
 import { useTheme } from './ThemeContext';
 
 interface ProblemSolutionProps {
-  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community') => void;
+  setCurrentView?: (_view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void;
 }
 
 const ProblemSolution: React.FC<ProblemSolutionProps> = ({ setCurrentView }) => {

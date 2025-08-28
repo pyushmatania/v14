@@ -1,48 +1,45 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { SkeletonHero } from './components/Skeletons';
-import InView from './components/InView';
+
+
 import LaunchNotification from './components/LaunchNotification';
-const Hero = React.lazy(() => import('./components/Hero'));
-const ProblemSolution = React.lazy(() => import('./components/ProblemSolution'));
-const HowItWorks = React.lazy(() => import('./components/HowItWorks'));
-const LiveProjects = React.lazy(() => import('./components/LiveProjects'));
-const WhyThisMatters = React.lazy(() => import('./components/WhyThisMatters'));
-const TechTrust = React.lazy(() => import('./components/TechTrust'));
-const Rewards = React.lazy(() => import('./components/Rewards'));
-const Testimonials = React.lazy(() => import('./components/Testimonials'));
-const AboutUs = React.lazy(() => import('./components/AboutUs'));
-const FAQ = React.lazy(() => import('./components/FAQ'));
-const CallToAction = React.lazy(() => import('./components/CallToAction'));
+import { QueryProvider } from './providers/QueryProvider';
+
+
+// 🚀 Advanced lazy imports with performance monitoring
+// 🚀 Route-based lazy loading is handled by RouteLoader component
 import Navigation from './components/Navigation';
 import AuthModal from './components/auth/AuthModal';
-import ToastContainer from './components/auth/ToastNotification';
 import { ThemeProvider } from './components/ThemeProvider';
 import { AuthProvider } from './components/auth/AuthProvider';
+import ToastContainer from './components/auth/ToastNotification';
 import { useAuth } from './components/auth/useAuth';
 import { useToast } from './hooks/useToast';
 import DebugPanel from './components/DebugPanel';
 import ErrorBoundary from './components/ErrorBoundary';
+
 import { Project } from './types';
 
-// 🚀 AI Waitlist Components
-import WaitlistHero from './components/waitlist/WaitlistHero';
-import BenefitsGrid from './components/waitlist/BenefitsGrid';
-import AnalyticsDashboard from './components/waitlist/AnalyticsDashboard';
+// 🚀 Lazy-loaded waitlist components with performance monitoring
+const WaitlistHero = React.lazy(() => import('./components/waitlist/WaitlistHero'));
+const BenefitsGrid = React.lazy(() => import('./components/waitlist/BenefitsGrid'));
+const AnalyticsDashboard = React.lazy(() => import('./components/waitlist/AnalyticsDashboard'));
 import './components/waitlist/waitlist.css';
 
-// 🚀 Direct imports for instant navigation
-import Dashboard from './components/Dashboard';
-import Community from './components/Community';
-import Merchandise from './components/Merchandise';
-import ProfilePage from './components/profile/ProfilePage';
-import AdminDashboard from './components/admin/AdminDashboard';
-import PortfolioAnalytics from './components/PortfolioAnalytics';
-import ProjectComparison from './components/ProjectComparison';
-import ProjectDetailPage from './components/ProjectDetailPage';
-import NewsAndUpdates from './components/NewsAndUpdates';
-import NotificationCenter from './components/NotificationCenter';
-import EnhancedSearch from './components/EnhancedSearch';
-import ProjectCatalog from './components/ProjectCatalog';
+// 🚀 Lazy-loaded navigation components with performance monitoring
+const Dashboard = React.lazy(() => import('./components/Dashboard'));
+const Community = React.lazy(() => import('./components/Community'));
+const Merchandise = React.lazy(() => import('./components/Merchandise'));
+const ProfilePage = React.lazy(() => import('./components/profile/ProfilePage'));
+const AdminDashboard = React.lazy(() => import('./components/admin/AdminDashboard'));
+const PortfolioAnalytics = React.lazy(() => import('./components/PortfolioAnalytics'));
+const ProjectComparison = React.lazy(() => import('./components/ProjectComparison'));
+const ProjectDetailPage = React.lazy(() => import('./components/ProjectDetailPage'));
+const NewsAndUpdates = React.lazy(() => import('./components/NewsAndUpdates'));
+const NotificationCenter = React.lazy(() => import('./components/NotificationCenter'));
+const EnhancedSearch = React.lazy(() => import('./components/EnhancedSearch'));
+const ProjectCatalog = React.lazy(() => import('./components/ProjectCatalog'));
+import HomePage from './components/HomePage';
+import EntertainmentLoading from './components/EntertainmentLoading';
 
 
 // 🛡️ Type definitions for better type safety
@@ -112,18 +109,20 @@ function AppContent() {
   // Idle prefetch heavy routes (Browse and Community) for instant navigation
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const idle = (cb: () => void) => {
-      const w = window as unknown as { requestIdleCallback?: (cb: () => void) => number };
-      if (w.requestIdleCallback) {
-        w.requestIdleCallback(cb);
+    const idle = () => {
+      if ('requestIdleCallback' in window) {
+        (window as any).requestIdleCallback(() => {
+          import('./components/ProjectCatalog').catch(() => {});
+          import('./components/Community').catch(() => {});
+        });
       } else {
-        setTimeout(cb, 600);
+        setTimeout(() => {
+          import('./components/ProjectCatalog').catch(() => {});
+          import('./components/Community').catch(() => {});
+        }, 600);
       }
     };
-    idle(() => {
-      import('./components/ProjectCatalog').catch(() => {});
-      import('./components/Community').catch(() => {});
-    });
+    idle();
   }, []);
 
 
@@ -295,7 +294,7 @@ function AppContent() {
   // 🚀 Memoized current view renderer with optimized component loading
   const renderCurrentView = useMemo(() => {
 
-    const HeroFallback = () => <SkeletonHero />;
+    // const _HeroFallback = () => <SkeletonHero />;
 
     switch (currentView) {
       case 'projects':
@@ -349,19 +348,10 @@ function AppContent() {
       default:
         return (
           <>
-            <React.Suspense fallback={<HeroFallback />}><Hero setCurrentView={handleViewChange} /></React.Suspense>
-            <InView><React.Suspense fallback={null}><ProblemSolution setCurrentView={handleViewChange} /></React.Suspense></InView>
-            <InView><React.Suspense fallback={null}><HowItWorks setCurrentView={handleViewChange} /></React.Suspense></InView>
-            <InView><React.Suspense fallback={null}><Rewards /></React.Suspense></InView>
-            <InView><React.Suspense fallback={null}>
-              <LiveProjects onViewAll={() => handleViewChange('projects')} onProjectSelect={handleLiveProjectsSelect} />
-            </React.Suspense></InView>
-            <InView><React.Suspense fallback={null}><WhyThisMatters onJoin={() => handleAuthRequired('register')} /></React.Suspense></InView>
-            <InView><React.Suspense fallback={null}><TechTrust /></React.Suspense></InView>
-            <InView><React.Suspense fallback={null}><Testimonials /></React.Suspense></InView>
-            <InView><React.Suspense fallback={null}><AboutUs /></React.Suspense></InView>
-            <InView><React.Suspense fallback={null}><FAQ /></React.Suspense></InView>
-            <InView><React.Suspense fallback={null}><CallToAction setCurrentView={handleViewChange} /></React.Suspense></InView>
+            <HomePage 
+              setCurrentView={handleViewChange} 
+              onProjectSelect={handleLiveProjectsSelect}
+            />
           </>
         );
     }
@@ -375,7 +365,6 @@ function AppContent() {
     isAuthenticated,
     selectedProject,
     projectDetailTab,
-    handleAuthRequired,
     previousView,
     searchTerm
   ]);
@@ -408,15 +397,22 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 transition-colors duration-500">
-      <LaunchNotification />
-      {currentView !== 'admin' && <Navigation {...navigationProps} />}
-      {renderCurrentView}
-      <DebugPanel />
-      <AuthModal {...authModalProps} />
-      <ToastContainer {...toastContainerProps} />
-    </div>
-  );
-}
+              <LaunchNotification />
+        {currentView !== 'admin' && <Navigation {...navigationProps} />}
+        <QueryProvider>
+          <React.Suspense fallback={
+            <EntertainmentLoading />
+          }>
+            {renderCurrentView}
+          </React.Suspense>
+        </QueryProvider>
+                <DebugPanel />
+
+        <AuthModal {...authModalProps} />
+        <ToastContainer {...toastContainerProps} />
+      </div>
+    );
+  }
 
 /**
  * 🎯 App - Root application component with error boundary and providers

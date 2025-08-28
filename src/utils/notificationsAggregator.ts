@@ -15,9 +15,10 @@ import {
   Zap,
   Globe
 } from 'lucide-react';
-import { projects } from '../data/projects';
-import { portfolioData } from '../data/portfolio';
+
 import { musicAlbums } from '../data/musicAlbums';
+import { portfolioData } from '../data/portfolio';
+import { projects } from '../data/projects';
 
 import { getUserAvatar } from './imageUtils';
 

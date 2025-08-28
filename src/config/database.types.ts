@@ -565,13 +565,13 @@ export interface Database {
       };
     };
     Views: {
-      [_ in never]: never;
+      // No views defined
     };
     Functions: {
-      [_ in never]: never;
+      // No functions defined
     };
     Enums: {
-      [_ in never]: never;
+      // No enums defined
     };
   };
 }

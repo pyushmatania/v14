@@ -1,16 +1,18 @@
-import * as React from 'react';
-import { useState, useCallback, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Film, Music, Tv, Star, Play, TrendingUp, Calendar, AlertTriangle, Sparkles } from 'lucide-react';
-import PixelCard from './PixelCard';
+import * as React from 'react';
+import { useState, useCallback, useMemo, memo } from 'react';
+
 import { Project } from '../types';
+
+import PixelCard from './PixelCard';
 import ProjectDetailPage from './ProjectDetailPage';
 
 // 🛡️ Type definitions for better type safety
 interface ProjectCardProps {
   project: Project;
   onClick?: () => void;
-  onInvestClick?: (project: Project) => void;
+  onInvestClick?: (_project: Project) => void;
   featured?: boolean;
   compact?: boolean;
   urgent?: boolean;

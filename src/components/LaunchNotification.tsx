@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertCircle, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
 import { useTheme } from './ThemeContext';
 
 const LaunchNotification: React.FC = () => {

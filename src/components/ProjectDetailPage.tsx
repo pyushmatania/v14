@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback, memo, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { useTheme } from './ThemeContext';
+import { motion, AnimatePresence } from 'framer-motion';
+
+
 // 🚀 Optimized imports - only used icons
 import { 
   ArrowLeft, 
@@ -39,16 +39,19 @@ import {
   FileText,
   Award
 } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback, memo, useMemo } from 'react';
 
-import { Project } from '../types';
-import { useTMDBProjectData, getMainCast } from '../hooks/useTMDBProjectData';
-import { getTextColor, getBorderColor, getMainBgColor } from '../utils/themeUtils';
 import useIsMobile from '../hooks/useIsMobile';
+import { useTMDBProjectData, getMainCast } from '../hooks/useTMDBProjectData';
+import { Project } from '../types';
 // import { useMemoryOptimization } from '../hooks/useMemoryOptimization';
 // import { animationOptimizations } from '../utils/animationOptimizations';
 
 // Import logo image
 import { getUserAvatar } from '../utils/imageUtils';
+import { getTextColor, getBorderColor, getMainBgColor } from '../utils/themeUtils';
+
+import { useTheme } from './ThemeContext';
 
 // 🛡️ Type definitions for better type safety
 interface ProjectDetailPageProps {

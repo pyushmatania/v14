@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import { tmdbService, TMDBMovieDetails, TMDBActor } from '../services/tmdbApi';
 import { debug } from '../utils/debug';
 

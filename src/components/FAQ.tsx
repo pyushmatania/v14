@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle, Zap, ArrowRight } from 'lucide-react';
-import { useTheme } from './ThemeContext';
+import React, { useState } from 'react';
+
 import ErrorBoundary from './ErrorBoundary';
+import { useTheme } from './ThemeContext';
 
 interface FAQItem {
   question: string;

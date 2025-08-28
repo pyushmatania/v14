@@ -1,13 +1,9 @@
 // Import all images properly for Vite bundling
-import akashMatania from '../images/akash-matania.JPG';
 import adya from '../images/adya.JPG';
+import akashMatania from '../images/akash-matania.JPG';
 import alok from '../images/alok.jpg';
 import ankit from '../images/ankit.jpg';
 import biren from '../images/biren.jpg';
-import ipsit from '../images/ipsit.jpg';
-import kamlesh from '../images/kamlesh.jpg';
-import praveen from '../images/praveen.jpg';
-import soham from '../images/soham.jpg';
 import circlesLogo from '../images/circles-logo-main.png';
 
 // Import perk images
@@ -17,6 +13,10 @@ import perk3 from '../images/circles-perks/perk3.png';
 import perk4 from '../images/circles-perks/perk4.png';
 import perk5 from '../images/circles-perks/perk5.png';
 import perk6 from '../images/circles-perks/perk6.png';
+import ipsit from '../images/ipsit.jpg';
+import kamlesh from '../images/kamlesh.jpg';
+import praveen from '../images/praveen.jpg';
+import soham from '../images/soham.jpg';
 
 // 🚀 Enhanced fallback image generation for community items
 export const generateCommunityFallbackImage = (name: string, type: string): string => {

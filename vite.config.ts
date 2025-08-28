@@ -16,6 +16,16 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'ui-vendor': ['framer-motion', 'lucide-react', '@heroicons/react'],
+          'data-vendor': ['@supabase/supabase-js'],
+          'utils-vendor': ['canvas-confetti', 'react-csv'],
+        },
+      },
+    },
   },
 })

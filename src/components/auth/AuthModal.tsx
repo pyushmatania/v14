@@ -1,10 +1,12 @@
-import * as React from 'react';
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import * as React from 'react';
+import { useState } from 'react';
+
+import { useTheme } from '../ThemeContext';
+
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
-import { useTheme } from '../ThemeContext';
 
 interface AuthModalProps {
   isOpen: boolean;

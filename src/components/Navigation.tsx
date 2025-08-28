@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { useState, useCallback, useEffect, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Home, 
@@ -19,17 +17,21 @@ import {
   MoreHorizontal,
   Sparkles
 } from 'lucide-react';
-import { useTheme } from './ThemeContext';
-import { useAuth } from './auth/useAuth';
+import { useState, useCallback, useEffect, useMemo, memo } from 'react';
+import * as React from 'react';
+
 import useIsMobile from '../hooks/useIsMobile';
 
 // Import logo image
-import { circlesLogo, getUserAvatar } from '../utils/imageUtils';
-import SearchBar from './SearchBar';
-import NotificationDropdown from './NotificationDropdown';
 
 import { Project } from '../types';
+import { circlesLogo, getUserAvatar } from '../utils/imageUtils';
+
+import { useAuth } from './auth/useAuth';
 import MobileBottomBar from './MobileBottomBar';
+import NotificationDropdown from './NotificationDropdown';
+import SearchBar from './SearchBar';
+import { useTheme } from './ThemeContext';
 
 // 🛡️ Type definitions for better type safety
 type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics';
@@ -38,10 +40,10 @@ type AuthMode = 'login' | 'register';
 
 interface NavigationProps {
   currentView: ViewType;
-  setCurrentView: (view: ViewType) => void;
-  onAuthRequired: (mode?: AuthMode) => boolean;
-  onProjectSelect?: (project: Project, tab?: ProjectDetailTab) => void;
-  onSearchViewAll?: (term: string) => void;
+  setCurrentView: (_view: ViewType) => void;
+  onAuthRequired: (_mode?: AuthMode) => boolean;
+  onProjectSelect?: (_project: Project, _tab?: ProjectDetailTab) => void;
+  onSearchViewAll?: (_term: string) => void;
   previousView?: ViewType;
 }
 
@@ -378,7 +380,7 @@ const Navigation: React.FC<NavigationProps> = memo(({
     prefetch();
     const w = window as unknown as { requestIdleCallback?: (cb: () => void) => number };
     if (w.requestIdleCallback) {
-      w.requestIdleCallback(prefetch);
+      w.requestIdleCallback(() => prefetch());
     } else {
       setTimeout(prefetch, 300);
     }

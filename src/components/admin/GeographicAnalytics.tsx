@@ -1,5 +1,6 @@
-import React from 'react';
 import { MapPinIcon, GlobeAltIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
+import React from 'react';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface GeographicData {
   countryBreakdown: Record<string, number>;
@@ -20,11 +21,12 @@ const GeographicAnalytics: React.FC<GeographicAnalyticsProps> = ({ data, loading
   if (loading) {
     return (
       <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-            <div className="text-blue-400">Loading geographic data...</div>
-          </div>
+        <div className="text-center">
+          <LoadingSpinner 
+            variant="premium" 
+            size="lg" 
+            text="Loading geographic data..." 
+          />
         </div>
       </div>
     );

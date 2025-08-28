@@ -1,11 +1,11 @@
-import React, { useEffect, memo, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import React, { useEffect, memo, useCallback } from 'react';
 
 // 🛡️ Type definitions for better type safety
 interface AnimatedNumberProps {
   value: number;
   className?: string;
-  format?: (val: number) => string;
+  format?: Function;
   inView?: boolean;
 }
 

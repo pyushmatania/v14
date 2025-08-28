@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
@@ -11,13 +9,17 @@ import {
   Rocket,
   Eye
 } from 'lucide-react';
-import Typewriter from '../Typewriter';
+import * as React from 'react';
+import { useState, useMemo, useCallback, memo } from 'react';
+
 import { useTheme } from '../ThemeContext';
+import Typewriter from '../Typewriter';
+
 import SignupForm from './SignupForm';
 
 // 🛡️ Type definitions for better type safety
 interface WaitlistHeroProps {
-  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community') => void;
+  setCurrentView?: (_view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void;
 }
 
 

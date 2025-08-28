@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Project } from '../../../services/adminDataService';
+
+import { Project } from '../../../types';
 
 interface ProjectFormProps {
-  project?: Project;
+  _project?: Project;
   onSubmit: (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onCancel: () => void;
   loading?: boolean;

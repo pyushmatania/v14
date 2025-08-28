@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { useState, useEffect, useCallback } from 'react';
 import { 
   ChartBarIcon,
   GlobeAltIcon,
@@ -9,8 +7,12 @@ import {
   DevicePhoneMobileIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
-import GeographicAnalytics from './GeographicAnalytics';
+import * as React from 'react';
+import { useState, useEffect, useCallback } from 'react';
+
 import DeviceAnalytics from './DeviceAnalytics';
+import GeographicAnalytics from './GeographicAnalytics';
+import LoadingSpinner from '../LoadingSpinner';
 
 // Google Analytics Configuration
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
@@ -131,10 +133,11 @@ const GoogleAnalyticsTab: React.FC = () => {
       <div className="space-y-6">
         <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50">
           <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-              <div className="text-blue-400">Loading Google Analytics...</div>
-            </div>
+            <LoadingSpinner 
+              variant="premium" 
+              size="lg" 
+              text="Loading Google Analytics..." 
+            />
           </div>
         </div>
       </div>

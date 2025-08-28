@@ -103,10 +103,10 @@ export class AnimationFrameManager {
     if (this.isRunning) return;
 
     this.isRunning = true;
-    const animate = (timestamp: number) => {
+    const animate = (_timestamp: number) => {
       if (!this.isRunning) return;
 
-      callback(timestamp);
+      callback(_timestamp);
       this.animationId = requestAnimationFrame(animate);
     };
 

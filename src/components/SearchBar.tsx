@@ -1,4 +1,3 @@
-import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
@@ -9,15 +8,20 @@ import {
   History, 
   Star
 } from 'lucide-react';
-import { useTheme } from './ThemeContext';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
+
+
 import { projects } from '../data/projects';
-import { Project } from '../types';
 import { useDebounce } from '../hooks/useDebounce';
+import { Project } from '../types';
+import LoadingSpinner from './LoadingSpinner';
+
+import { useTheme } from './ThemeContext';
 
 // 🛡️ Type definitions for better type safety
 interface SearchBarProps {
-  onSelectProject?: (project: Project) => void;
-  onViewAllResults?: (term: string) => void;
+  onSelectProject?: (_project: Project) => void;
+  onViewAllResults?: (_term: string) => void;
 }
 
 type ProjectType = 'film' | 'music' | 'webseries';
@@ -360,8 +364,8 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
                 placeholder="Search projects, directors, artists..."
                 className={`w-48 sm:w-56 md:w-64 lg:w-72 pl-3 pr-8 py-1 rounded-lg border transition-all duration-200 text-sm min-w-0 ${
                   theme === 'light'
-                    ? 'bg-white border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200'
-                    : 'bg-gray-800 border-gray-600 focus:border-purple-400 focus:ring-2 focus:ring-purple-900'
+                    ? 'bg-white border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 text-gray-900 placeholder-gray-500'
+                    : 'bg-gray-800 border-gray-600 focus:border-purple-400 focus:ring-2 focus:ring-purple-900 text-white placeholder-gray-400'
                 }`}
               />
               {searchTerm && (
@@ -469,7 +473,11 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
               <div className="p-4">
                 {isLoading ? (
                   <div className="flex items-center justify-center py-4">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
+                    <LoadingSpinner 
+                      variant="entertainment" 
+                      size="sm" 
+                      text="" 
+                    />
                   </div>
                 ) : searchResults.length > 0 ? (
     <div className="space-y-2">

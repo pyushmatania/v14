@@ -1,4 +1,3 @@
-import React, { useState, useMemo } from 'react';
 import { 
   BarChart, 
   PieChart, 
@@ -31,10 +30,15 @@ import {
   Play,
   FileText
 } from 'lucide-react';
-import { useTheme } from './ThemeContext';
+import React, { useState, useMemo } from 'react';
+import { CSVLink } from 'react-csv';
+
 import { portfolioData as userInvestments } from '../data/portfolio';
 import { projects } from '../data/projects';
-import { CSVLink } from 'react-csv';
+
+import { useTheme } from './ThemeContext';
+
+
 
 // Calculate portfolio data from real investments with enhanced filtering
 const calculatePortfolioData = (filterType: string = 'all') => {

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
@@ -16,6 +15,8 @@ import {
   Bookmark, 
   ExternalLink 
 } from 'lucide-react';
+import React, { useState } from 'react';
+
 import { useTheme } from './ThemeContext';
 
 // Mock news data

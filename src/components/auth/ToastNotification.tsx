@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
+import React, { useEffect } from 'react';
 
 interface ToastProps {
   id: string;
@@ -8,10 +8,10 @@ interface ToastProps {
   title: string;
   message?: string;
   duration?: number;
-  onClose: (id: string) => void;
+  onClose: (_id: string) => void;
 }
 
-const Toast: React.FC<ToastProps> = ({ id, type, title, message, duration = 5000, onClose }) => {
+const Toast: React.FC<ToastProps> = ({ id: _id, type, title, message, duration = 5000, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose(id);
@@ -82,15 +82,19 @@ const Toast: React.FC<ToastProps> = ({ id, type, title, message, duration = 5000
 interface ToastContainerProps {
   toasts: Array<{
     id: string;
-    type: 'success' | 'error' | 'info' | 'warning';
+    type: 'success' | 'error' | 'warning' | 'info';
     title: string;
-    message?: string;
+    message: string;
     duration?: number;
+    showProgress?: boolean;
   }>;
-  onClose: (id: string) => void;
+  onClose: (_id: string) => void;
+  maxToasts?: number;
+  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+  className?: string;
 }
 
-const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose }) => {
+const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose, ...options }) => {
   return (
     <div className="fixed top-4 right-4 z-[9999] space-y-3">
       <AnimatePresence>
@@ -98,7 +102,7 @@ const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose }) => {
           <Toast
             key={toast.id}
             {...toast}
-            onClose={onClose}
+            onClose={() => onClose(toast.id)}
           />
         ))}
       </AnimatePresence>

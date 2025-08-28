@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+
 import { testimonials } from '../data/projects';
+
 import { useTheme } from './ThemeContext';
 import Typewriter from './Typewriter';
 

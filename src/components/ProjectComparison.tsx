@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BarChartBig, 
@@ -14,15 +14,18 @@ import {
   Tv, 
   X 
 } from 'lucide-react';
-import { useTheme } from './ThemeContext';
-import { Project } from '../types';
-import { projects } from '../data/projects';
-import confetti from 'canvas-confetti';
 import { Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { projects } from '../data/projects';
+import { Project } from '../types';
+
+import { useTheme } from './ThemeContext';
+
 
 interface ProjectComparisonProps {
   initialProjects?: Project[];
-  onProjectSelect?: (project: Project, tab?: 'overview' | 'invest') => void;
+  onProjectSelect?: (_project: Project, _tab?: 'overview' | 'invest') => void;
 }
 
 const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, onProjectSelect }) => {

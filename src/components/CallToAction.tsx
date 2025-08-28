@@ -1,11 +1,12 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Film, Music, TrendingUp } from 'lucide-react';
+import React from 'react';
+
 import { useTheme } from './ThemeContext';
 import Typewriter from './Typewriter';
 
 interface CallToActionProps {
-  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'waitlist') => void;
+  setCurrentView?: (view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void;
 }
 
 const CallToAction: React.FC<CallToActionProps> = ({ setCurrentView }) => {

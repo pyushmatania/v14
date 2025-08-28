@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ShoppingBag, 
@@ -21,6 +20,8 @@ import {
   Gift,
   Package
 } from 'lucide-react';
+import React, { useState } from 'react';
+
 import { useTheme } from './ThemeContext';
 
 interface MerchandiseItem {

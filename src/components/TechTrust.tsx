@@ -1,6 +1,7 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, Star, Handshake, Building2, Lock, TrendingUp, MapPin } from 'lucide-react';
+import React from 'react';
+
 import { useTheme } from './ThemeContext';
 import Typewriter from './Typewriter';
 

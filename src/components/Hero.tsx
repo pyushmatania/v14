@@ -1,14 +1,15 @@
-import * as React from 'react';
-import { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Film, TrendingUp, Users, DollarSign, Sparkles, Globe, Calendar, Coins } from 'lucide-react';
-import Typewriter from './Typewriter';
+import { useState, useMemo, useCallback, memo } from 'react';
+import * as React from 'react';
+
 import AnimatedNumber from './AnimatedNumber';
 import { useTheme } from './ThemeContext';
+import Typewriter from './Typewriter';
 
 // 🛡️ Type definitions for better type safety
 interface HeroProps {
-  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'waitlist') => void;
+  setCurrentView?: (_view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void;
 }
 
 interface StatData {

@@ -1,21 +1,24 @@
-import React, { useState, useRef, useMemo, useCallback, useContext, useEffect, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-
-import { Film, Music, Tv, Search, Star, Clock, ChevronLeft, ChevronRight, Play, Info, Siren as Fire, Filter, Heart, Share2, X, ArrowRight, Grid, RotateCcw, Globe, MessageSquare, DollarSign, TrendingUp } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Film, Music, Tv, Search, Star, Clock, ChevronLeft, ChevronRight, Play, Info, Siren as Fire, Filter, Heart, Share2, X, ArrowRight, Grid, RotateCcw, Globe, MessageSquare, DollarSign, TrendingUp } from 'lucide-react';
+import React, { useState, useRef, useMemo, useCallback, useContext, useEffect, memo } from 'react';
+
+
 // 🚀 Optimized project imports
 import { projects } from '../data/projects';
-
 import { Project } from '../types';
-import ProjectCard from './ProjectCard';
-import ElasticSlider from './ElasticSlider';
-import { ThemeContext } from './ThemeContext';
 import { getTextColor } from '../utils/themeUtils';
+
+import ElasticSlider from './ElasticSlider';
+import ProjectCard from './ProjectCard';
+import { ThemeContext } from './ThemeContext';
+import LoadingSpinner from './LoadingSpinner';
+
 // import { useMemoryOptimization } from '../hooks/useMemoryOptimization';
 // import { animationOptimizations } from '../utils/animationOptimizations';
 
 interface ProjectCatalogProps {
-  onProjectSelect?: (project: Project, tab?: 'overview' | 'invest') => void;
+  onProjectSelect?: (_project: Project, _tab?: 'overview' | 'invest') => void;
 }
 
 // Memoized filter options to prevent recreation on every render
@@ -701,10 +704,11 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = memo(({ onProjectSelect })
       <div className={`min-h-screen pb-[100px] ${
         theme === 'light' ? 'bg-pink-100' : 'bg-black'
       } flex items-center justify-center`}>
-        <div className="flex flex-col items-center gap-6">
-          <div className="w-12 h-12 border-2 border-gray-400 border-t-purple-500 rounded-full animate-spin" />
-          <div className="text-xl text-gray-300">Loading Browse Page...</div>
-        </div>
+        <LoadingSpinner 
+          variant="entertainment" 
+          size="lg" 
+          text="Loading Browse Page..." 
+        />
       </div>
     );
   }
@@ -1750,8 +1754,8 @@ export default ProjectCatalog;
 interface ProjectRowProps {
   title: string;
   projects: Project[];
-  onProjectClick: (project: Project, tab?: 'overview' | 'invest') => void;
-  onInvestClick: (project: Project) => void;
+  onProjectClick: (_project: Project, _tab?: 'overview' | 'invest') => void;
+  onInvestClick: (_project: Project) => void;
   onHeaderClick?: () => void;
   featured?: boolean;
   urgent?: boolean;

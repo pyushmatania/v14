@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { reportError } from '../services/sentry';
 
 // 🛡️ Type definitions for better type safety

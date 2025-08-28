@@ -5,7 +5,7 @@ import { supabase } from '../config/supabase';
 
 // Google Analytics API types
 interface GoogleTokenClient {
-  requestAccessToken: (callback?: (token: { access_token?: string }) => void) => void;
+  requestAccessToken: (_callback?: (_token: { access_token?: string }) => void) => void;
 }
 
 interface GoogleAccounts {
@@ -770,7 +770,7 @@ class GoogleAnalyticsService {
   // Track custom events to GA
   async trackCustomEvent(eventName: string, parameters: Record<string, unknown>) {
     if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
-      (window as Window & { gtag?: (...args: unknown[]) => void }).gtag!('event', eventName, {
+              (window as Window & { gtag?: (...args: unknown[]) => void }).gtag!('event', eventName, {
         ...parameters,
         custom_parameter_1: parameters.source,
         custom_parameter_2: parameters.deviceType,
@@ -794,7 +794,7 @@ class GoogleAnalyticsService {
   // Track page views to GA
   async trackPageView(page: string) {
     if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
-      (window as Window & { gtag?: (...args: unknown[]) => void }).gtag!('config', this.measurementId, {
+              (window as Window & { gtag?: (...args: unknown[]) => void }).gtag!('config', this.measurementId, {
         page_title: page,
         page_location: window.location.href
       });

@@ -1,9 +1,12 @@
-import * as React from 'react';
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle, Loader, ArrowLeft } from 'lucide-react';
-import { useAuth } from './useAuth';
+import * as React from 'react';
+import { useState } from 'react';
+
 import { useTheme } from '../ThemeContext';
+
+import { useAuth } from './useAuth';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;
@@ -243,11 +246,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onClose }) =>
           whileTap={{ scale: 0.98 }}
           className="w-full py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:from-purple-500 hover:to-blue-500 transition-all duration-300 flex items-center justify-center gap-2"
         >
-          {isSubmitting || isLoading ? (
-            <>
-              <Loader className="w-5 h-5 animate-spin" />
-              Signing in...
-            </>
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <LoadingSpinner 
+                variant="entertainment" 
+                size="sm" 
+                text="" 
+              />
+              <span>Signing in...</span>
+            </div>
           ) : (
             'Sign In'
           )}

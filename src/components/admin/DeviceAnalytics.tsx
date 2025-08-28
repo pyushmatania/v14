@@ -1,5 +1,6 @@
-import React from 'react';
 import { DevicePhoneMobileIcon, ComputerDesktopIcon, DeviceTabletIcon, ChartBarIcon } from '@heroicons/react/24/outline';
+import React from 'react';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface DeviceData {
   deviceBreakdown: Record<string, number>;
@@ -15,11 +16,12 @@ const DeviceAnalytics: React.FC<DeviceAnalyticsProps> = ({ data, loading = false
   if (loading) {
     return (
       <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-green-500/30 border-t-green-500 rounded-full animate-spin mx-auto mb-4"></div>
-            <div className="text-green-400">Loading device data...</div>
-          </div>
+        <div className="text-center">
+          <LoadingSpinner 
+            variant="premium" 
+            size="lg" 
+            text="Loading device data..." 
+          />
         </div>
       </div>
     );

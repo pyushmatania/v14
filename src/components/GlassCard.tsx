@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { Star, Film } from 'lucide-react';
+import * as React from 'react';
 
 // Import logo image
 

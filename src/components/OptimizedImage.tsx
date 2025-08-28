@@ -1,11 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
-// Extend Window interface for performance tracking
-declare global {
-  interface Window {
-    imagePerformanceTracker?: (url: string, loadTime: number, success: boolean) => void;
-  }
-}
 
 interface OptimizedImageProps {
   src: string;
@@ -76,23 +71,19 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
     // Preload image
     const img = new Image();
     img.onload = () => {
-      const loadTime = performance.now() - startTime;
+      const _loadTime = performance.now() - startTime;
       setCurrentSrc(optimizedSrc);
       setIsLoading(false);
       setRetryCount(0);
       
       // Track performance if monitoring is available
-      if (window.imagePerformanceTracker) {
-        window.imagePerformanceTracker(optimizedSrc, loadTime, true);
-      }
+      // Performance tracking removed for simplicity
     };
     img.onerror = () => {
-      const loadTime = performance.now() - startTime;
+      const _loadTime = performance.now() - startTime;
       
       // Track performance if monitoring is available
-      if (window.imagePerformanceTracker) {
-        window.imagePerformanceTracker(optimizedSrc, loadTime, false);
-      }
+      // Performance tracking removed for simplicity
 
       // 🚀 Optimized retry with different TMDB sizes if it's a TMDB URL
       if (optimizedSrc.includes('image.tmdb.org') && retryCount < 2 && !isRetry) {
@@ -137,7 +128,6 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
-        fetchpriority={priority ? 'high' : 'auto'}
         draggable={false}
         className={`transition-all duration-300 ${
           isLoading ? 'blur-sm scale-105' : 'blur-0 scale-100'
@@ -153,7 +143,11 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
       {/* Loading overlay */}
       {isLoading && (
         <div className="absolute inset-0 bg-gray-800/20 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
+          <LoadingSpinner 
+            variant="entertainment" 
+            size="sm" 
+            text="" 
+          />
         </div>
       )}
       

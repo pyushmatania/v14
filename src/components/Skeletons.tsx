@@ -1,4 +1,5 @@
 import React from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 type Classable = { className?: string };
 
@@ -73,19 +74,21 @@ export const PageSkeleton: React.FC = () => (
 // Browse/ProjectCatalog specific skeleton
 export const BrowseSkeleton: React.FC = () => (
   <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center">
-    <div className="flex flex-col items-center gap-4">
-      <div className="w-10 h-10 rounded-full border-4 border-gray-600 border-t-purple-500 animate-spin" />
-      <div className="text-sm text-gray-300">Loading Browse…</div>
-    </div>
+    <LoadingSpinner 
+      variant="entertainment" 
+      size="md" 
+      text="Loading Browse..." 
+    />
   </div>
 );
 
 export const CommunitySkeleton: React.FC = () => (
   <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center">
-    <div className="flex flex-col items-center gap-4">
-      <div className="w-10 h-10 rounded-full border-4 border-gray-600 border-t-purple-500 animate-spin" />
-      <div className="text-sm text-gray-300">Loading Community…</div>
-    </div>
+    <LoadingSpinner 
+      variant="entertainment" 
+      size="md" 
+      text="Loading Community..." 
+    />
   </div>
 );
 

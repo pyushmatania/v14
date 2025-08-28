@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { 
   TrendingUp, 
@@ -15,6 +13,8 @@ import {
   ArrowDownRight,
   RefreshCw
 } from 'lucide-react';
+import * as React from 'react';
+import { useState, useMemo, useCallback, memo } from 'react';
 
 // 🛡️ Type definitions for better type safety
 interface AnalyticsData {
@@ -43,7 +43,7 @@ interface AnalyticsData {
 
 interface AnalyticsDashboardProps {
   isAdmin?: boolean;
-  onExport?: (data: AnalyticsData) => void;
+  onExport?: (_data: AnalyticsData) => void;
 }
 
 // Default empty analytics data

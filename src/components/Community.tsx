@@ -1202,23 +1202,22 @@ const Community: React.FC = memo(() => {
   // Removed unused state variables: isLoadingSpotifyArtists, isContentLoaded
 
   // 🚀 Progressive loading for Community - Optimized
-  useEffect(() => {
-    // Use requestIdleCallback for non-blocking loading
-    const loadContent = () => {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => {
-          setIsDataLoaded(true);
-        });
-      } else {
-        // Fallback for browsers without requestIdleCallback
-        setTimeout(() => {
-          setIsDataLoaded(true);
-        }, 50);
-      }
-    };
-    
-    loadContent();
+  const loadContent = useCallback(() => {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        setIsDataLoaded(true);
+      });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(() => {
+        setIsDataLoaded(true);
+      }, 50);
+    }
   }, []);
+  
+  useEffect(() => {
+    loadContent();
+  }, [loadContent]);
   
   // Original state for when item is selected - Community Hub as default
   const [activeTab, setActiveTab] = useState<'feed' | 'hub' | 'channels' | 'friends' | 'media' | 'perks' | 'merch'>('feed');
@@ -1410,7 +1409,7 @@ const Community: React.FC = memo(() => {
 
   // Community Hub Functions - Cleaned up unused functions
 
-  const handleHubChatSend = () => {
+  const handleHubChatSend = useCallback(() => {
     if (!hubChatInput.trim()) return;
     
     const newMessage = {
@@ -1434,17 +1433,17 @@ const Community: React.FC = memo(() => {
         chatContainer.scrollTop = chatContainer.scrollHeight;
       }
     }, 100);
-  };
+  }, [hubChatInput]);
 
-  const handleHubChatLike = (messageId: number) => {
+  const handleHubChatLike = useCallback((messageId: number) => {
     setHubChatMessages(prev => prev.map(msg => 
       msg.id === messageId 
         ? { ...msg, likes: msg.likes + 1 }
         : msg
     ));
-  };
+  }, []);
 
-  const handleHubChatReaction = (messageId: number, reaction: string) => {
+  const handleHubChatReaction = useCallback((messageId: number, reaction: string) => {
     setHubChatMessages(prev => prev.map(msg => 
       msg.id === messageId 
         ? { 
@@ -1453,9 +1452,9 @@ const Community: React.FC = memo(() => {
           }
         : msg
     ));
-  };
+  }, []);
 
-  const handlePollVote = (messageId: number, option: string) => {
+  const handlePollVote = useCallback((messageId: number, option: string) => {
     setHubChatMessages(prev => prev.map(msg => 
       msg.id === messageId && msg.pollData
         ? { 
@@ -1471,10 +1470,10 @@ const Community: React.FC = memo(() => {
           }
         : msg
     ));
-  };
+  }, []);
 
   // Detailed Window Chat Functions
-  const handleDetailedWindowChatSend = () => {
+  const handleDetailedWindowChatSend = useCallback(() => {
     if (detailedWindowChatInput.trim()) {
       setDetailedWindowChatMessages(prev => [
         ...prev,
@@ -1492,9 +1491,9 @@ const Community: React.FC = memo(() => {
       setDetailedWindowChatInput('');
       scrollToBottomDelayed(detailedWindowChatRef, 100);
     }
-  };
+  }, [detailedWindowChatInput, extractMentions, scrollToBottomDelayed]);
 
-  const handleDetailedWindowChatLike = (messageId: number) => {
+  const handleDetailedWindowChatLike = useCallback((messageId: number) => {
     setDetailedWindowChatMessages(prev => 
       prev.map(msg => 
         msg.id === messageId 
@@ -1502,9 +1501,9 @@ const Community: React.FC = memo(() => {
           : msg
       )
     );
-  };
+  }, []);
 
-  const handleDetailedWindowChatReaction = (messageId: number, reaction: string) => {
+  const handleDetailedWindowChatReaction = useCallback((messageId: number, reaction: string) => {
     setDetailedWindowChatMessages(prev => 
       prev.map(msg => 
         msg.id === messageId 
@@ -1512,9 +1511,9 @@ const Community: React.FC = memo(() => {
           : msg
       )
     );
-  };
+  }, []);
 
-  const handleDetailedWindowChatReply = (messageId: number, replyText: string) => {
+  const handleDetailedWindowChatReply = useCallback((messageId: number, replyText: string) => {
     setDetailedWindowChatMessages(prev => [
       ...prev,
       {
@@ -1531,9 +1530,9 @@ const Community: React.FC = memo(() => {
       }
     ]);
     scrollToBottomDelayed(detailedWindowChatRef, 100);
-  };
+  }, [extractMentions, scrollToBottomDelayed]);
 
-  const handleDetailedWindowPollVote = (messageId: number, option: string) => {
+  const handleDetailedWindowPollVote = useCallback((messageId: number, option: string) => {
     setDetailedWindowChatMessages(prev => 
       prev.map(msg => 
         msg.id === messageId && msg.pollData
@@ -1550,14 +1549,14 @@ const Community: React.FC = memo(() => {
           : msg
       )
     );
-  };
+  }, []);
 
   // Add more interactive functions
  
   
 
   // Enhanced form handlers
-  const handlePollSubmit = () => {
+  const handlePollSubmit = useCallback(() => {
     if (!pollForm.question.trim() || pollForm.options.filter(opt => opt.trim()).length < 2) {
       return; // Don't submit if question is empty or less than 2 options
     }
@@ -1600,9 +1599,9 @@ const Community: React.FC = memo(() => {
       const chatContainer = document.querySelector('.hub-chat-messages');
       if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
     }, 100);
-  };
+  }, [pollForm]);
 
-  const handleEventSubmit = () => {
+  const handleEventSubmit = useCallback(() => {
     if (!eventForm.title.trim() || !eventForm.date || !eventForm.description.trim()) {
       return;
     }
@@ -1644,7 +1643,7 @@ const Community: React.FC = memo(() => {
       const chatContainer = document.querySelector('.hub-chat-messages');
       if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
     }, 100);
-  };
+  }, [eventForm]);
 
   const handleAnnouncementSubmit = () => {
     if (!announcementForm.title.trim() || !announcementForm.content.trim()) {
@@ -1696,36 +1695,36 @@ const Community: React.FC = memo(() => {
     }, 100);
   };
 
-  const addPollOption = () => {
+  const addPollOption = useCallback(() => {
     if (pollForm.options.length < 8) { // Max 8 options
       setPollForm(prev => ({
         ...prev,
         options: [...prev.options, '']
       }));
     }
-  };
+  }, [pollForm.options.length]);
 
-  const removePollOption = (index: number) => {
+  const removePollOption = useCallback((index: number) => {
     if (pollForm.options.length > 2) { // Min 2 options
       setPollForm(prev => ({
         ...prev,
         options: prev.options.filter((_, idx) => idx !== index)
       }));
     }
-  };
+  }, [pollForm.options.length]);
 
-  const updatePollOption = (index: number, value: string) => {
+  const updatePollOption = useCallback((index: number, value: string) => {
     setPollForm(prev => ({
       ...prev,
       options: prev.options.map((opt, idx) => idx === index ? value : opt)
     }));
-  };
+  }, []);
 
-  const formatNumber = (num: number) => {
+  const formatNumber = useCallback((num: number) => {
     if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
     if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
     return num.toString();
-  };
+  }, []);
 
 
 
@@ -1874,11 +1873,11 @@ const Community: React.FC = memo(() => {
   }, [isExperienceView]);
   
   // Auto-scroll functions
-  const scrollToBottom = (ref: React.RefObject<HTMLDivElement>) => {
+  const scrollToBottom = useCallback((ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
     }
-  };
+  }, []);
 
   const scrollToBottomDelayed = useCallback((ref: React.RefObject<HTMLDivElement>, delay: number = 100) => {
     setTimeout(() => {
@@ -2115,108 +2114,16 @@ const Community: React.FC = memo(() => {
     { id: 'merch', label: 'Merch', icon: ShoppingBag }
   ];
 
-  // Send message to selected channel
-  const sendChannelMessage = () => {
-    if (!newMessage.trim()) return;
-    try { 
-      navigator.vibrate?.(30); 
-    } catch {
-      // Vibration not supported or failed
-    }
-    
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
-    // Create user message
-    const userMsg = {
-      user: 'You',
-      message: newMessage,
-      time: currentTime,
-      avatar: getUserAvatar('You'),
-      isUser: true,
-      reactions: [],
-      mentions: extractMentions(newMessage)
-    };
-    
-    setMessages(prev => ({
-      ...prev,
-      [selectedChannel]: [...(prev[selectedChannel] || []), userMsg]
-    }));
-    
-    const sentMessage = newMessage;
-    setNewMessage('');
-    
-    // Auto-scroll to bottom after sending message
-    scrollToBottomDelayed(channelMessagesRef, 50);
-    scrollToBottomDelayed(expChannelMessagesRef, 50);
-    
-    // Show typing indicator
-    setChannelTyping(prev => [...prev, 'Community']);
-    
-    // Generate contextual responses based on channel and message content
-    setTimeout(() => {
-      const responses = generateChannelResponses(selectedChannel, sentMessage);
-      responses.forEach((response, index) => {
-        setTimeout(() => {
-      setMessages(prev => ({
-        ...prev,
-            [selectedChannel]: [...(prev[selectedChannel] || []), response]
-          }));
-        }, index * 1500); // Stagger responses
-      });
-      
-      // Hide typing indicator after responses
-      setTimeout(() => {
-        setChannelTyping(prev => prev.filter(user => user !== 'Community'));
-      }, responses.length * 1500 + 1000);
-    }, 2000);
-  };
-
   // Extract mentions from message
-  const extractMentions = (message: string) => {
+  const extractMentions = useCallback((message: string) => {
     const mentions = message.match(/@(\w+)/g);
     return mentions ? mentions.map(mention => mention.slice(1)) : [];
-  };
-
-  // Handle message reactions
-  const handleReaction = (messageIndex: number, reaction: string) => {
-    try { 
-      navigator.vibrate?.(20); 
-    } catch {
-      // Vibration not supported or failed
-    }
-    
-    setMessages(prev => {
-      const channelMessages = [...(prev[selectedChannel] || [])];
-      if (channelMessages[messageIndex]) {
-        const message = { ...channelMessages[messageIndex] };
-        if (!message.reactions) message.reactions = [];
-        
-        // Toggle reaction
-        const reactionIndex = message.reactions.indexOf(reaction);
-        if (reactionIndex > -1) {
-          message.reactions.splice(reactionIndex, 1);
-        } else {
-          message.reactions.push(reaction);
-        }
-        
-        channelMessages[messageIndex] = message;
-        return {
-          ...prev,
-          [selectedChannel]: channelMessages
-        };
-      }
-      return prev;
-    });
-  };
+  }, []);
 
   // Generate contextual channel responses
-  const generateChannelResponses = (channelId: string, userMessage: string) => {
+  const generateChannelResponses = useCallback((channelId: string, userMessage: string) => {
     const responses = [];
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
-          // Get channel info
-      // const channel = channels.find(c => c.id === channelId);
-      // const channelMembers = channel?.members || 1000;
     
     // Generate responses based on channel type and message content
     if (channelId === 'announcements') {
@@ -2315,70 +2222,160 @@ const Community: React.FC = memo(() => {
         user: 'Kamlesh Biswal',
         message: 'The behind-the-scenes content is always the best! Love seeing the magic happen! ✨',
         time: currentTime,
-        avatar: getUserAvatar('Kamlesh Biswal'),
-        isUser: false,
-        reactions: ['✨', '🎭']
-      });
-    } else if (channelId === 'general-chat') {
-      responses.push({
-        user: 'Adya Rath',
-        message: 'Love the energy in this chat! Everyone is so supportive! 💕',
-        time: currentTime,
-        avatar: getUserAvatar('Adya Rath'),
-        isUser: false,
-        reactions: ['💕', '👏']
-      });
-      
-      if (Math.random() > 0.5) {
-        responses.push({
-          user: 'Soham Bardhan',
-          message: 'This community is amazing! So many creative minds in one place! 🌟',
-          time: currentTime,
-          avatar: getUserAvatar('Soham Bardhan'),
-          isUser: false,
-          reactions: ['🌟', '🤝']
-        });
-      }
-    } else if (channelId === 'tech-talk') {
-      if (userMessage.toLowerCase().includes('ai') || userMessage.toLowerCase().includes('artificial intelligence')) {
-        responses.push({
-          user: 'Kamlesh Biswal',
-          message: 'AI is revolutionizing every industry! The possibilities are endless! 🤖',
-          time: currentTime,
           avatar: getUserAvatar('Kamlesh Biswal'),
           isUser: false,
-          reactions: ['🤖', '🚀']
+          reactions: ['✨', '🎭']
         });
-      } else {
+      } else if (channelId === 'general-chat') {
         responses.push({
-          user: 'Ankit Singh',
-          message: 'Technology moves so fast these days! Always something new to learn! 📱',
+          user: 'Adya Rath',
+          message: 'Love the energy in this chat! Everyone is so supportive! 💕',
           time: currentTime,
-          avatar: getUserAvatar('Ankit Singh'),
+          avatar: getUserAvatar('Adya Rath'),
           isUser: false,
-          reactions: ['📱', '💻']
+          reactions: ['💕', '👏']
+        });
+        
+        if (Math.random() > 0.5) {
+          responses.push({
+            user: 'Soham Bardhan',
+            message: 'This community is amazing! So many creative minds in one place! 🌟',
+            time: currentTime,
+            avatar: getUserAvatar('Soham Bardhan'),
+            isUser: false,
+            reactions: ['🌟', '🤝']
+          });
+        }
+      } else if (channelId === 'tech-talk') {
+        if (userMessage.toLowerCase().includes('ai') || userMessage.toLowerCase().includes('artificial intelligence')) {
+          responses.push({
+            user: 'Kamlesh Biswal',
+            message: 'AI is revolutionizing every industry! The possibilities are endless! 🤖',
+            time: currentTime,
+            avatar: getUserAvatar('Kamlesh Biswal'),
+            isUser: false,
+            reactions: ['🤖', '🚀']
+          });
+        } else {
+          responses.push({
+            user: 'Ankit Singh',
+            message: 'Technology moves so fast these days! Always something new to learn! 📱',
+            time: currentTime,
+            avatar: getUserAvatar('Ankit Singh'),
+            isUser: false,
+            reactions: ['📱', '💻']
+          });
+        }
+      } else {
+        // Default response for other channels
+        const randomUsers = ['Alok Tripathy', 'Ankit Singh', 'Biren Dora', 'Adya Rath', 'Soham Bardhan'];
+        const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
+        
+        responses.push({
+          user: randomUser,
+          message: 'Thanks for sharing! This adds great value to our community discussion! 🙌',
+          time: currentTime,
+          avatar: getUserAvatar(randomUser),
+          isUser: false,
+          reactions: ['🙌', '👍']
         });
       }
-    } else {
-      // Default response for other channels
-      const randomUsers = ['Alok Tripathy', 'Ankit Singh', 'Biren Dora', 'Adya Rath', 'Soham Bardhan'];
-      const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
       
-      responses.push({
-        user: randomUser,
-        message: 'Thanks for sharing! This adds great value to our community discussion! 🙌',
-        time: currentTime,
-        avatar: getUserAvatar(randomUser),
-        isUser: false,
-        reactions: ['🙌', '👍']
-      });
+      return responses;
+    }, []);
+
+  // Send message to selected channel
+  const sendChannelMessage = useCallback(() => {
+    if (!newMessage.trim()) return;
+    try { 
+      navigator.vibrate?.(30); 
+    } catch {
+      // Vibration not supported or failed
     }
     
-    return responses;
-  };
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    // Create user message
+    const userMsg = {
+      user: 'You',
+      message: newMessage,
+      time: currentTime,
+      avatar: getUserAvatar('You'),
+      isUser: true,
+      reactions: [],
+      mentions: extractMentions(newMessage)
+    };
+    
+    setMessages(prev => ({
+      ...prev,
+      [selectedChannel]: [...(prev[selectedChannel] || []), userMsg]
+    }));
+    
+    const sentMessage = newMessage;
+    setNewMessage('');
+    
+    // Auto-scroll to bottom after sending message
+    scrollToBottomDelayed(channelMessagesRef, 50);
+    scrollToBottomDelayed(expChannelMessagesRef, 50);
+    
+    // Show typing indicator
+    setChannelTyping(prev => [...prev, 'Community']);
+    
+    // Generate contextual responses based on channel and message content
+    setTimeout(() => {
+      const responses = generateChannelResponses(selectedChannel, sentMessage);
+      responses.forEach((response, index) => {
+        setTimeout(() => {
+      setMessages(prev => ({
+        ...prev,
+            [selectedChannel]: [...(prev[selectedChannel] || []), response]
+          }));
+        }, index * 1500); // Stagger responses
+      });
+      
+      // Hide typing indicator after responses
+      setTimeout(() => {
+        setChannelTyping(prev => prev.filter(user => user !== 'Community'));
+      }, responses.length * 1500 + 1000);
+    }, 2000);
+  }, [newMessage, selectedChannel, extractMentions, generateChannelResponses, scrollToBottomDelayed]);
+
+  // Handle message reactions
+  const handleReaction = useCallback((messageIndex: number, reaction: string) => {
+    try { 
+      navigator.vibrate?.(20); 
+    } catch {
+      // Vibration not supported or failed
+    }
+    
+    setMessages(prev => {
+      const channelMessages = [...(prev[selectedChannel] || [])];
+      if (channelMessages[messageIndex]) {
+        const message = { ...channelMessages[messageIndex] };
+        if (!message.reactions) message.reactions = [];
+        
+        // Toggle reaction
+        const reactionIndex = message.reactions.indexOf(reaction);
+        if (reactionIndex > -1) {
+          message.reactions.splice(reactionIndex, 1);
+        } else {
+          message.reactions.push(reaction);
+        }
+        
+        channelMessages[messageIndex] = message;
+        return {
+          ...prev,
+          [selectedChannel]: channelMessages
+        };
+      }
+      return prev;
+    });
+  }, [selectedChannel]);
+
+  
 
   // Send message to selected friend
-  const sendFriendMessage = () => {
+  const sendFriendMessage = useCallback(() => {
     if (!friendInput.trim()) return;
     try { 
       navigator.vibrate?.(30); 
@@ -2417,7 +2414,7 @@ const Community: React.FC = memo(() => {
       }
       setFriendTyping(false);
     }, 2000);
-  };
+  }, [friendInput, selectedFriend, friendsList]);
   // Scroll detection for experience view - for channels, friends, feed, and hub tabs
   useEffect(() => {
     let ticking = false;

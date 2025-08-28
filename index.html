@@ -1,40 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/circles-logo-main.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Circles - Own the stories you love</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     
-    <!-- Google tag (gtag.js) -->
-    <script>
-      // Defer GA load to idle to prioritize rendering
-      (function(){
-        if (!('requestIdleCallback' in window)) {
-          window.requestIdleCallback = function(cb){ return setTimeout(cb, 1); };
-        }
-        requestIdleCallback(function(){
-          if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-            return; // Skip GA in local dev to avoid blocking and noise
-          }
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-SBWLVKVMCN';
-          s.onload = function(){
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){ dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'G-SBWLVKVMCN');
-          };
-          document.head.appendChild(s);
-        });
-      })();
+    <!-- Primary Meta Tags -->
+    <title>EnterCircles - Lights, Camera, Ownership</title>
+    <meta name="title" content="EnterCircles - Lights, Camera, Ownership" />
+    <meta name="description" content="Join the revolution in entertainment investment. EnterCircles connects creators, investors, and fans in the world of film, music, and digital content. Lights, Camera, Ownership." />
+    <meta name="keywords" content="entertainment investment, film investment, music investment, digital content, creators, investors, film industry, music industry, entertainment platform" />
+    <meta name="author" content="EnterCircles" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://entercircles.com/" />
+    <meta property="og:title" content="EnterCircles - Lights, Camera, Ownership" />
+    <meta property="og:description" content="Join the revolution in entertainment investment. EnterCircles connects creators, investors, and fans in the world of film, music, and digital content." />
+    <meta property="og:image" content="/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://entercircles.com/" />
+    <meta property="twitter:title" content="EnterCircles - Lights, Camera, Ownership" />
+    <meta property="twitter:description" content="Join the revolution in entertainment investment. EnterCircles connects creators, investors, and fans in the world of film, music, and digital content." />
+    <meta property="twitter:image" content="/og-image.png" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#8B5CF6" />
+    <meta name="msapplication-TileColor" content="#8B5CF6" />
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Additional Meta Tags -->
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="distribution" content="global" />
+    <meta name="rating" content="general" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "EnterCircles",
+      "url": "https://entercircles.com",
+      "logo": "https://entercircles.com/logo.png",
+      "description": "EnterCircles connects creators, investors, and fans in the world of film, music, and digital content. Lights, Camera, Ownership.",
+      "slogan": "Lights, Camera, Ownership",
+      "sameAs": [
+        "https://twitter.com/entercircles",
+        "https://linkedin.com/company/entercircles",
+        "https://instagram.com/entercircles"
+      ]
+    }
     </script>
   </head>
   <body>

@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, XCircle, AlertCircle, Phone, Mail, User } from 'lucide-react';
+import * as React from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface CountryCode {
   code: string;
@@ -15,7 +15,7 @@ interface PremiumInputProps {
   label: string;
   placeholder: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (_value: string) => void;
   required?: boolean;
   validation?: {
     pattern?: RegExp;
@@ -88,11 +88,11 @@ const PremiumInput: React.FC<PremiumInputProps> = ({
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    onChange(newValue);
+    const _value = e.target.value;
+    onChange(_value);
     
-    if (newValue.trim()) {
-      const valid = validateInput(newValue);
+    if (_value.trim()) {
+      const valid = validateInput(_value);
       setIsValid(valid);
     } else {
       setIsValid(null);

@@ -1,11 +1,13 @@
-import * as React from 'react';
 import { motion } from 'framer-motion';
 import { Medal, Box, Gem, Crown, CheckCircle, Star, Sparkles, TrendingUp, ArrowRight } from 'lucide-react';
-import { useTheme } from './ThemeContext';
-import GlassCard from './GlassCard';
+import * as React from 'react';
+
 
 // Import perks images from centralized utils
 import { images } from '../utils/imageUtils';
+
+import GlassCard from './GlassCard';
+import { useTheme } from './ThemeContext';
 
 // Simple error boundary for Rewards
 const RewardsErrorBoundary: React.FC<{ children: React.ReactNode }> = ({ children }) => {

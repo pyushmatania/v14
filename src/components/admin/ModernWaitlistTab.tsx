@@ -1,6 +1,3 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { supabase } from '../../config/supabase';
 import { 
   MagnifyingGlassIcon,
   ArrowDownTrayIcon,
@@ -21,9 +18,13 @@ import {
   ShieldCheckIcon,
   CpuChipIcon
 } from '@heroicons/react/24/outline';
+import React, { useState, useEffect } from 'react';
+import LoadingSpinner from '../LoadingSpinner';
+
+import type { Database } from '../../config/database.types';
+import { supabase } from '../../config/supabase';
 
 // Types - Using the exact Supabase database structure
-import type { Database } from '../../config/database.types';
 
 type WaitlistEntry = Database['public']['Tables']['waitlist_signups']['Row'];
 
@@ -194,10 +195,11 @@ const ModernWaitlistTab: React.FC = () => {
       <div className="space-y-6">
         <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50">
           <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-              <div className="text-blue-400">Loading waitlist data...</div>
-            </div>
+            <LoadingSpinner 
+              variant="premium" 
+              size="lg" 
+              text="Loading waitlist data..." 
+            />
           </div>
         </div>
       </div>

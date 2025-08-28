@@ -1,4 +1,5 @@
 import { supabase } from '../config/supabase';
+
 import { googleAnalyticsService, GAEnhancedAnalytics } from './googleAnalyticsService';
 
 // Enhanced interfaces for comprehensive tracking

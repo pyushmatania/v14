@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Linkedin, 
@@ -14,16 +13,20 @@ import {
   Youtube,
   Twitter
 } from 'lucide-react';
+import React, { useState } from 'react';
+
+import AKASH_PHOTO from '../images/akash-matania.JPG';
+import GARIMA_PHOTO from '../images/garima.jpg';
+import GAURAV_PHOTO from '../images/gaurav.jpg';
+import STARTUP_INDIA from '../images/India.png';
+import KAMLESH_PHOTO from '../images/kamlesh_nagware.jpg';
+import STARTUP_ODISHA from '../images/startup odisha.png';
+
+import ErrorBoundary from './ErrorBoundary';
+import OptimizedImage from './OptimizedImage';
 import { useTheme } from './ThemeContext';
 import Typewriter from './Typewriter';
-import OptimizedImage from './OptimizedImage';
-import ErrorBoundary from './ErrorBoundary';
-import STARTUP_INDIA from '../images/India.png';
-import STARTUP_ODISHA from '../images/startup odisha.png';
-import AKASH_PHOTO from '../images/akash-matania.JPG';
-import GAURAV_PHOTO from '../images/gaurav.jpg';
-import KAMLESH_PHOTO from '../images/kamlesh_nagware.jpg';
-import GARIMA_PHOTO from '../images/garima.jpg';
+import LoadingSpinner from './LoadingSpinner';
 
 interface TeamMember {
   name: string;
@@ -648,9 +651,13 @@ const AboutUs: React.FC = () => {
                   }`}
                 >
                   {isSubmitting ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Sending...
+                    <div className="flex items-center gap-2">
+                      <LoadingSpinner 
+                        variant="entertainment" 
+                        size="sm" 
+                        text="" 
+                      />
+                      <span>Sending...</span>
                     </div>
                   ) : (
                     'Send Message'

@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   User, 
@@ -22,14 +21,17 @@ import {
   Share2,
   Download
 } from 'lucide-react';
-import { useAuth } from '../auth/useAuth';
-import { useTheme } from '../ThemeContext';
+import React, { useState, useEffect } from 'react';
+
 import { portfolioService } from '../../data/portfolio';
 import { getUserAvatar } from '../../utils/imageUtils';
+import { useAuth } from '../auth/useAuth';
+import { useTheme } from '../ThemeContext';
+import LoadingSpinner from '../LoadingSpinner';
 
 
-// If User type is not exported, define it here based on AuthProvider
-type User = {
+// User type definition for ProfilePage
+type ProfileUser = {
   id: string;
   email: string;
   name: string;
@@ -56,7 +58,7 @@ const ProfilePage: React.FC = () => {
   const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState<'overview' | 'investments' | 'settings'>('overview');
   const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState<User>(user || ({} as User));
+  const [editData, setEditData] = useState<ProfileUser>(user || ({} as ProfileUser));
   const [isUploading, setIsUploading] = useState(false);
 
   // Update editData when user data changes
@@ -70,10 +72,11 @@ const ProfilePage: React.FC = () => {
   if (!user) {
     return (
       <div className="min-h-screen pt-20 pb-[100px] flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-500">Loading profile...</p>
-        </div>
+        <LoadingSpinner 
+          variant="entertainment" 
+          size="lg" 
+          text="Loading profile..." 
+        />
       </div>
     );
   }

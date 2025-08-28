@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Crown, 
@@ -12,6 +10,8 @@ import {
   Rocket,
   Sparkles
 } from 'lucide-react';
+import * as React from 'react';
+import { useMemo, memo } from 'react';
 
 // 🛡️ Type definitions for better type safety
 interface BenefitCard {

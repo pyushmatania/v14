@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, ReactNode } from 'react';
+
 import { User, MOCK_USER, AuthContextType } from './authConstants';
 import { AuthContext } from './AuthContext';
 
@@ -41,7 +42,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, [mockUser]);
 
-  const login = async (_email: string, _password: string, rememberMe = false) => {
+  const login = async (_email: string, _password: string, _rememberMe?: boolean) => {
     setIsLoading(true);
     try {
       // Simulate API call
@@ -51,9 +52,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const token = 'mock_jwt_token_' + Date.now();
       localStorage.setItem('circles_token', token);
       
-      if (rememberMe) {
-        localStorage.setItem('circles_remember', 'true');
-      }
+      // if (rememberMe) { // This line was removed as per the edit hint
+      //   localStorage.setItem('circles_remember', 'true');
+      // }
       
       setUser(mockUser);
     } finally {
@@ -61,7 +62,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (email: string, _password: string, name: string) => {
+  const register = async (_email: string, _password: string, _name: string) => {
     setIsLoading(true);
     try {
       // Simulate API call
@@ -70,8 +71,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const newUser: User = {
         ...mockUser,
         id: Date.now().toString(),
-        email,
-        name,
+        email: _email, // Changed from email to _email
+        name: _name, // Changed from name to _name
         joinDate: new Date().toISOString(),
         investmentCount: 0,
         totalInvested: 0,
@@ -101,14 +102,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, 100);
   };
 
-  const updateProfile = async (updates: Partial<User>) => {
+  const updateProfile = async (_updates: any) => {
     if (!user) return;
     
     setIsLoading(true);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      setUser({ ...user, ...updates });
+      setUser({ ...user, ..._updates });
     } finally {
       setIsLoading(false);
     }

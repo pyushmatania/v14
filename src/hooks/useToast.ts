@@ -78,15 +78,15 @@ export const useToast = () => {
   // 🚀 Optimized toast methods with better type safety
   const toast = useMemo(() => ({
     success: (title: string, message?: string, options?: ToastOptions) => 
-      addToast({ type: 'success', title, message }, options),
+      addToast({ type: 'success', title, message: message || '' }, options),
     error: (title: string, message?: string, options?: ToastOptions) => 
-      addToast({ type: 'error', title, message }, options),
+      addToast({ type: 'error', title, message: message || '' }, options),
     info: (title: string, message?: string, options?: ToastOptions) => 
-      addToast({ type: 'info', title, message }, options),
+      addToast({ type: 'info', title, message: message || '' }, options),
     warning: (title: string, message?: string, options?: ToastOptions) => 
-      addToast({ type: 'warning', title, message }, options),
+      addToast({ type: 'warning', title, message: message || '' }, options),
     custom: (type: ToastType, title: string, message?: string, options?: ToastOptions) => 
-      addToast({ type, title, message }, options)
+      addToast({ type, title, message: message || '' }, options)
   }), [addToast]);
 
   // 🚀 Clear all toasts
@@ -102,7 +102,9 @@ export const useToast = () => {
     setToasts(prev => {
       if (prev.length === 0) return prev;
       const oldestToast = prev[0];
-      removeToast(oldestToast.id);
+      if (oldestToast) {
+        removeToast(oldestToast.id);
+      }
       return prev.slice(1);
     });
   }, [removeToast]);

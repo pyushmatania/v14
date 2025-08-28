@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, CreditCard, TrendingUp, Users, Shield, Award } from 'lucide-react';
+import React, { useState } from 'react';
+
 import { useTheme } from './ThemeContext';
 
 type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search';
 
 interface HowItWorksProps {
-  setCurrentView?: (view: ViewType) => void;
+  setCurrentView?: (_view: ViewType) => void;
 }
 
 const HowItWorks: React.FC<HowItWorksProps> = ({ setCurrentView }) => {

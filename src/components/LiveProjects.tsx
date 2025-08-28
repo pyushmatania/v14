@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { Film, Music, Users, TrendingUp, ArrowRight, Sparkles, Star, Play, Heart, Share2, Camera, Ticket, Award, Gift, Video, Calendar, MapPin, Globe, Shield, Zap, AlertTriangle } from 'lucide-react';
-import confetti from 'canvas-confetti';
-import AnimatedNumber from './AnimatedNumber';
+import React, { useState } from 'react';
+
 import { projects } from '../data/projects';
 import { Project } from '../types';
+
+import AnimatedNumber from './AnimatedNumber';
 import { useTheme } from './ThemeContext';
 import Typewriter from './Typewriter';
 
 
 interface LiveProjectsProps {
   onViewAll?: () => void;
-  onProjectSelect?: (project: Project, tab?: 'overview' | 'invest') => void;
+  onProjectSelect?: (_project: Project, _tab?: 'overview' | 'invest') => void;
 }
 
 const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onProjectSelect }) => {
@@ -82,7 +84,7 @@ const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onProjectSelect 
     }, 100);
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [selectedProjects]);
 
   return (
     <section className={`py-24 ${

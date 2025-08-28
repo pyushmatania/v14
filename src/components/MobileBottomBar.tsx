@@ -1,13 +1,14 @@
-import React from 'react';
 import { motion, PanInfo } from 'framer-motion';
 import { Home, BarChart3, Film, Users, Sparkles, ChevronUp, ChevronDown } from 'lucide-react';
-import { useTheme } from './ThemeContext';
+import React from 'react';
+
 import { useAuth } from './auth/useAuth';
+import { useTheme } from './ThemeContext';
 
 interface MobileBottomBarProps {
   currentView: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics';
-  setCurrentView: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics') => void;
-  onAuthRequired: (mode?: 'login' | 'register') => boolean;
+  setCurrentView: (_view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics') => void;
+  onAuthRequired: (_mode?: 'login' | 'register') => boolean;
 }
 
 const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ currentView, setCurrentView, onAuthRequired }) => {
