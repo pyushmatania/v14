@@ -71,8 +71,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const newUser: User = {
         ...mockUser,
         id: Date.now().toString(),
-        email: _email, // Changed from email to _email
-        name: _name, // Changed from name to _name
+        email: _email,
+        name: _name,
         joinDate: new Date().toISOString(),
         investmentCount: 0,
         totalInvested: 0,
@@ -115,14 +115,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   const resetPassword = async (_email: string) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     // In real app, send reset email
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   const changePassword = async (_currentPassword: string, _newPassword: string) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));

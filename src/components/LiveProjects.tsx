@@ -13,7 +13,7 @@ import Typewriter from './Typewriter';
 
 interface LiveProjectsProps {
   onViewAll?: () => void;
-  onProjectSelect?: (_project: Project, _tab?: 'overview' | 'invest') => void;
+  onProjectSelect?: (project: Project, tab?: 'overview' | 'invest') => void; // eslint-disable-line no-unused-vars
 }
 
 const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onProjectSelect }) => {
@@ -296,8 +296,8 @@ const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onProjectSelect 
                     <div className={`text-lg font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                       <AnimatedNumber 
                         value={project.runtime || 120} 
-                        format={(val) => `${val} min`}
-                        inView={statsInView[index]}
+                        format={(val: number) => `${val} min`}
+                        inView={statsInView[index] || false}
                       />
                     </div>
                     <div className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Runtime</div>
@@ -306,7 +306,7 @@ const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onProjectSelect 
                     <div className={`text-lg font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                       <AnimatedNumber 
                         value={project.releaseYear || 2024} 
-                        inView={statsInView[index]}
+                        inView={statsInView[index] || false}
                       />
                     </div>
                     <div className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Year</div>
@@ -315,8 +315,8 @@ const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onProjectSelect 
                     <div className={`text-lg font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                       <AnimatedNumber 
                         value={project.rating || project.tmdbRating || 8} 
-                        format={(val) => `${val}/10`}
-                        inView={statsInView[index]}
+                        format={(val: number) => `${val}/10`}
+                        inView={statsInView[index] || false}
                       />
                     </div>
                     <div className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Rating</div>

@@ -4654,4 +4654,4 @@ export const musicAlbums: Project[] = [
   }
 ];
 
-export default musicAlbums;
+// REMOVED: Unused default export

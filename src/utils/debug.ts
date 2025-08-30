@@ -1,4 +1,4 @@
-import React from 'react';
+// REMOVED: Unused React import
 
 import { reportError } from '../services/sentry';
 
@@ -23,11 +23,11 @@ type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
 
 // 🚀 Debug configuration with enhanced options
 const DEBUG_CONFIG: DebugConfig = {
-  enabled: import.meta.env.DEV || import.meta.env.VITE_DEBUG === 'true',
-  logLevel: import.meta.env.VITE_LOG_LEVEL || 'info',
-  performance: import.meta.env.VITE_PERFORMANCE_DEBUG === 'true',
+  enabled: import.meta.env.DEV || import.meta.env['VITE_DEBUG'] === 'true',
+  logLevel: import.meta.env['VITE_LOG_LEVEL'] || 'info',
+  performance: import.meta.env['VITE_PERFORMANCE_DEBUG'] === 'true',
   maxLogEntries: 1000,
-  enableSentry: import.meta.env.VITE_ENABLE_SENTRY !== 'false'
+  enableSentry: import.meta.env['VITE_ENABLE_SENTRY'] !== 'false'
 };
 
 // 🚀 Log levels with numeric values
@@ -77,7 +77,7 @@ export class DebugLogger {
       level,
       message,
       args,
-      stack: new Error().stack
+      stack: new Error().stack || ''
     });
   }
 
@@ -245,114 +245,17 @@ export class PerformanceMonitor {
   }
 }
 
-/**
- * 🎯 useDebugEffect - Enhanced React effect debugging hook
- * @description Provides detailed debugging for React effects
- */
-export function useDebugEffect(
-  effect: React.EffectCallback, 
-  deps: React.DependencyList, 
-  name?: string
-): void {
-  const logger = DebugLogger.getInstance();
-  const effectName = name || 'useEffect';
+// REMOVED: Unused export (useDebugEffect)
 
-  React.useEffect(() => {
-    logger.debug(`Effect started: ${effectName}`, { deps });
-    const cleanup = effect();
-    return () => {
-      logger.debug(`Effect cleanup: ${effectName}`);
-      if (cleanup) cleanup();
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps]);
-}
+// REMOVED: Unused export (useDebugState)
 
-/**
- * 🎯 useDebugState - Enhanced React state debugging hook
- * @description Provides detailed debugging for React state changes
- */
-export function useDebugState<T>(
-  initialState: T, 
-  name?: string
-): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const logger = DebugLogger.getInstance();
-  const stateName = name || 'state';
-  const [state, setState] = React.useState<T>(initialState);
+// REMOVED: Unused export (debugFetch)
 
-  const debugSetState = React.useCallback((value: React.SetStateAction<T>) => {
-    logger.debug(`State update: ${stateName}`, { 
-      current: state, 
-      newValue: typeof value === 'function' ? 'function' : value 
-    });
-    setState(value);
-  }, [state, stateName, logger]);
-
-  return [state, debugSetState];
-}
-
-/**
- * 🎯 debugFetch - Enhanced fetch debugging wrapper
- * @description Provides detailed debugging for fetch requests
- */
-export function debugFetch(url: string, options?: RequestInit): Promise<Response> {
-  const logger = DebugLogger.getInstance();
-  const startTime = performance.now();
-
-  logger.debug(`Fetch request: ${url}`, { options });
-
-  return fetch(url, options)
-    .then(response => {
-      const duration = performance.now() - startTime;
-      logger.debug(`Fetch response: ${url}`, { 
-        status: response.status, 
-        duration: `${duration.toFixed(2)}ms` 
-      });
-      return response;
-    })
-    .catch(error => {
-      const duration = performance.now() - startTime;
-      logger.error(`Fetch error: ${url}`, { error, duration: `${duration.toFixed(2)}ms` });
-      throw error;
-    });
-}
-
-/**
- * 🎯 debugAsync - Debug wrapper for async functions
- * @description Provides debugging for async function execution
- */
-export function debugAsync<T>(
-  name: string,
-  fn: () => Promise<T>,
-  logger?: DebugLogger
-): Promise<T> {
-  const debugLogger = logger || DebugLogger.getInstance();
-  const startTime = performance.now();
-
-  debugLogger.debug(`Async function started: ${name}`);
-  
-  return fn()
-    .then(result => {
-      const duration = performance.now() - startTime;
-      debugLogger.debug(`Async function completed: ${name}`, { 
-        duration: `${duration.toFixed(2)}ms`,
-        result 
-      });
-      return result;
-    })
-    .catch(error => {
-      const duration = performance.now() - startTime;
-      debugLogger.error(`Async function failed: ${name}`, { 
-        error, 
-        duration: `${duration.toFixed(2)}ms` 
-      });
-      throw error;
-    });
-}
+// REMOVED: Unused export (debugAsync)
 
 // 🚀 Export convenience functions
 export const debug = DebugLogger.getInstance();
-export const perf = PerformanceMonitor;
+// REMOVED: Unused export (perf)
 
 // 🚀 Global error handler with enhanced error tracking
 if (typeof window !== 'undefined') {

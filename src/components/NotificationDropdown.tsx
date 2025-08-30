@@ -23,7 +23,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 
 import { getUserAvatar } from '../utils/imageUtils';
-import generateRealNotifications from '../utils/notificationsAggregator';
+// REMOVED: Unused import (generateRealNotifications)
 
 import { useTheme } from './ThemeContext';
 
@@ -81,7 +81,8 @@ interface Notification {
 }
 
 // Use real notifications generated from actual project and community data
-const mockNotifications: Notification[] = generateRealNotifications();
+// REMOVED: generateRealNotifications usage
+const mockNotifications: Notification[] = []; // Empty array for now
 
 interface NotificationDropdownProps {
   onViewAll: () => void;

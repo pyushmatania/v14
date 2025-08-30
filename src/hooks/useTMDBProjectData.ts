@@ -95,8 +95,4 @@ export const getMainCast = (cast: TMDBActor[], limit: number = 5): TMDBActor[] =
   return cast.slice(0, limit);
 };
 
-// Note: Crew members have different structure than actors
-// This function expects crew data with job property
-export const getKeyCrew = (crew: Array<TMDBActor & { job?: string }>, roles: string[] = ['Director', 'Producer', 'Writer']): Array<TMDBActor & { job?: string }> => {
-  return crew.filter(member => roles.includes(member.job || ''));
-}; 
+// REMOVED: Unused export (getKeyCrew) 

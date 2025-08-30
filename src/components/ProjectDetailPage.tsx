@@ -41,7 +41,7 @@ import {
 } from 'lucide-react';
 import React, { useState, useEffect, useRef, useCallback, memo, useMemo } from 'react';
 
-import useIsMobile from '../hooks/useIsMobile';
+// REMOVED: Unused import (useIsMobile)
 import { useTMDBProjectData, getMainCast } from '../hooks/useTMDBProjectData';
 import { Project } from '../types';
 // import { useMemoryOptimization } from '../hooks/useMemoryOptimization';
@@ -52,12 +52,13 @@ import { getUserAvatar } from '../utils/imageUtils';
 import { getTextColor, getBorderColor, getMainBgColor } from '../utils/themeUtils';
 
 import { useTheme } from './ThemeContext';
+import { isMobile, formatCurrency } from '../utils/commonUtils';
 
 // 🛡️ Type definitions for better type safety
 interface ProjectDetailPageProps {
   project: Project;
   onClose: () => void;
-  onInvest?: (project: Project) => void;
+  onInvest?: (project: Project) => void; // eslint-disable-line no-unused-vars
   initialTab?: 'overview' | 'invest' | 'perks' | 'milestones' | 'team' | 'story' | 'gallery' | 'updates' | 'community' | 'reviews' | 'faqs' | 'legal';
 }
 
@@ -78,7 +79,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   // const animationThrottler = useMemo(() => new animationOptimizations.AnimationThrottler(), []);
 
   const { theme } = useTheme();
-  const { isMobile } = useIsMobile();
+  // Use consolidated utility
 
   const [activeTab, setActiveTab] = useState(initialTab);
   const [tabChangeKey, setTabChangeKey] = useState(0);
@@ -318,14 +319,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     }, 9000);
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
+  // formatCurrency now imported from commonUtils
 
   const formatLargeNumber = (num: number) => {
     if (num >= 10000000) {
@@ -348,7 +342,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     ];
     for (const pattern of videoPatterns) {
       const match = url.match(pattern);
-      if (match) return match[1];
+      if (match) return match[1] || null;
     }
     // Handle search query URLs - these don't have video IDs, so we return null
     if (url.includes('youtube.com/results?search_query=')) {
@@ -365,8 +359,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   // Create embedUrl with mute parameter based on mobile state
   const embedUrl = useMemo(() => {
     if (!baseEmbedUrl) return null;
-    return `${baseEmbedUrl}&mute=${isMobile ? 1 : 0}`;
-  }, [baseEmbedUrl, isMobile]);
+    return `${baseEmbedUrl}&mute=${isMobile() ? 1 : 0}`;
+  }, [baseEmbedUrl]);
 
   const handleVideoLoad = useCallback(async () => {
     if (!videoRef.current) return;
@@ -433,7 +427,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     window.setTimeout(() => {
       // Video loaded
     }, 500);
-  }, [isMobile]);
+  }, []);
 
   const handleIframeLoad = useCallback(() => {
     // For YouTube iframes, hide poster after iframe loads
@@ -560,7 +554,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         }
       };
     }
-  }, [finalVideoId, isMobile]);
+    return undefined;
+  }, [finalVideoId]);
 
 
 
@@ -581,7 +576,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       if (embedUrl && iframeRef.current) {
         try {
           const iframe = iframeRef.current;
-          if (iframe.contentWindow && (iframe.contentWindow as { postMessage?: (message: string, targetOrigin: string) => void }).postMessage) {
+          if (iframe.contentWindow && (iframe.contentWindow as { postMessage?: (message: string, targetOrigin: string) => void }).postMessage) { // eslint-disable-line no-unused-vars
             const command = newMutedState ? 'mute' : 'unMute';
             iframe.contentWindow.postMessage(
               JSON.stringify({ event: 'command', func: command, args: [] }),
@@ -605,7 +600,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         // On both mobile and desktop, unmute on video click
         try {
           videoRef.current.muted = false;
-          videoRef.current.volume = isMobile ? 0.3 : 0.5;
+          videoRef.current.volume = isMobile() ? 0.3 : 0.5;
           setIsMuted(false);
         } catch {
           // Could not unmute video on click
@@ -620,7 +615,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         }
       }
     }
-  }, [isMobile, isMuted, embedUrl]);
+  }, [isMuted, embedUrl]);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -679,7 +674,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   const getSearchQuery = (url: string): string | null => {
     if (!url) return null;
     const match = url.match(/youtube\.com\/results\?search_query=([^&]+)/);
-    return match ? decodeURIComponent(match[1]) : null;
+    return match ? decodeURIComponent(match[1] || '') : null;
   };
 
   // Function to fetch first video from search results
@@ -746,7 +741,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
   // Check if it's a search query URL and fetch video if needed
   useEffect(() => {
-    if (isSearchQuery && !searchVideoId && !isSearchVideoLoading) {
+    if (isSearchQuery && !searchVideoId && !isSearchVideoLoading && project.trailer) {
       const query = getSearchQuery(project.trailer);
       if (query) {
         fetchSearchVideo(query);
@@ -754,7 +749,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     }
   }, [project.trailer, isSearchQuery, searchVideoId, isSearchVideoLoading]);
 
+  useEffect(() => {
+    // 🚀 Load project data when component mounts
+    if (project?.id) {
+      // Project data loading removed
+    }
 
+    return () => {
+      // Cleanup if needed
+    };
+  }, [project?.id]);
 
   return (
     <motion.div
@@ -784,7 +788,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               // Unmute on click for both mobile and desktop
               const video = videoRef.current;
               video.muted = false;
-              video.volume = isMobile ? 0.3 : 0.5;
+                             video.volume = isMobile() ? 0.3 : 0.5;
               setIsMuted(false);
             } else {
               // Toggle mute if already unmuted
@@ -858,7 +862,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                 className="absolute inset-0 w-full h-full object-cover cursor-pointer"
                 onLoadedData={handleVideoLoad}
                 onClick={handleVideoClick}
-                muted={isMobile}
+                muted={isMobile()}
                 loop
                 playsInline
                 autoPlay
@@ -923,7 +927,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           >
             <p className="text-white text-sm flex items-center gap-2">
               <VolumeX className="w-4 h-4" />
-              {isMobile ? 'Tap to unmute' : 'Click to unmute'}
+                             {isMobile() ? 'Tap to unmute' : 'Click to unmute'}
             </p>
           </motion.div>
         )}

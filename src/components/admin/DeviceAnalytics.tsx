@@ -167,7 +167,7 @@ const DeviceAnalytics: React.FC<DeviceAnalyticsProps> = ({ data, loading = false
           <div className="text-center p-4 bg-gray-800/30 rounded-lg border border-gray-700/50">
             <div className="text-2xl font-bold text-purple-400 mb-1">
               {sortedDevices.length > 0 ? 
-                Math.round((sortedDevices[0][1] / totalSessions) * 100) : 0
+                Math.round((sortedDevices[0]?.[1] || 0 / totalSessions) * 100) : 0
               }%
             </div>
             <div className="text-gray-400 text-sm">Top Device Share</div>

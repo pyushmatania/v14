@@ -96,27 +96,27 @@ function detectBrowser(): { browser: string; version: string } {
   
   if (userAgent.includes('Firefox/')) {
     const match = userAgent.match(/Firefox\/(\d+\.\d+)/);
-    return { browser: 'Firefox', version: match ? match[1] : 'unknown' };
+    return { browser: 'Firefox', version: match ? match[1] || 'unknown' : 'unknown' };
   }
   
   if (userAgent.includes('Chrome/')) {
     const match = userAgent.match(/Chrome\/(\d+\.\d+)/);
-    return { browser: 'Chrome', version: match ? match[1] : 'unknown' };
+    return { browser: 'Chrome', version: match ? match[1] || 'unknown' : 'unknown' };
   }
   
   if (userAgent.includes('Safari/') && !userAgent.includes('Chrome/')) {
     const match = userAgent.match(/Version\/(\d+\.\d+)/);
-    return { browser: 'Safari', version: match ? match[1] : 'unknown' };
+    return { browser: 'Safari', version: match ? match[1] || 'unknown' : 'unknown' };
   }
   
   if (userAgent.includes('Edge/')) {
     const match = userAgent.match(/Edge\/(\d+\.\d+)/);
-    return { browser: 'Edge', version: match ? match[1] : 'unknown' };
+    return { browser: 'Edge', version: match ? match[1] || 'unknown' : 'unknown' };
   }
   
   if (userAgent.includes('MSIE') || userAgent.includes('Trident/')) {
     const match = userAgent.match(/MSIE (\d+\.\d+)/);
-    return { browser: 'Internet Explorer', version: match ? match[1] : 'unknown' };
+    return { browser: 'Internet Explorer', version: match ? match[1] || 'unknown' : 'unknown' };
   }
   
   return { browser: 'Unknown', version: 'unknown' };
@@ -130,7 +130,7 @@ function detectOS(): { os: string; version: string } {
     const match = userAgent.match(/Windows NT (\d+\.\d+)/);
     let version = 'unknown';
     if (match) {
-      const major = parseInt(match[1]);
+      const major = parseInt(match[1] || '0');
       if (major === 10) version = '10';
       else if (major === 6.3) version = '8.1';
       else if (major === 6.2) version = '8';
@@ -144,7 +144,7 @@ function detectOS(): { os: string; version: string } {
   
   if (userAgent.includes('Mac OS X')) {
     const match = userAgent.match(/Mac OS X (\d+[._]\d+)/);
-    return { os: 'macOS', version: match ? match[1].replace('_', '.') : 'unknown' };
+    return { os: 'macOS', version: match ? (match[1] || 'unknown').replace('_', '.') : 'unknown' };
   }
   
   if (userAgent.includes('Linux')) {
@@ -153,12 +153,12 @@ function detectOS(): { os: string; version: string } {
   
   if (userAgent.includes('Android')) {
     const match = userAgent.match(/Android (\d+\.\d+)/);
-    return { os: 'Android', version: match ? match[1] : 'unknown' };
+    return { os: 'Android', version: match ? match[1] || 'unknown' : 'unknown' };
   }
   
   if (userAgent.includes('iOS')) {
     const match = userAgent.match(/OS (\d+_\d+)/);
-    return { os: 'iOS', version: match ? match[1].replace('_', '.') : 'unknown' };
+    return { os: 'iOS', version: match ? (match[1] || 'unknown').replace('_', '.') : 'unknown' };
   }
   
   return { os: 'Unknown', version: 'unknown' };
@@ -263,44 +263,44 @@ function detectPlugins(): Record<string, boolean> {
   // Flash
   try {
     const flash = (navigator as any).plugins['Shockwave Flash'];
-    plugins.flash = !!flash;
+    plugins['flash'] = !!flash;
   } catch {
-    plugins.flash = false;
+          plugins['flash'] = false;
   }
   
   // Java
   try {
-    plugins.java = (navigator as any).javaEnabled();
+    plugins['java'] = (navigator as any).javaEnabled();
   } catch {
-    plugins.java = false;
+    plugins['java'] = false;
   }
   
   // PDF
   try {
     const pdf = (navigator as any).plugins['Chrome PDF Plugin'] || (navigator as any).plugins['Adobe Acrobat'];
-    plugins.pdf = !!pdf;
+    plugins['pdf'] = !!pdf;
   } catch {
-    plugins.pdf = false;
+    plugins['pdf'] = false;
   }
   
   // Other plugins (set to false for now as they're deprecated)
-  plugins.silverlight = false;
-  plugins.quicktime = false;
-  plugins.realplayer = false;
-  plugins.windowsmedia = false;
-  plugins.vlc = false;
-  plugins.shockwave = false;
-  plugins.activex = false;
-  plugins.vbs = false;
-  plugins.vb = false;
-  plugins.perl = false;
-  plugins.python = false;
-  plugins.ruby = false;
-  plugins.php = false;
-  plugins.asp = false;
-  plugins.jsp = false;
-  plugins.coldfusion = false;
-  plugins.cgi = false;
+  plugins['silverlight'] = false;
+  plugins['quicktime'] = false;
+  plugins['realplayer'] = false;
+  plugins['windowsmedia'] = false;
+  plugins['vlc'] = false;
+  plugins['shockwave'] = false;
+  plugins['activex'] = false;
+  plugins['vbs'] = false;
+  plugins['vb'] = false;
+  plugins['perl'] = false;
+  plugins['python'] = false;
+  plugins['ruby'] = false;
+  plugins['php'] = false;
+  plugins['asp'] = false;
+  plugins['jsp'] = false;
+  plugins['coldfusion'] = false;
+  plugins['cgi'] = false;
   
   return plugins;
 }
@@ -390,26 +390,26 @@ export async function collectDeviceInfo(): Promise<DeviceInfo> {
     vpnDetected,
     torDetected,
     botDetected,
-    flashEnabled: plugins.flash,
-    javaEnabled: plugins.java,
-    silverlightEnabled: plugins.silverlight,
-    pdfViewer: plugins.pdf ? 'Built-in' : 'None',
-    quicktimeEnabled: plugins.quicktime,
-    realplayerEnabled: plugins.realplayer,
-    windowsmediaEnabled: plugins.windowsmedia,
-    vlcEnabled: plugins.vlc,
-    shockwaveEnabled: plugins.shockwave,
-    activexEnabled: plugins.activex,
-    vbsEnabled: plugins.vbs,
-    vbEnabled: plugins.vb,
-    perlEnabled: plugins.perl,
-    pythonEnabled: plugins.python,
-    rubyEnabled: plugins.ruby,
-    phpEnabled: plugins.php,
-    aspEnabled: plugins.asp,
-    jspEnabled: plugins.jsp,
-    coldfusionEnabled: plugins.coldfusion,
-    cgiEnabled: plugins.cgi
+    flashEnabled: plugins['flash'] || false,
+    javaEnabled: plugins['java'] || false,
+    silverlightEnabled: plugins['silverlight'] || false,
+    pdfViewer: plugins['pdf'] ? 'Built-in' : 'None',
+    quicktimeEnabled: plugins['quicktime'] || false,
+    realplayerEnabled: plugins['realplayer'] || false,
+    windowsmediaEnabled: plugins['windowsmedia'] || false,
+    vlcEnabled: plugins['vlc'] || false,
+    shockwaveEnabled: plugins['shockwave'] || false,
+    activexEnabled: plugins['activex'] || false,
+    vbsEnabled: plugins['vbs'] || false,
+    vbEnabled: plugins['vb'] || false,
+    perlEnabled: plugins['perl'] || false,
+    pythonEnabled: plugins['python'] || false,
+    rubyEnabled: plugins['ruby'] || false,
+    phpEnabled: plugins['php'] || false,
+    aspEnabled: plugins['asp'] || false,
+    jspEnabled: plugins['jsp'] || false,
+    coldfusionEnabled: plugins['coldfusion'] || false,
+    cgiEnabled: plugins['cgi'] || false
   };
 }
 

@@ -28,7 +28,7 @@ import { Project } from '../types';
 import { useTheme } from './ThemeContext';
 
 interface EnhancedSearchProps {
-  onSelectProject?: (_project: Project) => void;
+  onSelectProject?: (project: Project) => void; // eslint-disable-line no-unused-vars
   initialSearchTerm?: string;
   onBack?: () => void;
 }
@@ -89,34 +89,39 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initia
 
   // Calculate string similarity (Levenshtein distance)
   const calculateSimilarity = (str1: string, str2: string): number => {
-    const matrix = [];
     const len1 = str1.length;
     const len2 = str2.length;
-
-    for (let i = 0; i <= len2; i++) {
-      matrix[i] = [i];
-    }
-
+    const maxLen = Math.max(len1, len2);
+    
+    if (maxLen === 0) return 1;
+    
+    // Initialize matrix with proper bounds
+    const matrix: number[][] = Array(len2 + 1).fill(null).map(() => Array(len1 + 1).fill(0));
+    
+    // Initialize first row and column
     for (let j = 0; j <= len1; j++) {
-      matrix[0][j] = j;
+      if (matrix[0]) {
+        matrix[0][j] = j;
+      }
     }
-
+    
     for (let i = 1; i <= len2; i++) {
+      matrix[i]![0] = i;
+      
       for (let j = 1; j <= len1; j++) {
-        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
+        if (str2[i - 1] === str1[j - 1]) {
+          matrix[i]![j] = matrix[i - 1]![j - 1] || 0;
         } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1
-          );
+          const prevPrev = matrix[i - 1]![j - 1] || 0;
+          const prev = matrix[i]![j - 1] || 0;
+          const up = matrix[i - 1]![j] || 0;
+          matrix[i]![j] = Math.min(prevPrev + 1, prev + 1, up + 1);
         }
       }
     }
-
-    const maxLen = Math.max(len1, len2);
-    return maxLen === 0 ? 1 : (maxLen - matrix[len2][len1]) / maxLen;
+    
+    if (maxLen === 0) return 1;
+    return (maxLen - (matrix[len2]![len1] || 0)) / maxLen;
   };
 
   // Enhanced search matching with fuzzy search
@@ -136,7 +141,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initia
       project.actor?.toLowerCase() || '',
       project.actress?.toLowerCase() || '',
       project.productionHouse?.toLowerCase() || '',
-      project.cast?.toLowerCase() || '',
+      project.cast?.join(', ').toLowerCase() || '',
       ...(project.keyPeople?.map(person => person.name.toLowerCase()) || [])
     ].filter(text => text.length > 0);
 

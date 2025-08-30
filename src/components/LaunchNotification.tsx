@@ -11,10 +11,13 @@ const LaunchNotification: React.FC = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
-    // Always show popup on website load
-    setShowPopup(true);
-    setCountdown(10); // Reset countdown when popup is shown
-  }, []);
+    // 🚀 Show notification after component mounts
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [setShowPopup]);
 
   useEffect(() => {
     // Show banner after popup is closed
@@ -34,6 +37,7 @@ const LaunchNotification: React.FC = () => {
     } else if (showPopup && countdown === 0) {
       handleClosePopup();
     }
+    return undefined;
   }, [showPopup, countdown]);
 
   const handleClosePopup = () => {

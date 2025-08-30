@@ -27,7 +27,7 @@ interface BenefitCard {
 // 🚀 Benefits data with cyberpunk theme
 const benefitsData: BenefitCard[] = [
   {
-    icon: Crown,
+    icon: Crown as React.ComponentType<{ className?: string }>,
     title: 'VIP Founding Member Status',
     description: 'Exclusive access to premium investment opportunities',
     color: 'text-yellow-400',
@@ -41,7 +41,7 @@ const benefitsData: BenefitCard[] = [
     priority: 'high'
   },
   {
-    icon: Film,
+    icon: Film as React.ComponentType<{ className?: string }>,
     title: 'Exclusive Film Projects',
     description: 'Access to handpicked entertainment investments',
     color: 'text-purple-400',
@@ -55,7 +55,7 @@ const benefitsData: BenefitCard[] = [
     priority: 'high'
   },
   {
-    icon: Film,
+    icon: Film as React.ComponentType<{ className?: string }>,
     title: 'Hollywood & Bollywood Access',
     description: 'Direct investment in major film productions',
     color: 'text-red-400',
@@ -69,7 +69,7 @@ const benefitsData: BenefitCard[] = [
     priority: 'high'
   },
   {
-    icon: Music,
+    icon: Music as React.ComponentType<{ className?: string }>,
     title: 'Music Industry Ventures',
     description: 'Invest in chart-topping albums and tours',
     color: 'text-green-400',
@@ -83,7 +83,7 @@ const benefitsData: BenefitCard[] = [
     priority: 'medium'
   },
   {
-    icon: Camera,
+    icon: Camera as React.ComponentType<{ className?: string }>,
     title: 'Set Experience Packages',
     description: 'Real-world trips to film and music sets',
     color: 'text-blue-400',
@@ -97,7 +97,7 @@ const benefitsData: BenefitCard[] = [
     priority: 'medium'
   },
   {
-    icon: Gift,
+    icon: Gift as React.ComponentType<{ className?: string }>,
     title: 'Exclusive Perks & Rewards',
     description: 'Digital assets and real-world rewards',
     color: 'text-pink-400',
@@ -111,7 +111,7 @@ const benefitsData: BenefitCard[] = [
     priority: 'medium'
   },
   {
-    icon: TrendingUp,
+    icon: TrendingUp as React.ComponentType<{ className?: string }>,
     title: '10x Return Potential',
     description: 'High-growth investment opportunities',
     color: 'text-emerald-400',
@@ -125,7 +125,7 @@ const benefitsData: BenefitCard[] = [
     priority: 'high'
   },
   {
-    icon: Globe,
+    icon: Globe as React.ComponentType<{ className?: string }>,
     title: 'Global Investment Network',
     description: 'Access to international entertainment markets',
     color: 'text-cyan-400',

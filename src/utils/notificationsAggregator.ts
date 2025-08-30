@@ -52,36 +52,36 @@ export const generateRealNotifications = () => {
       type: 'friend_joined',
       category: 'community',
       title: 'Friend Joined Circles',
-      message: `${realFriends[2].name} joined Circles and is now following your investment journey!`,
+      message: `${realFriends[2]?.name || 'A friend'} joined Circles and is now following your investment journey!`,
       time: '5 minutes ago',
       read: false,
       icon: User,
       action: 'View Profile',
-      user: { id: realFriends[2].id, name: realFriends[2].name, avatar: realFriends[2].avatar }
+      user: { id: realFriends[2]?.id || 'unknown', name: realFriends[2]?.name || 'Unknown', avatar: realFriends[2]?.avatar || '' }
     },
     {
       id: '2',
       type: 'channel_update',
       category: 'community',
       title: 'New Channel Post',
-      message: `${realFriends[0].name} posted: "Latest trailer dekh liya! Cinematography toh bilkul stunning hai! 🎬✨"`,
+      message: `${realFriends[0]?.name || 'A friend'} posted: "Latest trailer dekh liya! Cinematography toh bilkul stunning hai! 🎬✨"`,
       time: '15 minutes ago',
       read: false,
       icon: Hash,
       action: 'View Post',
-      channel: { id: '1', name: 'Film Updates', avatar: realFriends[0].avatar }
+      channel: { id: '1', name: 'Film Updates', avatar: realFriends[0]?.avatar || '' }
     },
     {
       id: '3',
       type: 'community_event',
       category: 'community',
       title: 'Community Meetup',
-      message: `${realProjects[0].title} fans are hosting a meetup this weekend. 15 people are attending!`,
+      message: `${realProjects[0]?.title || 'Project'} fans are hosting a meetup this weekend. 15 people are attending!`,
       time: '30 minutes ago',
       read: false,
       icon: Users,
       action: 'Join Event',
-      event: { id: '1', title: `${realProjects[0].title} Fan Meetup`, attendees: 15 }
+              event: { id: '1', title: `${realProjects[0]?.title || 'Project'} Fan Meetup`, attendees: 15 }
     },
     {
       id: '4',
@@ -104,61 +104,61 @@ export const generateRealNotifications = () => {
       type: 'friend_request',
       category: 'friends',
       title: 'Friend Request',
-      message: `${realFriends[1].name} wants to connect with you on Circles.`,
+      message: `${realFriends[1]?.name || 'A friend'} wants to connect with you on Circles.`,
       time: '1 hour ago',
       read: false,
       icon: User,
       action: 'Accept Request',
-      user: { id: realFriends[1].id, name: realFriends[1].name, avatar: realFriends[1].avatar }
+      user: { id: realFriends[1]?.id || 'unknown', name: realFriends[1]?.name || 'Unknown', avatar: realFriends[1]?.avatar || '' }
     },
     {
       id: '6',
       type: 'friend_message',
       category: 'friends',
       title: 'New Message from Friend',
-      message: `${realFriends[3].name}: "Hey! I saw you invested in ${realInvestments[0]?.projectName}. What do you think about the project?"`,
+      message: `${realFriends[3]?.name || 'A friend'}: "Hey! I saw you invested in ${realInvestments[0]?.projectName || 'a project'}. What do you think about the project?"`,
       time: '2 hours ago',
       read: false,
       icon: MessageCircle,
       action: 'Reply',
-      user: { id: realFriends[3].id, name: realFriends[3].name, avatar: realFriends[3].avatar }
+      user: { id: realFriends[3]?.id || 'unknown', name: realFriends[3]?.name || 'Unknown', avatar: realFriends[3]?.avatar || '' }
     },
     {
       id: '7',
       type: 'friend_recommendation',
       category: 'friends',
       title: 'Friend Recommendation',
-      message: `${realFriends[4].name} recommended "${realProjects[1].title}" to you based on your interests.`,
+      message: `${realFriends[4]?.name || 'A friend'} recommended "${realProjects[1]?.title || 'a project'}" to you based on your interests.`,
       time: '4 hours ago',
       read: true,
       icon: Star,
       action: 'View Project',
-      user: { id: realFriends[4].id, name: realFriends[4].name, avatar: realFriends[4].avatar },
-      project: { id: realProjects[1].id, title: realProjects[1].title, type: realProjects[1].type }
+      user: { id: realFriends[4]?.id || 'unknown', name: realFriends[4]?.name || 'Unknown', avatar: realFriends[4]?.avatar || '' },
+              project: { id: realProjects[1]?.id || 'unknown', title: realProjects[1]?.title || 'Unknown Project', type: realProjects[1]?.type || 'unknown' }
     },
     {
       id: '8',
       type: 'friend_activity',
       category: 'friends',
       title: 'Friend Activity',
-      message: `${realFriends[5].name} shared their investment portfolio with you.`,
+      message: `${realFriends[5]?.name || 'A friend'} shared their investment portfolio with you.`,
       time: '5 hours ago',
       read: true,
       icon: Share2,
       action: 'View Portfolio',
-      user: { id: realFriends[5].id, name: realFriends[5].name, avatar: realFriends[5].avatar }
+      user: { id: realFriends[5]?.id || 'unknown', name: realFriends[5]?.name || 'Unknown', avatar: realFriends[5]?.avatar || '' }
     },
     {
       id: '9',
       type: 'friend_milestone',
       category: 'friends',
       title: 'Friend Milestone',
-      message: `${realFriends[6].name} reached ₹1,000,000 in total investments!`,
+      message: `${realFriends[6]?.name || 'A friend'} reached ₹1,000,000 in total investments!`,
       time: '8 hours ago',
       read: true,
       icon: TrendingUp,
       action: 'Congratulate',
-      user: { id: realFriends[6].id, name: realFriends[6].name, avatar: realFriends[6].avatar }
+      user: { id: realFriends[6]?.id || 'unknown', name: realFriends[6]?.name || 'Unknown', avatar: realFriends[6]?.avatar || '' }
     }
   ];
 
@@ -169,60 +169,60 @@ export const generateRealNotifications = () => {
       type: 'investment',
       category: 'project',
       title: 'Investment Confirmed',
-      message: `Your investment of ₹${realInvestments[0]?.investmentAmount?.toLocaleString()} in "${realInvestments[0]?.projectName}" has been confirmed.`,
+      message: `Your investment of ₹${realInvestments[0]?.investmentAmount?.toLocaleString() || '0'} in "${realInvestments[0]?.projectName || 'Unknown Project'}" has been confirmed.`,
       time: '1 day ago',
       read: false,
       icon: DollarSign,
       action: 'View Investment',
-      project: { id: realInvestments[0]?.projectId, title: realInvestments[0]?.projectName, type: realInvestments[0]?.projectType }
+      project: { id: realInvestments[0]?.projectId || 'unknown', title: realInvestments[0]?.projectName || 'Unknown Project', type: realInvestments[0]?.projectType || 'unknown' }
     },
     {
       id: '11',
       type: 'return',
       category: 'project',
       title: 'Returns Received',
-      message: `You received ₹${realInvestments[1]?.returnAmount?.toLocaleString()} in returns from your "${realInvestments[1]?.projectName}" investment.`,
+      message: `You received ₹${realInvestments[1]?.returnAmount?.toLocaleString() || '0'} in returns from your "${realInvestments[1]?.projectName || 'Unknown Project'}" investment.`,
       time: '2 days ago',
       read: false,
       icon: TrendingUp,
       action: 'View Returns',
-      project: { id: realInvestments[1]?.projectId, title: realInvestments[1]?.projectName, type: realInvestments[1]?.projectType }
+      project: { id: realInvestments[1]?.projectId || 'unknown', title: realInvestments[1]?.projectName || 'Unknown Project', type: realInvestments[1]?.projectType || 'unknown' }
     },
     {
       id: '12',
       type: 'perk',
       category: 'project',
       title: 'New Perk Available',
-      message: `You've unlocked the "Studio Recording Session" perk from "${realProjects[2].title}".`,
+      message: `You've unlocked the "Studio Recording Session" perk from "${realProjects[2]?.title || 'a project'}".`,
       time: '3 days ago',
       read: true,
       icon: Gift,
       action: 'Claim Perk',
-      project: { id: realProjects[2].id, title: realProjects[2].title, type: realProjects[2].type }
+              project: { id: realProjects[2]?.id || 'unknown', title: realProjects[2]?.title || 'Unknown Project', type: realProjects[2]?.type || 'unknown' }
     },
     {
       id: '13',
       type: 'project_update',
       category: 'project',
       title: 'Project Update',
-      message: `"${realProjects[3].title}" has reached ${realProjects[3].fundedPercentage}% of its funding goal!`,
+      message: `"${realProjects[3]?.title || 'A project'}" has reached ${realProjects[3]?.fundedPercentage || 0}% of its funding goal!`,
       time: '4 days ago',
       read: true,
       icon: Film,
       action: 'View Project',
-      project: { id: realProjects[3].id, title: realProjects[3].title, type: realProjects[3].type }
+              project: { id: realProjects[3]?.id || 'unknown', title: realProjects[3]?.title || 'Unknown Project', type: realProjects[3]?.type || 'unknown' }
     },
     {
       id: '14',
       type: 'music_release',
       category: 'project',
       title: 'New Music Release',
-      message: `"${realProjects[8].title}" by ${realProjects[8].artist} is now available for streaming!`,
+      message: `"${realProjects[8]?.title || 'A project'}" by ${realProjects[8]?.artist || 'Unknown Artist'} is now available for streaming!`,
       time: '5 days ago',
       read: true,
       icon: Music,
       action: 'Listen Now',
-      project: { id: realProjects[8].id, title: realProjects[8].title, type: realProjects[8].type }
+              project: { id: realProjects[8]?.id || 'unknown', title: realProjects[8]?.title || 'Unknown Project', type: realProjects[8]?.type || 'unknown' }
     }
   ];
 
@@ -294,5 +294,4 @@ export const generateRealNotifications = () => {
   });
 };
 
-// Export the function to be used in notification components
-export default generateRealNotifications; 
+// REMOVED: Unused export (generateRealNotifications) 

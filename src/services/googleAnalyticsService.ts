@@ -10,10 +10,10 @@ interface GoogleTokenClient {
 
 interface GoogleAccounts {
   oauth2: {
-    initTokenClient: (config: {
+    initTokenClient: (_config: {
       client_id: string;
       scope: string;
-      callback: (token: { access_token?: string }) => void;
+      callback: (_token: { access_token?: string }) => void;
     }) => GoogleTokenClient;
   };
 }
@@ -86,9 +86,9 @@ class GoogleAnalyticsService {
   private isInitialized: boolean = false;
 
   constructor() {
-    this.measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || '';
-    this.propertyId = import.meta.env.VITE_GA_PROPERTY_ID || null;
-    this.clientId = import.meta.env.VITE_GA_CLIENT_ID || null;
+    this.measurementId = import.meta.env['VITE_GA_MEASUREMENT_ID'] || '';
+    this.propertyId = import.meta.env['VITE_GA_PROPERTY_ID'] || null;
+    this.clientId = import.meta.env['VITE_GA_CLIENT_ID'] || null;
     
     // Debug logs removed for cleaner console
     
@@ -769,12 +769,12 @@ class GoogleAnalyticsService {
 
   // Track custom events to GA
   async trackCustomEvent(eventName: string, parameters: Record<string, unknown>) {
-    if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
-              (window as Window & { gtag?: (...args: unknown[]) => void }).gtag!('event', eventName, {
+    if (typeof window !== 'undefined' && (window as Window & { gtag?: (..._args: unknown[]) => void }).gtag) {
+              (window as Window & { gtag?: (..._args: unknown[]) => void }).gtag!('event', eventName, {
         ...parameters,
-        custom_parameter_1: parameters.source,
-        custom_parameter_2: parameters.deviceType,
-        custom_parameter_3: parameters.scrollDepth
+        custom_parameter_1: parameters['source'],
+        custom_parameter_2: parameters['deviceType'],
+        custom_parameter_3: parameters['scrollDepth']
       });
     }
   }
@@ -793,8 +793,8 @@ class GoogleAnalyticsService {
 
   // Track page views to GA
   async trackPageView(page: string) {
-    if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
-              (window as Window & { gtag?: (...args: unknown[]) => void }).gtag!('config', this.measurementId, {
+    if (typeof window !== 'undefined' && (window as Window & { gtag?: (..._args: unknown[]) => void }).gtag) {
+              (window as Window & { gtag?: (..._args: unknown[]) => void }).gtag!('config', this.measurementId, {
         page_title: page,
         page_location: window.location.href
       });

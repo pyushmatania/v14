@@ -221,6 +221,7 @@ export class ContactMessageService {
       return !!(window.WebGLRenderingContext && 
         (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
     } catch (_e) {
+      void _e; // Intentionally unused
       return false;
     }
   }
@@ -231,7 +232,7 @@ export class ContactMessageService {
   private static checkPluginSupport(pluginName: string): boolean {
     if (navigator.plugins) {
       for (let i = 0; i < navigator.plugins.length; i++) {
-        if (navigator.plugins[i].name.indexOf(pluginName) !== -1) {
+        if (navigator.plugins[i]?.name.indexOf(pluginName) !== -1) {
           return true;
         }
       }
@@ -246,9 +247,9 @@ export class ContactMessageService {
     if (navigator.plugins) {
       for (let i = 0; i < navigator.plugins.length; i++) {
         const plugin = navigator.plugins[i];
-        if (plugin.name.toLowerCase().includes('pdf') || 
-            plugin.description.toLowerCase().includes('pdf')) {
-          return plugin.name;
+        if (plugin?.name.toLowerCase().includes('pdf') || 
+            plugin?.description.toLowerCase().includes('pdf')) {
+          return plugin?.name || '';
         }
       }
     }
@@ -262,6 +263,7 @@ export class ContactMessageService {
     try {
       return !!(('ActiveXObject' in window) || (window as any).ActiveXObject);
     } catch (_e) {
+      void _e; // Intentionally unused
       return false;
     }
   }
@@ -281,6 +283,7 @@ export class ContactMessageService {
       
       return isAdBlocked;
     } catch (_e) {
+      void _e; // Intentionally unused
       return false;
     }
   }

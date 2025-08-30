@@ -93,13 +93,13 @@ class CelebrityService {
       
       if (searchResult.results && searchResult.results.length > 0) {
         const actor = searchResult.results[0];
-        return tmdbService.getImageUrl(actor.profile_path, 'w500');
+        return tmdbService.getImageUrl(actor?.profile_path || '', 'w500');
       }
       
       // Fallback to popular actors if search fails
       const popularActors = await tmdbService.getPopularActors(1);
       const randomActor = popularActors.results[Math.floor(Math.random() * popularActors.results.length)];
-      return tmdbService.getImageUrl(randomActor.profile_path, 'w500');
+      return tmdbService.getImageUrl(randomActor?.profile_path || '', 'w500');
     } catch (error) {
       console.error(`Error fetching celebrity image for ${celebrityName}:`, error);
       // Return a fallback image
@@ -199,10 +199,10 @@ class CelebrityService {
       const randomActor = popularActors.results[Math.floor(Math.random() * popularActors.results.length)];
       
       return {
-        name: randomActor.name,
-        avatar: tmdbService.getImageUrl(randomActor.profile_path, 'w500'),
+        name: randomActor?.name || 'Unknown Actor',
+        avatar: tmdbService.getImageUrl(randomActor?.profile_path || '', 'w500'),
         verified: true,
-        role: randomActor.known_for_department === 'Acting' ? 'Actor' : 'Director'
+        role: randomActor?.known_for_department === 'Acting' ? 'Actor' : 'Director'
       };
     } catch (error) {
       console.error('Error getting random celebrity:', error);
@@ -218,5 +218,4 @@ class CelebrityService {
 
 export const celebrityService = new CelebrityService();
 
-// Export the mapping for reference
-export { CELEBRITY_MAPPING }; 
+// REMOVED: Unused export (CELEBRITY_MAPPING) 

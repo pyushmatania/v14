@@ -43,7 +43,7 @@ import EntertainmentLoading from './components/EntertainmentLoading';
 
 
 // 🛡️ Type definitions for better type safety
-type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics';
+type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics' | 'about' | 'browse' | 'contact' | 'login' | 'register' | 'settings';
 type ProjectDetailTab = 'overview' | 'invest';
 type AuthModalMode = 'login' | 'register';
 

@@ -18143,79 +18143,13 @@ export const projects: Project[] = [
 ];
 
 // Diverse, Randomized Arrays for Different Sections
-export const trendingNow = projects
-  .filter(project => project.rating >= 7.0 && project.fundedPercentage >= 20)
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 12);
+// REMOVED: Unused exports (trendingNow, bollywoodSection, hollywoodSection)
 
-export const bollywoodSection = projects
-  .filter(project => project.category === "Bollywood")
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 15);
+// REMOVED: Unused exports (actionThrillers, dramaRomance)
 
-export const hollywoodSection = projects
-  .filter(project => project.category === "Hollywood")
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 15);
+// REMOVED: Unused exports (comedyEntertainment, sciFiFantasy)
 
-export const actionThrillers = projects
-  .filter(project => 
-    project.genre?.toLowerCase().includes("action") || 
-    project.genre?.toLowerCase().includes("thriller") ||
-    project.tags?.some(tag => tag.toLowerCase().includes("action")) ||
-    project.tags?.some(tag => tag.toLowerCase().includes("thriller"))
-  )
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 12);
-
-export const dramaRomance = projects
-  .filter(project => 
-    project.genre?.toLowerCase().includes("drama") || 
-    project.genre?.toLowerCase().includes("romance") ||
-    project.tags?.some(tag => tag.toLowerCase().includes("drama")) ||
-    project.tags?.some(tag => tag.toLowerCase().includes("romance"))
-  )
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 12);
-
-export const comedyEntertainment = projects
-  .filter(project => 
-    project.genre?.toLowerCase().includes("comedy") || 
-    project.genre?.toLowerCase().includes("adventure") ||
-    project.tags?.some(tag => tag.toLowerCase().includes("comedy")) ||
-    project.tags?.some(tag => tag.toLowerCase().includes("adventure"))
-  )
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 12);
-
-export const sciFiFantasy = projects
-  .filter(project => 
-    project.genre?.toLowerCase().includes("sci-fi") || 
-    project.genre?.toLowerCase().includes("fantasy") ||
-    project.genre?.toLowerCase().includes("animation") ||
-    project.tags?.some(tag => tag.toLowerCase().includes("sci-fi")) ||
-    project.tags?.some(tag => tag.toLowerCase().includes("fantasy"))
-  )
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 12);
-
-export const allProjects = projects
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 50);
-
-export const highRatedProjects = projects
-  .filter(project => project.rating >= 7.5)
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 12);
-
-export const newlyAddedProjects = projects
-  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-  .slice(0, 12);
-
-export const mostFundedProjects = projects
-  .filter(project => project.fundedPercentage >= 30)
-  .sort((a, b) => b.fundedPercentage - a.fundedPercentage)
-  .slice(0, 12);
+// REMOVED: Unused exports (allProjects, highRatedProjects, newlyAddedProjects, mostFundedProjects)
 
 // Testimonial data (can be kept separate or merged if relevant)
 export const testimonials: Testimonial[] = [

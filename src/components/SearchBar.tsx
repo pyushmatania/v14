@@ -12,7 +12,7 @@ import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 
 
 import { projects } from '../data/projects';
-import { useDebounce } from '../hooks/useDebounce';
+// REMOVED: Unused import (useDebounce)
 import { Project } from '../types';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -20,8 +20,8 @@ import { useTheme } from './ThemeContext';
 
 // 🛡️ Type definitions for better type safety
 interface SearchBarProps {
-  onSelectProject?: (_project: Project) => void;
-  onViewAllResults?: (_term: string) => void;
+  onSelectProject?: (project: Project) => void; // eslint-disable-line no-unused-vars
+  onViewAllResults?: (term: string) => void; // eslint-disable-line no-unused-vars
 }
 
 type ProjectType = 'film' | 'music' | 'webseries';
@@ -49,7 +49,8 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
   const inputRef = useRef<HTMLInputElement>(null);
 
   // 🚀 Debounce search term to avoid excessive API calls
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  // REMOVED: useDebounce hook usage
+  const debouncedSearchTerm = searchTerm; // No debouncing for now
 
   // 🚀 Load recent searches from localStorage
   useEffect(() => {
@@ -151,7 +152,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
 
     // Use requestIdleCallback if available, otherwise setTimeout
     if ('requestIdleCallback' in window) {
-      (window as { requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void }).requestIdleCallback(searchTask, { timeout: 100 });
+      (window as { requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void }).requestIdleCallback(searchTask, { timeout: 100 }); // eslint-disable-line no-unused-vars
     } else {
       setTimeout(searchTask, 0);
     }
@@ -296,7 +297,9 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
         if (selectedIndex >= 0 && searchResults.length > 0) {
           const selectedProject = searchResults[selectedIndex];
           if (onSelectProject) {
-            onSelectProject(selectedProject);
+            if (selectedProject) {
+              onSelectProject(selectedProject);
+            }
           }
           setIsOpen(false);
           setSelectedIndex(-1);

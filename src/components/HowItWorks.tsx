@@ -7,7 +7,7 @@ import { useTheme } from './ThemeContext';
 type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search';
 
 interface HowItWorksProps {
-  setCurrentView?: (_view: ViewType) => void;
+  setCurrentView?: (view: ViewType) => void; // eslint-disable-line no-unused-vars
 }
 
 const HowItWorks: React.FC<HowItWorksProps> = ({ setCurrentView }) => {

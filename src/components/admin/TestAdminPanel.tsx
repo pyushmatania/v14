@@ -17,12 +17,12 @@ const TestAdminPanel: React.FC = () => {
       
       // Test 3: Check environment variables
       const envVars = {
-        supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
-        supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-        gaMeasurementId: import.meta.env.VITE_GA_MEASUREMENT_ID,
-        gaPropertyId: import.meta.env.VITE_GA_PROPERTY_ID,
-        adminUsername: import.meta.env.VITE_ADMIN_USERNAME,
-        adminPassword: import.meta.env.VITE_ADMIN_PASSWORD
+        supabaseUrl: import.meta.env['VITE_SUPABASE_URL'],
+        supabaseKey: import.meta.env['VITE_SUPABASE_ANON_KEY'],
+        gaMeasurementId: import.meta.env['VITE_GA_MEASUREMENT_ID'],
+        gaPropertyId: import.meta.env['VITE_GA_PROPERTY_ID'],
+        adminUsername: import.meta.env['VITE_ADMIN_USERNAME'],
+        adminPassword: import.meta.env['VITE_ADMIN_PASSWORD']
       };
       
       results.push(`🔍 Environment Variables Status:`);

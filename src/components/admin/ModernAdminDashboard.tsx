@@ -3,7 +3,6 @@ import {
   UsersIcon, 
   EnvelopeIcon, 
   ChartPieIcon,
-  CogIcon,
   BellIcon,
   EyeIcon,
   ClockIcon,
@@ -104,7 +103,7 @@ const ModernAdminDashboard: React.FC = () => {
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [messagesError, setMessagesError] = useState<string | null>(null);
     const [refreshSuccess, setRefreshSuccess] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  // Removed unused state
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [monitorCollapsed, setMonitorCollapsed] = useState(false);
@@ -128,7 +127,7 @@ const ModernAdminDashboard: React.FC = () => {
     topSources?: Array<{ source: string; sessions: number }>;
   } | null>(null);
   const [gaLoading, setGaLoading] = useState(false);
-  const [gaError, setGaError] = useState<string | null>(null);
+  // Removed unused state
   const [isGAConnected, setIsGAConnected] = useState(false);
   const [gaLastUpdated, setGaLastUpdated] = useState<Date | null>(null);
   const [liveVisitors, setLiveVisitors] = useState(0);
@@ -150,13 +149,7 @@ const ModernAdminDashboard: React.FC = () => {
     fetchGoogleAnalyticsData();
   }, []);
 
-  // Update clock every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  // Clock update removed
 
   // Keyboard shortcut for sidebar toggle (Ctrl/Cmd + B)
   useEffect(() => {
@@ -175,7 +168,7 @@ const ModernAdminDashboard: React.FC = () => {
   const fetchGoogleAnalyticsData = async () => {
     try {
       setGaLoading(true);
-      setGaError(null);
+              // Error cleared
       
       // Import and use the real Google Analytics service
       const { googleAnalyticsService } = await import('../../services/googleAnalyticsService');
@@ -183,7 +176,7 @@ const ModernAdminDashboard: React.FC = () => {
       // Check if GA is configured
       if (!googleAnalyticsService.isConfigured()) {
         setIsGAConnected(false);
-        setGaError('Google Analytics not properly configured');
+        console.error('Google Analytics not properly configured');
         return;
       }
       
@@ -191,7 +184,7 @@ const ModernAdminDashboard: React.FC = () => {
       const initialized = await googleAnalyticsService.initialize();
       if (!initialized) {
         setIsGAConnected(false);
-        setGaError('Failed to initialize Google Analytics service');
+        console.error('Failed to initialize Google Analytics service');
         return;
       }
       
@@ -201,7 +194,7 @@ const ModernAdminDashboard: React.FC = () => {
       if (!authStatus.authenticated) {
         // Don't automatically request authentication - let user click button
         setIsGAConnected(false);
-        setGaError('Google Analytics authentication required. Click "Connect" to authenticate.');
+        console.error('Google Analytics authentication required. Click "Connect" to authenticate.');
         return;
       }
       
@@ -246,7 +239,7 @@ const ModernAdminDashboard: React.FC = () => {
       
     } catch (error) {
       console.error('Error fetching Google Analytics data:', error);
-      setGaError(error instanceof Error ? error.message : 'Failed to fetch Google Analytics data');
+              console.error('Failed to fetch Google Analytics data:', error);
       setIsGAConnected(false);
     } finally {
       setGaLoading(false);
@@ -375,7 +368,7 @@ const ModernAdminDashboard: React.FC = () => {
   // Real-time updates
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentTime(new Date());
+      // Time updated
       
       // Refresh data every 30 seconds
       if (Date.now() % 30000 < 5000) {

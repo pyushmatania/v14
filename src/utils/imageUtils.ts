@@ -137,47 +137,7 @@ export const getUserAvatar = (name: string): string => {
   `)}`;
 };
 
-// Helper function to get image by key
-export const getImage = (key: string): string => {
-  return images[key as keyof typeof images] || akashMatania;
-};
-
-// Helper function to get perk image
-export const getPerkImage = (index: number): string => {
-  const perkKey = `perk${index}` as keyof typeof images;
-  return images[perkKey] || perk1;
-};
-
-// 🚀 Optimized image preloading with caching and error handling
-const imageCache = new Map<string, Promise<boolean>>();
-
-export const preloadImage = (src: string): Promise<boolean> => {
-  // Check cache first
-  if (imageCache.has(src)) {
-    return imageCache.get(src)!;
-  }
-  
-  const preloadPromise = new Promise<boolean>((resolve) => {
-    if (!src || src.startsWith('data:')) {
-      resolve(true);
-      return;
-    }
-    
-    const img = new Image();
-    
-    // Set crossOrigin for better caching
-    img.crossOrigin = 'anonymous';
-    
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-    img.src = src;
-  });
-  
-  // Cache the promise
-  imageCache.set(src, preloadPromise);
-  
-  return preloadPromise;
-};
+// REMOVED: Unused exports (getImage, getPerkImage, preloadImage)
 
 // Export individual images for direct imports
 export {

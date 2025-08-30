@@ -15,9 +15,9 @@ import GeographicAnalytics from './GeographicAnalytics';
 import LoadingSpinner from '../LoadingSpinner';
 
 // Google Analytics Configuration
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
-const GA_PROPERTY_ID = import.meta.env.VITE_GA_PROPERTY_ID;
-const GA_CLIENT_ID = import.meta.env.VITE_GA_CLIENT_ID;
+const GA_MEASUREMENT_ID = import.meta.env['VITE_GA_MEASUREMENT_ID'];
+const GA_PROPERTY_ID = import.meta.env['VITE_GA_PROPERTY_ID'];
+const GA_CLIENT_ID = import.meta.env['VITE_GA_CLIENT_ID'];
 
 interface AnalyticsData {
   pageViews: number;
@@ -124,6 +124,9 @@ const GoogleAnalyticsTab: React.FC = () => {
 
       return () => clearInterval(interval);
     }
+    return () => {
+      // Cleanup if needed
+    };
   }, [error, analyticsData, fetchGoogleAnalyticsData]);
 
   const [activeTab, setActiveTab] = useState<'overview' | 'geographic' | 'devices' | 'traffic'>('overview');

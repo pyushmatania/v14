@@ -898,7 +898,7 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
 
     // Use requestIdleCallback if available, otherwise execute immediately
     if ('requestIdleCallback' in window) {
-      (window as { requestIdleCallback: (_callback: () => void, _options?: { timeout: number }) => void }).requestIdleCallback(loadTask, { timeout: 1000 });
+      (window as { requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void }).requestIdleCallback(loadTask, { timeout: 1000 }); // eslint-disable-line no-unused-vars
     } else {
       loadTask();
     }
@@ -909,7 +909,7 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
     if (loading) return;
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
+      if (entries.length > 0 && entries[0]?.isIntersecting && hasMore) {
         loadMorePosts();
       }
     });
@@ -1091,24 +1091,35 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
       isLiked: false,
       isBookmarked: false,
       reactions: [],
-      hashtags: hashtags.length > 0 ? hashtags : undefined,
-      mentions: mentions.length > 0 ? mentions : undefined,
-      location: postLocation || undefined,
-      poll: showPollCreator && pollQuestion ? {
-        question: pollQuestion,
-        options: pollOptions.filter(opt => opt.trim()),
-        votes: {}
-      } : undefined
+      hashtags: hashtags.length > 0 ? hashtags : [],
+      mentions: mentions.length > 0 ? mentions : [],
+      location: postLocation || '',
+      ...(showPollCreator && pollQuestion ? {
+        poll: {
+          question: pollQuestion,
+          options: pollOptions.filter(opt => opt.trim()),
+          votes: {}
+        }
+      } : {})
     };
 
     // Add media if selected
     if (selectedMedia.length > 0) {
       const firstMedia = selectedMedia[0];
-      newPost.media = {
-        type: firstMedia.type.startsWith('image/') ? 'image' : 'video',
-        url: mediaPreview[0],
-        thumbnail: firstMedia.type.startsWith('video/') ? mediaPreview[0] : undefined
-      };
+      let mediaPreviewData: { type: 'image' | 'video'; url: string; thumbnail?: string } | undefined;
+      
+      // Handle media preview
+      if (mediaPreview.length > 0 && firstMedia) {
+        mediaPreviewData = {
+          type: firstMedia.type.startsWith('image/') ? 'image' : 'video',
+          url: mediaPreview[0] || '',
+          thumbnail: firstMedia.type.startsWith('video/') ? mediaPreview[0] || '' : ''
+        };
+      }
+
+      if (mediaPreviewData) {
+        newPost.media = mediaPreviewData;
+      }
     }
 
     setPosts(prev => [newPost, ...prev]);

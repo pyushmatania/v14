@@ -24,16 +24,16 @@ type ToastType = Toast['type'];
 export const useToast = () => {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const toastTimeouts = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
-  const removeToastRef = useRef<((id: string) => void) | null>(null);
+  const removeToastRef = useRef<((_id: string) => void) | null>(null);
   const maxToasts = 5; // Prevent too many toasts from overwhelming the UI
 
   // 🚀 Optimized toast addition with queue management and performance improvements
   const addToast = useCallback((toast: Omit<Toast, 'id' | 'timestamp'>, options: ToastOptions = {}) => {
-    const id = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substr(2, 9);
+    const _id = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substr(2, 9);
     const timestamp = Date.now();
     const newToast: Toast = { 
       ...toast, 
-      id, 
+      id: _id, 
       timestamp,
       duration: options.duration ?? toast.duration ?? 5000
     };
@@ -50,26 +50,26 @@ export const useToast = () => {
     if (!options.persistent && newToast.duration && newToast.duration > 0) {
       const timeout = setTimeout(() => {
         if (removeToastRef.current) {
-          removeToastRef.current(id);
+          removeToastRef.current(_id);
         }
       }, newToast.duration);
       
-      toastTimeouts.current.set(id, timeout);
+      toastTimeouts.current.set(_id, timeout);
     }
 
-    return id;
+    return _id;
   }, []);
 
   // 🚀 Optimized toast removal with cleanup
-  const removeToast = useCallback((id: string) => {
+  const removeToast = useCallback((_id: string) => {
     // Clear timeout if exists
-    const timeout = toastTimeouts.current.get(id);
+    const timeout = toastTimeouts.current.get(_id);
     if (timeout) {
       clearTimeout(timeout);
-      toastTimeouts.current.delete(id);
+      toastTimeouts.current.delete(_id);
     }
 
-    setToasts(prev => prev.filter(toast => toast.id !== id));
+    setToasts(prev => prev.filter(toast => toast.id !== _id));
   }, []);
 
   // Store removeToast in ref for use in addToast

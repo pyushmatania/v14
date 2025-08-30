@@ -9,25 +9,17 @@ import Typewriter from './Typewriter';
 
 const Testimonials: React.FC = () => {
   const { theme } = useTheme();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition] = useState({ x: 0, y: 0 });
+  // Removed unused state
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setMousePosition({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top
-        });
-      }
-    };
+    // 🚀 Start animation when component mounts
+    const timer = setTimeout(() => {
+      // Animation completed
+    }, 500);
 
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener('mousemove', handleMouseMove);
-      return () => container.removeEventListener('mousemove', handleMouseMove);
-    }
+    return () => clearTimeout(timer);
   }, []);
 
   const getCubeAnimation = (row: number, col: number) => {

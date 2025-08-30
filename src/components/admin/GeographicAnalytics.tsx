@@ -171,7 +171,7 @@ const GeographicAnalytics: React.FC<GeographicAnalyticsProps> = ({ data, loading
           <div className="text-center p-4 bg-gray-800/30 rounded-lg border border-gray-700/50">
             <div className="text-2xl font-bold text-purple-400 mb-1">
               {sortedCountries.length > 0 ? 
-                Math.round((sortedCountries[0][1] / Object.values(data.countryBreakdown).reduce((a, b) => a + b, 0)) * 100) : 0
+                Math.round((sortedCountries[0]?.[1] || 0 / Object.values(data.countryBreakdown).reduce((a, b) => a + b, 0)) * 100) : 0
               }%
             </div>
             <div className="text-gray-400 text-sm">Top Country Share</div>

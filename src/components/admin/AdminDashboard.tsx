@@ -2,7 +2,8 @@ import * as React from 'react';
 import { BellIcon, CogIcon } from '@heroicons/react/24/outline';
 
 import { useAdminAuth } from '../../hooks/useAdminAuth';
-import { Project, MerchandiseItem, Perk } from '../../services/adminDataService';
+import { Project } from '../../types';
+import { MerchandiseItem, Perk } from '../../services/adminDataService';
 
 import ProjectForm from './forms/ProjectForm';
 import ModernAdminDashboard from './ModernAdminDashboard';
@@ -30,7 +31,7 @@ const AdminDashboard: React.FC = () => {
 
     // Modal states
     const [showProjectModal, setShowProjectModal] = React.useState(false);
-    const [editingProject, setEditingProject] = React.useState<Project | null>(null);
+    const [editingProject, setEditingProject] = React.useState<Project | undefined>(undefined);
 
     // Force re-render when authentication state changes
     React.useEffect(() => {
@@ -106,7 +107,7 @@ const AdminDashboard: React.FC = () => {
           setProjects(prev => [...prev, newProject]);
         }
         setShowProjectModal(false);
-        setEditingProject(null);
+        setEditingProject(undefined);
       } catch (error) {
         console.error('Error saving project:', error);
       } finally {
@@ -132,7 +133,7 @@ const AdminDashboard: React.FC = () => {
     };
 
     const openProjectModal = (project?: Project) => {
-      setEditingProject(project || null);
+              setEditingProject(project || undefined);
       setShowProjectModal(true);
     };
     
@@ -675,17 +676,17 @@ const AdminDashboard: React.FC = () => {
           isOpen={showProjectModal}
           onClose={() => {
             setShowProjectModal(false);
-            setEditingProject(null);
+            setEditingProject(undefined);
           }}
           title={editingProject ? 'Edit Project' : 'Add New Project'}
           size="xl"
         >
           <ProjectForm
-            project={editingProject || undefined}
+            project={editingProject}
             onSubmit={handleProjectSubmit}
             onCancel={() => {
               setShowProjectModal(false);
-              setEditingProject(null);
+              setEditingProject(undefined);
             }}
             loading={loading}
           />

@@ -14,11 +14,11 @@ interface ToastProps {
 const Toast: React.FC<ToastProps> = ({ id: _id, type, title, message, duration = 5000, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose(id);
+      onClose(_id);
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [id, duration, onClose]);
+  }, [_id, duration, onClose]);
 
   const icons = {
     success: CheckCircle,
@@ -60,7 +60,7 @@ const Toast: React.FC<ToastProps> = ({ id: _id, type, title, message, duration =
           </div>
           
           <button
-            onClick={() => onClose(id)}
+            onClick={() => onClose(_id)}
             className="text-gray-400 hover:text-white transition-colors p-1"
           >
             <X className="w-4 h-4" />
@@ -84,7 +84,7 @@ interface ToastContainerProps {
     id: string;
     type: 'success' | 'error' | 'warning' | 'info';
     title: string;
-    message: string;
+    message?: string;
     duration?: number;
     showProgress?: boolean;
   }>;
@@ -94,7 +94,7 @@ interface ToastContainerProps {
   className?: string;
 }
 
-const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose, ...options }) => {
+const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose }) => {
   return (
     <div className="fixed top-4 right-4 z-[9999] space-y-3">
       <AnimatePresence>

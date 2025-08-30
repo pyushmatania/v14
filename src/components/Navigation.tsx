@@ -20,7 +20,7 @@ import {
 import { useState, useCallback, useEffect, useMemo, memo } from 'react';
 import * as React from 'react';
 
-import useIsMobile from '../hooks/useIsMobile';
+// REMOVED: Unused import (useIsMobile)
 
 // Import logo image
 
@@ -32,18 +32,19 @@ import MobileBottomBar from './MobileBottomBar';
 import NotificationDropdown from './NotificationDropdown';
 import SearchBar from './SearchBar';
 import { useTheme } from './ThemeContext';
+import { isMobile } from '../utils/commonUtils';
 
 // 🛡️ Type definitions for better type safety
-type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics';
+type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics' | 'about' | 'browse' | 'contact' | 'login' | 'register' | 'settings';
 type ProjectDetailTab = 'overview' | 'invest';
 type AuthMode = 'login' | 'register';
 
 interface NavigationProps {
   currentView: ViewType;
-  setCurrentView: (_view: ViewType) => void;
-  onAuthRequired: (_mode?: AuthMode) => boolean;
-  onProjectSelect?: (_project: Project, _tab?: ProjectDetailTab) => void;
-  onSearchViewAll?: (_term: string) => void;
+  setCurrentView: (view: ViewType) => void; // eslint-disable-line no-unused-vars
+  onAuthRequired: (mode?: AuthMode) => boolean; // eslint-disable-line no-unused-vars
+  onProjectSelect?: (project: Project, tab?: ProjectDetailTab) => void; // eslint-disable-line no-unused-vars
+  onSearchViewAll?: (term: string) => void; // eslint-disable-line no-unused-vars
   previousView?: ViewType;
 }
 
@@ -72,23 +73,23 @@ const Navigation: React.FC<NavigationProps> = memo(({
 
   const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, user } = useAuth();
-  const { isMobile } = useIsMobile();
+  // Use consolidated utility
 
   // 🚀 Memoized navigation items for better performance
   const mainNavItems = useMemo<NavItem[]>(() => [
-    { id: 'home', label: 'Home', icon: Home, requiresAuth: false },
-    { id: 'projects', label: 'Browse', icon: Film, requiresAuth: false },
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, requiresAuth: false },
-    { id: 'community', label: 'Enter Circles', icon: Users, requiresAuth: false },
-    { id: 'waitlist', label: 'Join Waitlist', icon: Sparkles, requiresAuth: false }
+    { id: 'home', label: 'Home', icon: Home as React.ComponentType<{ className?: string }>, requiresAuth: false },
+    { id: 'projects', label: 'Browse', icon: Film as React.ComponentType<{ className?: string }>, requiresAuth: false },
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3 as React.ComponentType<{ className?: string }>, requiresAuth: false },
+    { id: 'community', label: 'Enter Circles', icon: Users as React.ComponentType<{ className?: string }>, requiresAuth: false },
+    { id: 'waitlist', label: 'Join Waitlist', icon: Sparkles as React.ComponentType<{ className?: string }>, requiresAuth: false }
   ], []);
 
   const moreNavItems = useMemo<NavItem[]>(() => [
-    { id: 'merch', label: 'Merch', icon: ShoppingBag },
-    { id: 'portfolio', label: 'Portfolio', icon: BarChart, requiresAuth: true },
-    { id: 'compare', label: 'Compare', icon: ArrowsCompare },
-    { id: 'news', label: 'News', icon: Newspaper },
-    { id: 'admin', label: 'Admin', icon: LayoutDashboard }
+    { id: 'merch', label: 'Merch', icon: ShoppingBag as React.ComponentType<{ className?: string }> },
+    { id: 'portfolio', label: 'Portfolio', icon: BarChart as React.ComponentType<{ className?: string }>, requiresAuth: true },
+    { id: 'compare', label: 'Compare', icon: ArrowsCompare as React.ComponentType<{ className?: string }> },
+    { id: 'news', label: 'News', icon: Newspaper as React.ComponentType<{ className?: string }> },
+    { id: 'admin', label: 'Admin', icon: LayoutDashboard as React.ComponentType<{ className?: string }> }
   ], []);
 
   // 🚀 Optimized scroll event listener with rAF throttle
@@ -378,7 +379,7 @@ const Navigation: React.FC<NavigationProps> = memo(({
       if (id === 'projects') import('./ProjectCatalog').catch(() => {});
     };
     prefetch();
-    const w = window as unknown as { requestIdleCallback?: (cb: () => void) => number };
+    const w = window as unknown as { requestIdleCallback?: (callback: () => void) => number }; // eslint-disable-line no-unused-vars
     if (w.requestIdleCallback) {
       w.requestIdleCallback(() => prefetch());
     } else {
@@ -726,7 +727,7 @@ const Navigation: React.FC<NavigationProps> = memo(({
         )}
       </AnimatePresence>
 
-      {isMobile && (
+      {isMobile() && (
         <MobileBottomBar
           currentView={currentView}
           setCurrentView={setCurrentView}

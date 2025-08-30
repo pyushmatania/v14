@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -6,12 +6,13 @@ interface ErrorBoundaryState {
   errorInfo: ErrorInfo | null;
   errorId: string;
   retryCount: number;
+  maxRetries: number;
 }
 
 interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
-  onError?: (_error: Error, _errorInfo: ErrorInfo) => void;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void; // eslint-disable-line no-unused-vars
   maxRetries?: number;
   resetOnPropsChange?: boolean;
   showErrorDetails?: boolean;
@@ -24,8 +25,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       hasError: false,
       error: null,
       errorInfo: null,
-      errorId: '',
-      retryCount: 0
+      retryCount: 0,
+      maxRetries: props.maxRetries || 3,
+      errorId: ''
     };
   }
 
@@ -40,12 +42,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // 🚀 Log error details
     console.error('ErrorBoundary caught an error:', error, errorInfo);
     
     this.setState({
+      error,
       errorInfo,
+      hasError: true,
       retryCount: this.state.retryCount + 1
     });
 
@@ -56,7 +60,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.reportError(error, errorInfo);
   }
 
-  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+  override componentDidUpdate(prevProps: ErrorBoundaryProps) {
     // 🚀 Reset error state when props change (if enabled)
     if (this.props.resetOnPropsChange && prevProps.children !== this.props.children) {
       this.resetError();
@@ -127,7 +131,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     return message;
   };
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       // 🚀 Custom fallback UI
       if (this.props.fallback) {

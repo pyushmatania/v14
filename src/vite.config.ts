@@ -98,14 +98,17 @@ export default defineConfig({
           if (id.includes('/src/providers/')) {
             return 'providers';
           }
+          
+          // 🚀 Default case
+          return undefined;
         },
         // 🚀 Optimize chunk naming for better caching
         chunkFileNames: 'js/[name]-[hash].js',
         entryFileNames: 'js/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name || 'asset';
-          const info = name.split('.');
-          const ext = info[info.length - 1];
+          // const info = name.split('.');
+          // const ext = info[info.length - 1];
           if (/\.(css)$/.test(name)) {
             return `css/[name]-[hash].[ext]`;
           }

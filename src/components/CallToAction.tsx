@@ -6,7 +6,7 @@ import { useTheme } from './ThemeContext';
 import Typewriter from './Typewriter';
 
 interface CallToActionProps {
-  setCurrentView?: (view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void;
+  setCurrentView?: (view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void; // eslint-disable-line no-unused-vars
 }
 
 const CallToAction: React.FC<CallToActionProps> = ({ setCurrentView }) => {

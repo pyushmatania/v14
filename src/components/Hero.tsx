@@ -9,7 +9,7 @@ import Typewriter from './Typewriter';
 
 // 🛡️ Type definitions for better type safety
 interface HeroProps {
-  setCurrentView?: (_view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void;
+  setCurrentView?: (view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void; // eslint-disable-line no-unused-vars
 }
 
 interface StatData {
@@ -40,7 +40,7 @@ const mainStats: StatData[] = [
     value: 20,
     description: 'Films, Music & Series',
     growth: '+45%',
-    icon: Film,
+    icon: Film as React.ComponentType<{ className?: string }>,
     color: 'text-purple-400'
   },
   {
@@ -51,7 +51,7 @@ const mainStats: StatData[] = [
     unit: 'Cr+',
     description: 'Across all projects',
     growth: '+127%',
-    icon: DollarSign,
+    icon: DollarSign as React.ComponentType<{ className?: string }>,
     color: 'text-green-400'
   },
   {
@@ -61,7 +61,7 @@ const mainStats: StatData[] = [
     unit: '+',
     description: 'Active community',
     growth: '+89%',
-    icon: Users,
+    icon: Users as React.ComponentType<{ className?: string }>,
     color: 'text-blue-400'
   },
   {
@@ -71,7 +71,7 @@ const mainStats: StatData[] = [
     unit: '%',
     description: 'Quarterly average',
     growth: '+23%',
-    icon: TrendingUp,
+    icon: TrendingUp as React.ComponentType<{ className?: string }>,
     color: 'text-yellow-400'
   }
 ];
@@ -79,21 +79,21 @@ const mainStats: StatData[] = [
 // 🚀 Simplified supporting stats
 const supportingStats: SupportingStatData[] = [
   {
-    icon: Globe,
+    icon: Globe as React.ComponentType<{ className?: string }>,
     title: 'Global Reach',
     value: '15 Countries',
     description: 'Investors from around the world',
     color: 'text-emerald-400'
   },
   {
-    icon: Calendar,
+    icon: Calendar as React.ComponentType<{ className?: string }>,
     title: 'Success Rate',
     value: '87%',
     description: 'Projects meeting funding goals',
     color: 'text-green-400'
   },
   {
-    icon: Coins,
+    icon: Coins as React.ComponentType<{ className?: string }>,
     title: 'Avg Investment',
     value: '₹25,000',
     description: 'Per investor per project',
@@ -721,7 +721,7 @@ const Hero: React.FC<HeroProps> = memo(({ setCurrentView }) => {
                   <div className="text-2xl sm:text-3xl font-extrabold mb-2 text-white">
                     <AnimatedNumber 
                       value={stat.value} 
-                      format={(v) => `${stat.prefix || ''}${v.toLocaleString()}${stat.unit || ''}`}
+                      format={(v: number) => `${stat.prefix || ''}${v.toLocaleString()}${stat.unit || ''}`}
                       inView={!!statsInView[idx]}
                     />
                   </div>

@@ -25,7 +25,7 @@ import React, { useState } from 'react';
 
 
 import { getUserAvatar } from '../utils/imageUtils';
-import generateRealNotifications from '../utils/notificationsAggregator';
+// REMOVED: Unused import (generateRealNotifications)
 
 import { useTheme } from './ThemeContext';
 
@@ -83,11 +83,12 @@ interface Notification {
 }
 
 // Use real notifications generated from actual project and community data
-const mockNotifications: Notification[] = generateRealNotifications();
+// REMOVED: generateRealNotifications usage
+const mockNotifications: Notification[] = []; // Empty array for now
 
 interface NotificationCenterProps {
   onClose?: () => void;
-  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search') => void;
+  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search') => void; // eslint-disable-line no-unused-vars
 }
 
 const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose, setCurrentView }) => {

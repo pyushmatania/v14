@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, User, AlertCircle, CheckCircle, Loader, Check, X, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, AlertCircle, CheckCircle, Check, X, ArrowLeft } from 'lucide-react';
 import * as React from 'react';
 import { useState } from 'react';
 
@@ -50,31 +50,31 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Full name is required';
+      newErrors['name'] = 'Full name is required';
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
+              newErrors['name'] = 'Name must be at least 2 characters';
     }
 
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors['email'] = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
+              newErrors['email'] = 'Please enter a valid email';
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors['password'] = 'Password is required';
     } else if (passwordStrength.score < 3) {
-      newErrors.password = 'Password is too weak';
+              newErrors['password'] = 'Password is too weak';
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      newErrors['confirmPassword'] = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+              newErrors['confirmPassword'] = 'Passwords do not match';
     }
 
     if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = 'You must agree to the terms and conditions';
+      newErrors['agreeToTerms'] = 'You must agree to the terms and conditions';
     }
 
     setErrors(newErrors);
@@ -173,7 +173,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               className={`w-full pl-10 pr-4 py-3 rounded-xl border transition-all duration-300 ${
-                errors.name 
+                errors['name'] 
                   ? 'border-red-500 focus:border-red-500' 
                   : theme === 'light'
                     ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
@@ -182,13 +182,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
               placeholder="Enter your full name"
             />
           </div>
-          {errors.name && (
+          {errors['name'] && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mt-2 text-sm text-red-500"
             >
-              {errors.name}
+                              {errors['name']}
             </motion.p>
           )}
         </div>
@@ -205,7 +205,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               className={`w-full pl-10 pr-4 py-3 rounded-xl border transition-all duration-300 ${
-                errors.email 
+                errors['email'] 
                   ? 'border-red-500 focus:border-red-500' 
                   : theme === 'light'
                     ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
@@ -214,13 +214,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
               placeholder="Enter your email"
             />
           </div>
-          {errors.email && (
+          {errors['email'] && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mt-2 text-sm text-red-500"
             >
-              {errors.email}
+                              {errors['email']}
             </motion.p>
           )}
         </div>
@@ -237,7 +237,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
               value={formData.password}
               onChange={(e) => handleInputChange('password', e.target.value)}
               className={`w-full pl-10 pr-12 py-3 rounded-xl border transition-all duration-300 ${
-                errors.password 
+                errors['password'] 
                   ? 'border-red-500 focus:border-red-500' 
                   : theme === 'light'
                     ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
@@ -299,13 +299,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
             </motion.div>
           )}
 
-          {errors.password && (
+          {errors['password'] && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mt-2 text-sm text-red-500"
             >
-              {errors.password}
+                              {errors['password']}
             </motion.p>
           )}
         </div>
@@ -322,7 +322,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
               value={formData.confirmPassword}
               onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
               className={`w-full pl-10 pr-12 py-3 rounded-xl border transition-all duration-300 ${
-                errors.confirmPassword 
+                errors['confirmPassword'] 
                   ? 'border-red-500 focus:border-red-500' 
                   : theme === 'light'
                     ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
@@ -338,13 +338,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
               {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
-          {errors.confirmPassword && (
+          {errors['confirmPassword'] && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mt-2 text-sm text-red-500"
             >
-              {errors.confirmPassword}
+                              {errors['confirmPassword']}
             </motion.p>
           )}
         </div>
@@ -369,26 +369,26 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin, onClose })
               </a>
             </span>
           </label>
-          {errors.agreeToTerms && (
+          {errors['agreeToTerms'] && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mt-2 text-sm text-red-500"
             >
-              {errors.agreeToTerms}
+                              {errors['agreeToTerms']}
             </motion.p>
           )}
         </div>
 
         {/* Submit Error */}
-        {errors.submit && (
+        {errors['submit'] && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="p-4 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center gap-3"
           >
             <AlertCircle className="w-5 h-5 text-red-400" />
-            <span className="text-red-300 text-sm">{errors.submit}</span>
+                          <span className="text-red-300 text-sm">{errors['submit']}</span>
           </motion.div>
         )}
 

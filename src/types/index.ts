@@ -12,10 +12,10 @@ export interface KeyPerson {
 export interface Project {
   id: string;
   title: string;
-  type: string;
+  type: 'film' | 'music' | 'webseries' | 'documentary';
   category: string;
   language: string;
-  status: string;
+  status: 'active' | 'pending' | 'completed' | 'cancelled';
   fundedPercentage: number;
   targetAmount: number;
   raisedAmount: number;
@@ -49,7 +49,7 @@ export interface Project {
   disabled: boolean;
   featured?: boolean;
   budget?: number;
-  cast?: string;
+  cast?: string[];
   artist?: string;
   
   // New TMDB enriched fields

@@ -3738,5 +3738,5 @@ const communityData = {
 ] as RealCommunityItem[]
 };
 
-export default communityData;
+// REMOVED: Unused default export
 export const comprehensiveCommunityData = communityData; 

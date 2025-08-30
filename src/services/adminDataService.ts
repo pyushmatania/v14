@@ -115,28 +115,7 @@ export interface ComprehensiveAnalytics extends WaitlistAnalytics {
 }
 
 // Admin Data Service - Real CRUD Operations
-export interface Project {
-  id: string;
-  title: string;
-  type: 'film' | 'music' | 'webseries' | 'documentary';
-  category: string;
-  language: string;
-  status: 'active' | 'pending' | 'completed' | 'cancelled';
-  fundedPercentage: number;
-  targetAmount: number;
-  raisedAmount: number;
-  createdAt: string;
-  updatedAt: string;
-  poster: string;
-  tags: string[];
-  description: string;
-  genre: string;
-  perks: string[];
-  director?: string;
-  cast?: string[];
-  releaseDate?: string;
-  duration?: string;
-}
+import { Project } from '../types';
 
 export interface MerchandiseItem {
   id: string;
@@ -253,8 +232,10 @@ const mockProjects: Project[] = [
     perks: ['Meet & Greet', 'VIP Screening', 'Merchandise'],
     director: 'Siddharth Anand',
     cast: ['Shah Rukh Khan', 'Deepika Padukone', 'John Abraham'],
-    releaseDate: '2024-12-25',
-    duration: '2h 35m'
+    rating: 8.5,
+    trailer: 'https://www.youtube.com/watch?v=pathaan2',
+    keyPeople: [],
+    disabled: false
   },
   {
     id: '2',
@@ -273,8 +254,10 @@ const mockProjects: Project[] = [
     description: 'A.R. Rahman\'s latest musical masterpiece',
     genre: 'Classical',
     perks: ['Concert Tickets', 'Signed Album', 'Backstage Pass'],
-    releaseDate: '2024-06-15',
-    duration: '1h 45m'
+    rating: 8.8,
+    trailer: 'https://www.youtube.com/watch?v=rahman-symphony',
+    keyPeople: [],
+    disabled: false
   },
   {
     id: '3',
@@ -295,8 +278,10 @@ const mockProjects: Project[] = [
     perks: ['Exclusive Screening', 'Meet Cast', 'Behind the Scenes'],
     director: 'Vikramaditya Motwane',
     cast: ['Saif Ali Khan', 'Nawazuddin Siddiqui'],
-    releaseDate: '2024-09-01',
-    duration: '8 Episodes'
+    rating: 8.9,
+    trailer: 'https://www.youtube.com/watch?v=sacred-games-3',
+    keyPeople: [],
+    disabled: false
   }
 ];
 
@@ -751,15 +736,16 @@ class AdminDataService {
       const date = new Date(createdAt);
       if (isNaN(date.getTime())) return;
       
-      const weekStart = new Date(date);
-      weekStart.setDate(date.getDate() - date.getDay());
-      const weekKey = weekStart.toISOString().split('T')[0];
+      const year = date.getFullYear();
+      const week = Math.ceil((date.getTime() - new Date(year, 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000));
+      const weekKey = `${year}-W${week.toString().padStart(2, '0')}`;
       
       if (!weeklyData[weekKey]) {
         weeklyData[weekKey] = { signups: 0, conversions: 0 };
       }
       
       weeklyData[weekKey].signups++;
+      
       if (entry.source === 'converted') {
         weeklyData[weekKey].conversions++;
       }
@@ -793,7 +779,7 @@ class AdminDataService {
       if (timeOnPage > 120 && scrollDepth > 50) engagement = 'High';
       else if (timeOnPage > 60 || scrollDepth > 25) engagement = 'Medium';
       
-      breakdown[engagement]++;
+      breakdown[engagement] = (breakdown[engagement] || 0) + 1;
     });
 
     return breakdown;
@@ -830,8 +816,11 @@ class AdminDataService {
       const date = new Date(createdAt);
       if (isNaN(date.getTime())) return;
       
-      const day = days[date.getDay()];
-      breakdown[day]++;
+      const dayIndex = date.getDay();
+      const day = days[dayIndex];
+      if (day) {
+        breakdown[day] = (breakdown[day] || 0) + 1;
+      }
     });
 
     return breakdown;
@@ -959,12 +948,13 @@ class AdminDataService {
   async updateProject(id: string, projectData: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>): Promise<Project | null> {
     const index = mockProjects.findIndex(p => p.id === id);
     if (index !== -1) {
-      mockProjects[index] = {
-        ...mockProjects[index],
+      const updatedProject: Project = {
+        ...mockProjects[index]!,
         ...projectData,
         updatedAt: new Date().toISOString()
       };
-      return mockProjects[index];
+      mockProjects[index] = updatedProject;
+      return updatedProject;
     }
     return null;
   }

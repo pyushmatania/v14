@@ -8,6 +8,7 @@ import React, { useState, useRef, useMemo, useCallback, useContext, useEffect, m
 import { projects } from '../data/projects';
 import { Project } from '../types';
 import { getTextColor } from '../utils/themeUtils';
+import { shuffleArray } from '../utils/commonUtils';
 
 import ElasticSlider from './ElasticSlider';
 import ProjectCard from './ProjectCard';
@@ -439,15 +440,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = memo(({ onProjectSelect })
       return project.category?.toLowerCase()?.includes(category.toLowerCase()) || false;
     };
 
-    // Shuffle function for better variety
-    const shuffleArray = (array: Project[]) => {
-      const shuffled = [...array];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      return shuffled;
-    };
+    // shuffleArray now imported from commonUtils
 
     // Create a pool tracker to ensure uniqueness across sections
     const usedProjectIds = new Set<string>();
@@ -585,11 +578,15 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = memo(({ onProjectSelect })
 
   // Simple swipe detection for carousel
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
+    if (e.touches[0]) {
+      setTouchStartX(e.touches[0].clientX);
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEndX(e.touches[0].clientX);
+    if (e.touches[0]) {
+      setTouchEndX(e.touches[0].clientX);
+    }
   };
 
   const handleTouchEnd = () => {
@@ -807,17 +804,23 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = memo(({ onProjectSelect })
         safeUltimateFallback.length > 0 && safeUltimateFallback[wrappedSlide] ? (
           <div
             className="md:hidden relative h-72 overflow-hidden mobile-carousel"
-            onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
-            onTouchEnd={(e) => {
-              const diff = e.changedTouches[0].clientX - touchStartX;
-              if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                  prevSlide();
-                } else {
-                  nextSlide();
-                }
+            onTouchStart={(e) => {
+              if (e.touches[0]) {
+                setTouchStartX(e.touches[0].clientX);
               }
             }}
+                                        onTouchEnd={(e) => {
+                if (e.changedTouches[0]) {
+                  const diff = e.changedTouches[0].clientX - touchStartX;
+                  if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                      prevSlide();
+                    } else {
+                      nextSlide();
+                    }
+                  }
+                }
+              }}
                         onClick={() => safeUltimateFallback[wrappedSlide] && handleProjectClick(safeUltimateFallback[wrappedSlide])}
             >
             <AnimatePresence mode="sync">
@@ -1856,7 +1859,7 @@ const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClic
               project={project} 
               onClick={() => onProjectClick(project)}
               onInvestClick={onInvestClick}
-              urgent={urgent}
+              urgent={urgent || false}
             />
           </div>
         ))}

@@ -1,7 +1,7 @@
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { Crown } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { collectDeviceInfo, getIPInfo } from '../../utils/deviceDetection';
 
 import { handleWaitlistSignup } from '../../api/waitlistSupabase';
@@ -71,7 +71,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess, onError }) => {
       await handleWaitlistSignup({
         name: formData.name.trim(),
         email: formData.email.trim(),
-        phoneNumber: formData.phoneNumber?.trim(),
+        phoneNumber: formData.phoneNumber?.trim() || '',
         consent: formData.consent,
         marketingConsent: formData.marketingConsent,
         source: 'direct',

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import * as React from 'react';
 import { useState, useMemo, useCallback, memo } from 'react';
+import { formatNumber } from '../../utils/commonUtils';
 
 // 🛡️ Type definitions for better type safety
 interface AnalyticsData {
@@ -142,10 +143,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ isAdmin = false
     fetchAnalyticsData();
   }, [fetchAnalyticsData]);
 
-  // 🚀 Format number with commas
-  const formatNumber = (num: number): string => {
-    return num.toLocaleString();
-  };
+  // formatNumber now imported from commonUtils
 
   // 🚀 Format percentage
   const formatPercentage = (num: number): string => {

@@ -157,6 +157,15 @@ export default [
           argsIgnorePattern: '^_',
         },
       ],
+      'no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
+      ],
       'import/order': [
         'error',
         {

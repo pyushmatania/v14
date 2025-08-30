@@ -12,13 +12,13 @@ interface EmojiData {
 
 export interface MobileChatInputProps {
   value: string;
-  onChange: (_next: string) => void;
+  onChange: (next: string) => void; // eslint-disable-line no-unused-vars
   onSend: () => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
-  onFilesSelected?: (_files: FileList) => void;
-  onImagesSelected?: (_files: FileList) => void;
+  onFilesSelected?: (files: FileList) => void; // eslint-disable-line no-unused-vars
+  onImagesSelected?: (files: FileList) => void; // eslint-disable-line no-unused-vars
 }
 
 

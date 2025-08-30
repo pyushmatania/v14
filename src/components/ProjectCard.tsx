@@ -12,7 +12,7 @@ import ProjectDetailPage from './ProjectDetailPage';
 interface ProjectCardProps {
   project: Project;
   onClick?: () => void;
-  onInvestClick?: (_project: Project) => void;
+  onInvestClick?: (project: Project) => void; // eslint-disable-line no-unused-vars
   featured?: boolean;
   compact?: boolean;
   urgent?: boolean;
@@ -389,7 +389,7 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({
         <ProjectDetailPage 
           project={project} 
           onClose={handleCloseDetailPage}
-          onInvest={onInvestClick}
+          onInvest={onInvestClick || (() => {})}
         />
       )}
     </PixelCard>

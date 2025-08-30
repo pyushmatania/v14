@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
 import { useTheme } from './ThemeContext';
 
 interface ProblemSolutionProps {
-  setCurrentView?: (_view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void;
+  setCurrentView?: (view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist' | 'projects') => void; // eslint-disable-line no-unused-vars
 }
 
 const ProblemSolution: React.FC<ProblemSolutionProps> = ({ setCurrentView }) => {

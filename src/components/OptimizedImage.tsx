@@ -66,12 +66,12 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
     setHasError(false);
 
     const optimizedSrc = getOptimizedSrc(imageSrc);
-    const startTime = performance.now();
+    // const startTime = performance.now();
     
     // Preload image
     const img = new Image();
     img.onload = () => {
-      const _loadTime = performance.now() - startTime;
+      // const _loadTime = performance.now() - startTime;
       setCurrentSrc(optimizedSrc);
       setIsLoading(false);
       setRetryCount(0);
@@ -80,7 +80,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = memo(({
       // Performance tracking removed for simplicity
     };
     img.onerror = () => {
-      const _loadTime = performance.now() - startTime;
+      // const _loadTime = performance.now() - startTime;
       
       // Track performance if monitoring is available
       // Performance tracking removed for simplicity

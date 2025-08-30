@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Project } from '../../../types';
 
 interface ProjectFormProps {
-  _project?: Project;
-  onSubmit: (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  project?: Project | undefined;
+  onSubmit: (_project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => void | Promise<void>;
   onCancel: () => void;
   loading?: boolean;
 }
@@ -30,9 +30,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     genre: project?.genre || '',
     perks: project?.perks || [],
     director: project?.director || '',
-    cast: project?.cast || [],
-    releaseDate: project?.releaseDate || '',
-    duration: project?.duration || ''
+    cast: project?.cast || []
   });
 
   const [newTag, setNewTag] = useState('');
@@ -40,7 +38,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit({
+      ...formData,
+      disabled: false,
+      rating: 0,
+      trailer: '',
+      keyPeople: [],
+      cast: formData.cast || []
+    });
   };
 
   const addTag = () => {
@@ -56,7 +61,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const removeTag = (tagToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
+      tags: prev.tags.filter((tag: string) => tag !== tagToRemove)
     }));
   };
 
@@ -73,13 +78,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const removePerk = (perkToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      perks: prev.perks.filter(perk => perk !== perkToRemove)
+      perks: prev.perks.filter((perk: string) => perk !== perkToRemove)
     }));
   };
 
   const addCastMember = () => {
     const castInput = document.getElementById('cast') as HTMLInputElement;
-    if (castInput && castInput.value.trim() && !formData.cast.includes(castInput.value.trim())) {
+    if (castInput && castInput.value.trim()) {
       setFormData(prev => ({
         ...prev,
         cast: [...prev.cast, castInput.value.trim()]
@@ -91,7 +96,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const removeCastMember = (memberToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      cast: prev.cast.filter(member => member !== memberToRemove)
+      cast: prev.cast.filter((member: string) => member !== memberToRemove)
     }));
   };
 
@@ -264,34 +269,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             className="w-full px-4 py-3 bg-red-700/50 border border-red-600/50 rounded-lg text-white placeholder-red-300 focus:outline-none focus:ring-2 focus:ring-red-500"
             placeholder="https://example.com/poster.jpg"
           />
-                </div>
+        </div>
+      </div>
 
-        <div>
-          <label className="block text-sm font-medium text-red-200 mb-2">
-            Duration
-          </label>
-          <input
-            type="text"
-            value={formData.duration}
-            onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
-            className="w-full px-4 py-3 bg-red-700/50 border border-red-600/50 rounded-lg text-white placeholder-red-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-            placeholder="e.g., 2h 35m, 8 Episodes"
-                    />
-                  </div>
-                </div>
 
-      {/* Release Date */}
-      <div>
-        <label className="block text-sm font-medium text-red-200 mb-2">
-          Release Date
-        </label>
-        <input
-          type="date"
-          value={formData.releaseDate}
-          onChange={(e) => setFormData(prev => ({ ...prev, releaseDate: e.target.value }))}
-          className="w-full px-4 py-3 bg-red-700/50 border border-red-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-red-500"
-        />
-              </div>
 
       {/* Tags */}
       <div>
@@ -316,7 +297,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                           </button>
                         </div>
         <div className="flex flex-wrap gap-2">
-          {formData.tags.map((tag, index) => (
+          {formData.tags.map((tag: string, index: number) => (
             <span
               key={index}
               className="px-3 py-1 bg-red-600/30 text-red-200 rounded-full text-sm flex items-center space-x-2"
@@ -355,15 +336,15 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           </button>
                   </div>
         <div className="flex flex-wrap gap-2">
-          {formData.cast.map((member, index) => (
+                          {formData.cast.filter(member => member.trim()).map((member: string, index: number) => (
             <span
               key={index}
               className="px-3 py-1 bg-red-600/30 text-red-200 rounded-full text-sm flex items-center space-x-2"
             >
-              <span>{member}</span>
+              <span>{member.trim()}</span>
               <button
                 type="button"
-                onClick={() => removeCastMember(member)}
+                onClick={() => removeCastMember(member.trim())}
                 className="text-red-300 hover:text-white"
               >
                 ×
@@ -396,7 +377,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           </button>
         </div>
         <div className="flex flex-wrap gap-2">
-          {formData.perks.map((perk, index) => (
+          {formData.perks.map((perk: string, index: number) => (
             <span
               key={index}
               className="px-3 py-1 bg-red-600/30 text-red-200 rounded-full text-sm flex items-center space-x-2"

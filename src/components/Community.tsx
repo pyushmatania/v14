@@ -52,8 +52,9 @@ import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import Feed from './Feed';
 import { useTheme } from './ThemeContext';
-import useIsMobile from '../hooks/useIsMobile';
+// REMOVED: Unused import (useIsMobile)
 import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comprehensiveCommunityData';
+import { isMobile, formatNumber } from '../utils/commonUtils';
 
 interface EmojiData {
   native?: string;
@@ -1433,7 +1434,7 @@ const Community: React.FC = memo(() => {
         chatContainer.scrollTop = chatContainer.scrollHeight;
       }
     }, 100);
-  }, [hubChatInput]);
+  }, [hubChatInput]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleHubChatLike = useCallback((messageId: number) => {
     setHubChatMessages(prev => prev.map(msg => 
@@ -1491,7 +1492,7 @@ const Community: React.FC = memo(() => {
       setDetailedWindowChatInput('');
       scrollToBottomDelayed(detailedWindowChatRef, 100);
     }
-  }, [detailedWindowChatInput, extractMentions, scrollToBottomDelayed]);
+  }, [detailedWindowChatInput]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDetailedWindowChatLike = useCallback((messageId: number) => {
     setDetailedWindowChatMessages(prev => 
@@ -1530,7 +1531,7 @@ const Community: React.FC = memo(() => {
       }
     ]);
     scrollToBottomDelayed(detailedWindowChatRef, 100);
-  }, [extractMentions, scrollToBottomDelayed]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDetailedWindowPollVote = useCallback((messageId: number, option: string) => {
     setDetailedWindowChatMessages(prev => 
@@ -1576,7 +1577,7 @@ const Community: React.FC = memo(() => {
         question: pollForm.question,
         options: validOptions,
         votes: Object.fromEntries(validOptions.map((_, idx) => [String.fromCharCode(65 + idx), 0])),
-        userVote: undefined
+        userVote: ''
       }
     };
     
@@ -1720,11 +1721,7 @@ const Community: React.FC = memo(() => {
     }));
   }, []);
 
-  const formatNumber = useCallback((num: number) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-    return num.toString();
-  }, []);
+  // formatNumber now imported from commonUtils
 
 
 
@@ -1797,7 +1794,7 @@ const Community: React.FC = memo(() => {
       { user: 'Adya Rath', message: 'Just discovered this amazing app for music production! 🎵🎧', time: '10:50 AM', avatar: getUserAvatar('Adya Rath') }
     ]
   });
-  const friendsList = [
+  const friendsList = useMemo(() => [
     { id: 'alok', name: 'Alok Tripathy', avatar: getUserAvatar('Alok Tripathy'), online: true },
     { id: 'ankit', name: 'Ankit Singh', avatar: getUserAvatar('Ankit Singh'), online: true },
     { id: 'biren', name: 'Biren Dora', avatar: getUserAvatar('Biren Dora'), online: false },
@@ -1806,8 +1803,8 @@ const Community: React.FC = memo(() => {
     { id: 'praveen', name: 'Praveen Dehury', avatar: getUserAvatar('Praveen Dehury'), online: true },
     { id: 'ipsit', name: 'Ipsit Tripathy', avatar: getUserAvatar('Ipsit Tripathy'), online: true },
     { id: 'kamlesh', name: 'Kamlesh Biswal', avatar: getUserAvatar('Kamlesh Biswal'), online: true }
-  ];
-  const [selectedFriend, setSelectedFriend] = useState<string>(friendsList[0].id);
+  ], []);
+  const [selectedFriend, setSelectedFriend] = useState<string>(friendsList[0]?.id || '');
   // const [previewFriend, setPreviewFriend] = useState<string | null>(null);
   const [friendInput, setFriendInput] = useState('');
   const [friendTyping, setFriendTyping] = useState(false);
@@ -1883,7 +1880,7 @@ const Community: React.FC = memo(() => {
     setTimeout(() => {
       scrollToBottom(ref);
     }, delay);
-  }, []);
+  }, [scrollToBottom]);
   
   const [friendChats, setFriendChats] = useState<Record<string, {
     user: string; 
@@ -1971,7 +1968,7 @@ const Community: React.FC = memo(() => {
   }, [friendChats, selectedFriend, scrollToBottomDelayed]);
 
   const { theme } = useTheme();
-  const { isMobile } = useIsMobile();
+  // Use consolidated utility
 
   // Use TMDB community data with Spotify for music artists
   // Memoized community data to prevent unnecessary recalculations
@@ -1991,7 +1988,7 @@ const Community: React.FC = memo(() => {
   // Optimized pagination data with lazy loading and virtual scrolling
   const paginationData = useMemo(() => {
     const currentCategoryItems = getCommunityData()[selectedCategory] || [];
-                    const itemsPerPage = isMobile ? 9 : 12; // 3×3 for mobile, 6×2 for desktop (exactly 12 items)
+    const itemsPerPage = isMobile() ? 9 : 12; // 3×3 for mobile, 6×2 for desktop (exactly 12 items)
     const totalPages = Math.ceil(currentCategoryItems.length / itemsPerPage);
     const paginatedItems = currentCategoryItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
@@ -2001,7 +1998,7 @@ const Community: React.FC = memo(() => {
       totalPages,
       paginatedItems
     };
-  }, [getCommunityData, selectedCategory, currentPage, isMobile]);
+  }, [getCommunityData, selectedCategory, currentPage]);
 
   const { totalPages, paginatedItems } = paginationData;
 
@@ -2012,11 +2009,11 @@ const Community: React.FC = memo(() => {
   // Mobile swipe navigation handlers
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+    setTouchStart(e.targetTouches[0]?.clientX || 0);
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    setTouchEnd(e.targetTouches[0]?.clientX || 0);
   }, []);
 
   const handleTouchEnd = useCallback(() => {
@@ -2272,10 +2269,10 @@ const Community: React.FC = memo(() => {
         const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
         
         responses.push({
-          user: randomUser,
+          user: randomUser || '',
           message: 'Thanks for sharing! This adds great value to our community discussion! 🙌',
           time: currentTime,
-          avatar: getUserAvatar(randomUser),
+          avatar: getUserAvatar(randomUser || ''),
           isUser: false,
           reactions: ['🙌', '👍']
         });
@@ -2414,7 +2411,7 @@ const Community: React.FC = memo(() => {
       }
       setFriendTyping(false);
     }, 2000);
-  }, [friendInput, selectedFriend, friendsList]);
+  }, [friendInput, selectedFriend, friendsList]); // eslint-disable-line react-hooks/exhaustive-deps
   // Scroll detection for experience view - for channels, friends, feed, and hub tabs
   useEffect(() => {
     let ticking = false;
@@ -3031,14 +3028,14 @@ const Community: React.FC = memo(() => {
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                                      className={`grid grid-cols-3 md:grid-cols-6 gap-6 min-h-[400px] justify-items-center mobile-grid force-grid-layout`}
-                                     onTouchStart={isMobile ? handleTouchStart : undefined}
-                                     onTouchMove={isMobile ? handleTouchMove : undefined}
-                                     onTouchEnd={isMobile ? handleTouchEnd : undefined}
+                                                                           onTouchStart={isMobile() ? handleTouchStart : undefined}
+                                      onTouchMove={isMobile() ? handleTouchMove : undefined}
+                                      onTouchEnd={isMobile() ? handleTouchEnd : undefined}
                                      role="grid"
                 >
                   {/* Loading state - only show if no items available */}
                   {selectedCategory === 'musicArtist' && paginatedItems.length === 0 && (
-                    Array.from({ length: isMobile ? 9 : 12 }).map((_, _index) => (
+                                         Array.from({ length: isMobile() ? 9 : 12 }).map((_, _index) => (
                       <div key={`loading-${_index}`} className="flex flex-col items-center justify-center gap-3 min-h-[200px] md:min-h-[300px]">
                         <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse" />
                         <div className="w-20 h-4 bg-gray-700 rounded animate-pulse" />
@@ -3117,7 +3114,7 @@ const Community: React.FC = memo(() => {
                             isPerson 
                               ? 'rounded-full' 
                               : 'rounded-2xl'
-                          } ${isMobile ? 'touch-manipulation' : ''}`}
+                                                     } ${isMobile() ? 'touch-manipulation' : ''}`}
                           >
                           {/* Instagram-style gradient border for active users */}
                           {item.isActive && (
@@ -3222,7 +3219,7 @@ const Community: React.FC = memo(() => {
                 <span className="text-sm text-gray-400 font-medium">
                   {currentPage + 1} / {totalPages}
                 </span>
-                {isMobile && (
+                {isMobile() && (
                   <div className="flex items-center gap-2 mt-2">
                     <span className="text-xs text-gray-500">Swipe left/right to change pages</span>
                                           <div className="flex gap-1">
@@ -3949,9 +3946,9 @@ const Community: React.FC = memo(() => {
               <div className="w-full h-[calc(100vh-200px)] bg-black rounded-2xl overflow-hidden">
 
                 {/* Full Chat Window with Mobile-Friendly Layout */}
-                <div className={`bg-black h-full ${isMobile ? 'flex flex-col' : 'flex gap-6'}`}>
+                                 <div className={`bg-black h-full ${isMobile() ? 'flex flex-col' : 'flex gap-6'}`}>
                   {/* Main Chat Area */}
-                  <div className={`${isMobile ? 'flex-1' : 'flex-1'} bg-black flex flex-col`}>
+                                     <div className={`${isMobile() ? 'flex-1' : 'flex-1'} bg-black flex flex-col`}>
                     
                     {/* Chat Header */}
                     <div className="p-2 bg-black border-b border-white/5">
@@ -4737,7 +4734,7 @@ const Community: React.FC = memo(() => {
               )}
 
               {/* Mobile-Friendly Widgets Section */}
-              {isMobile && (
+                             {isMobile() && (
                 <div className="p-4 bg-white/5 border-t border-white/10">
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="text-sm font-medium text-white">Community Widgets</h4>
@@ -5752,7 +5749,7 @@ const Community: React.FC = memo(() => {
           )}
         </AnimatePresence>
         {/* Mobile chat input – only visible in Community Hub, normal view */}
-        {isMobile && activeTab === 'hub' && !isExperienceView && (
+                 {isMobile() && activeTab === 'hub' && !isExperienceView && (
           <MobileChatInput
             className="mobile-message-input"
             value={hubChatInput}
@@ -5771,7 +5768,7 @@ const Community: React.FC = memo(() => {
         )}
 
         {/* Mobile chat input – Community Hub, experience view */}
-        {isMobile && activeTab === 'hub' && isExperienceView && (
+                 {isMobile() && activeTab === 'hub' && isExperienceView && (
           <MobileChatInput
             className="mobile-message-input"
             value={hubChatInput}
@@ -5790,7 +5787,7 @@ const Community: React.FC = memo(() => {
         )}
 
         {/* Mobile chat input – Friends, normal view */}
-        {isMobile && activeTab === 'friends' && !isExperienceView && (
+                 {isMobile() && activeTab === 'friends' && !isExperienceView && (
           <MobileChatInput
             className="mobile-message-input"
             value={friendInput}
@@ -5809,7 +5806,7 @@ const Community: React.FC = memo(() => {
         )}
 
         {/* Mobile chat input – Friends, experience view */}
-        {isMobile && activeTab === 'friends' && isExperienceView && (
+                 {isMobile() && activeTab === 'friends' && isExperienceView && (
           <MobileChatInput
             className="mobile-message-input"
             value={friendInput}
@@ -5828,7 +5825,7 @@ const Community: React.FC = memo(() => {
         )}
 
         {/* Mobile chat input – Channels, normal view */}
-        {isMobile && activeTab === 'channels' && !isExperienceView && (
+                 {isMobile() && activeTab === 'channels' && !isExperienceView && (
           <MobileChatInput
             className="mobile-message-input"
             value={newMessage}
@@ -5847,7 +5844,7 @@ const Community: React.FC = memo(() => {
         )}
 
         {/* Mobile chat input – Channels, experience view */}
-        {isMobile && activeTab === 'channels' && isExperienceView && (
+                 {isMobile() && activeTab === 'channels' && isExperienceView && (
           <MobileChatInput
             className="mobile-message-input"
             value={newMessage}
@@ -7244,7 +7241,7 @@ const Community: React.FC = memo(() => {
                                          {poll.options.map((option, idx) => (
                                            <div key={idx} className="flex items-center gap-2 mb-1">
                                              <div className="w-16 bg-white/10 rounded-full h-1">
-                                               <div className="bg-purple-500 h-1 rounded-full" style={{ width: `${(poll.votes[idx] / poll.totalVotes) * 100}%` }}></div>
+                                                                                               <div className="bg-purple-500 h-1 rounded-full" style={{ width: `${((poll.votes[idx] || 0) / (poll.totalVotes || 1)) * 100}%` }}></div>
                                              </div>
                                              <span className="text-gray-400">{option}</span>
                                            </div>

@@ -234,7 +234,7 @@ const PixelCard = memo(function PixelCard({
             ctx,
             x,
             y,
-            color,
+            color || 'default',
             effectiveSpeed,
             delay
           )

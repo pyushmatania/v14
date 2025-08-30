@@ -74,14 +74,14 @@ interface Tab {
 
 type TabType = 'overview' | 'investments' | 'perks' | 'circles' | 'portfolio' | 'profile';
 
-interface DashboardProps {
-  setCurrentView?: (view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist') => void;
-}
-
 /**
  * 🎯 Dashboard - Optimized version with exact original design preserved
  * @description Main dashboard with performance optimizations while maintaining original styling
  */
+interface DashboardProps {
+  setCurrentView?: (view: 'home' | 'browse' | 'community' | 'about' | 'contact' | 'login' | 'register' | 'dashboard' | 'profile' | 'settings' | 'admin' | 'waitlist') => void; // eslint-disable-line no-unused-vars
+}
+
 const Dashboard: React.FC<DashboardProps> = memo(({ setCurrentView }) => {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [investmentFilter, setInvestmentFilter] = useState<'all' | 'film' | 'music' | 'web-series'>('all');

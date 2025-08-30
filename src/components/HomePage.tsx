@@ -6,8 +6,8 @@ import RouteLoader from './RouteLoader';
 type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics';
 
 interface HomePageProps {
-  setCurrentView: (_view: ViewType) => void;
-  onProjectSelect?: (_project: any) => void;
+  setCurrentView: (view: ViewType) => void; // eslint-disable-line no-unused-vars
+  onProjectSelect?: (project: any) => void; // eslint-disable-line no-unused-vars
 }
 
 const HomePage: React.FC<HomePageProps> = ({ setCurrentView, onProjectSelect }) => {

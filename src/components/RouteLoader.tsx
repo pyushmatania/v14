@@ -82,7 +82,7 @@ const RouteLoader: React.FC<RouteLoaderProps> = ({ route, props = {} }) => {
       case 'project-comparison':
         return <ProjectComparison {...props} />;
       case 'project-detail':
-        return <ProjectDetailPage {...props} />;
+        return <ProjectDetailPage project={props['project'] || {} as any} onClose={() => {}} />;
       case 'news-updates':
         return <NewsAndUpdates {...props} />;
       case 'notification-center':

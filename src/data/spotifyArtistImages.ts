@@ -27,26 +27,4 @@ export const getSpotifyArtistData = (artistName: string): SpotifyArtistImageData
   return spotifyArtistImages.artists[artistName] || null;
 };
 
-// Helper function to check if artist has Spotify data
-export const hasSpotifyData = (artistName: string): boolean => {
-  return artistName in spotifyArtistImages.artists;
-};
-
-// Helper function to get all artist names
-export const getAllSpotifyArtistNames = (): string[] => {
-  return Object.keys(spotifyArtistImages.artists);
-};
-
-// Helper function to get artists by genre
-export const getSpotifyArtistsByGenre = (genre: string): SpotifyArtistImageData[] => {
-  return Object.values(spotifyArtistImages.artists).filter(artist => 
-    artist.genres.some(g => g.toLowerCase().includes(genre.toLowerCase()))
-  );
-};
-
-// Helper function to get top artists by popularity
-export const getTopSpotifyArtists = (limit: number = 10): SpotifyArtistImageData[] => {
-  return Object.values(spotifyArtistImages.artists)
-    .sort((a, b) => b.popularity - a.popularity)
-    .slice(0, limit);
-}; 
+// REMOVED: Unused helper functions (hasSpotifyData, getAllSpotifyArtistNames, getSpotifyArtistsByGenre, getTopSpotifyArtists) 

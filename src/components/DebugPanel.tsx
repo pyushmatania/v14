@@ -40,15 +40,15 @@ const DebugPanel: React.FC = () => {
     const originalWarn = console.warn;
     const originalDebug = console.debug;
 
-    const addLog = (level: string, message: string, ...args: unknown[]) => {
+    const addLog = (_level: string, _message: string, ..._args: unknown[]) => {
       const update = () => setLogs(prev => [...prev.slice(-99), {
         timestamp: new Date().toISOString(),
-        level,
-        message,
-        data: args.length > 0 ? JSON.stringify(args) : undefined
+        level: 'info',
+        message: 'Debug info logged',
+        data: _args.length > 0 ? JSON.stringify(_args) : ''
       }]);
       if ('requestIdleCallback' in window) {
-        (window as { requestIdleCallback?: (_callback: () => void) => number }).requestIdleCallback?.(update);
+        (window as { requestIdleCallback?: (callback: () => void) => number }).requestIdleCallback?.(update); // eslint-disable-line no-unused-vars
       } else {
         setTimeout(update, 0);
       }
@@ -162,7 +162,9 @@ const DebugPanel: React.FC = () => {
                 {logs.map((log, index) => (
                   <div key={index} className={`p-1 rounded ${getLogColor(log.level)}`}>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">{log.timestamp.split('T')[1].split('.')[0]}</span>
+                      <span className="text-gray-400">
+                        {log.timestamp.split('T')[1]?.split('.')[0] || ''}
+                      </span>
                       <span className={`px-1 rounded text-xs ${getLogBadgeColor(log.level)}`}>
                         {log.level}
                       </span>

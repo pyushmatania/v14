@@ -515,7 +515,25 @@ export class PortfolioService {
   public updateInvestment(id: string, updates: Partial<UserInvestment>): void {
     const index = this.investments.findIndex(inv => inv.id === id);
     if (index !== -1) {
-      this.investments[index] = { ...this.investments[index], ...updates };
+      this.investments[index] = { 
+        ...this.investments[index], 
+        ...updates,
+        id: this.investments[index]?.id || updates.id || '',
+        projectId: updates.projectId || this.investments[index]?.projectId || '',
+        projectName: updates.projectName || this.investments[index]?.projectName || '',
+        projectPoster: updates.projectPoster || this.investments[index]?.projectPoster || '',
+        investmentAmount: updates.investmentAmount || this.investments[index]?.investmentAmount || 0,
+        currentValue: updates.currentValue || this.investments[index]?.currentValue || 0,
+        returnAmount: updates.returnAmount || this.investments[index]?.returnAmount || 0,
+        returnPercentage: updates.returnPercentage || this.investments[index]?.returnPercentage || 0,
+        status: updates.status || this.investments[index]?.status || 'active',
+        maturityDate: updates.maturityDate || this.investments[index]?.maturityDate || new Date().toISOString(),
+        circleId: updates.circleId || this.investments[index]?.circleId || 'default-circle',
+        circleName: updates.circleName || this.investments[index]?.circleName || 'Default Circle',
+        investmentDate: updates.investmentDate || this.investments[index]?.investmentDate || new Date().toISOString(),
+        projectType: updates.projectType || this.investments[index]?.projectType || 'film',
+        risk: updates.risk || this.investments[index]?.risk || 'medium'
+      };
     }
   }
 
@@ -537,5 +555,4 @@ export class PortfolioService {
 // Export the service instance
 export const portfolioService = PortfolioService.getInstance();
 
-// Export the raw data for backward compatibility
-export const userInvestments = portfolioData; 
+// REMOVED: Unused export (userInvestments) 

@@ -24,12 +24,12 @@ export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>; // eslint-disable-line no-unused-vars
+  register: (email: string, password: string, name: string) => Promise<void>; // eslint-disable-line no-unused-vars
   logout: () => void;
-  updateProfile: (updates: Partial<User>) => Promise<void>;
-  resetPassword: (email: string) => Promise<void>;
-  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  updateProfile: (updates: Partial<User>) => Promise<void>; // eslint-disable-line no-unused-vars
+  resetPassword: (email: string) => Promise<void>; // eslint-disable-line no-unused-vars
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>; // eslint-disable-line no-unused-vars
 }
 
 export const MOCK_USER: User = {

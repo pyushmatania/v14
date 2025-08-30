@@ -18,7 +18,7 @@ interface ElasticSliderProps {
   stepSize?: number;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  onValueChange?: (value: number) => void;
+  onValueChange?: (value: number) => void; // eslint-disable-line no-unused-vars
 }
 
 const ElasticSlider: React.FC<ElasticSliderProps> = ({
@@ -44,7 +44,7 @@ const ElasticSlider: React.FC<ElasticSliderProps> = ({
         stepSize={stepSize}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
-        onValueChange={onValueChange}
+        onValueChange={onValueChange || (() => {})}
       />
     </div>
   );
@@ -58,7 +58,7 @@ interface SliderProps {
   stepSize: number;
   leftIcon: React.ReactNode;
   rightIcon: React.ReactNode;
-  onValueChange?: (_value: number) => void;
+  onValueChange?: (value: number) => void; // eslint-disable-line no-unused-vars
 }
 
 const Slider: React.FC<SliderProps> = ({

@@ -15,7 +15,7 @@ export default function InView({ rootMargin = '200px', threshold = 0, children }
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting) {
+        if (entry && entry.isIntersecting) {
           setIsVisible(true);
           observer.disconnect();
         }

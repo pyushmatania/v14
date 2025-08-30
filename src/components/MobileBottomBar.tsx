@@ -6,9 +6,9 @@ import { useAuth } from './auth/useAuth';
 import { useTheme } from './ThemeContext';
 
 interface MobileBottomBarProps {
-  currentView: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics';
-  setCurrentView: (_view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics') => void;
-  onAuthRequired: (_mode?: 'login' | 'register') => boolean;
+  currentView: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics' | 'about' | 'browse' | 'contact' | 'login' | 'register' | 'settings';
+  setCurrentView: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics' | 'about' | 'browse' | 'contact' | 'login' | 'register' | 'settings') => void; // eslint-disable-line no-unused-vars
+  onAuthRequired: (mode?: 'login' | 'register') => boolean; // eslint-disable-line no-unused-vars
 }
 
 const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ currentView, setCurrentView, onAuthRequired }) => {

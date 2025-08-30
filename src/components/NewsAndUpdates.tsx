@@ -282,40 +282,40 @@ const NewsAndUpdates: React.FC<NewsAndUpdatesProps> = () => {
                     <div className="flex flex-col md:flex-row">
                       <div className="md:w-1/2 h-64 md:h-auto relative">
                         <img 
-                          src={filteredNews.filter(news => news.trending)[0].image} 
-                          alt={filteredNews.filter(news => news.trending)[0].title}
+                                                    src={filteredNews.filter(news => news.trending)[0]?.image || ''}
+                          alt={filteredNews.filter(news => news.trending)[0]?.title || 'Trending News'}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                         <div className="absolute top-4 left-4 z-10">
                           <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-md ${
-                            getCategoryColor(filteredNews.filter(news => news.trending)[0].category)
+                            getCategoryColor(filteredNews.filter(news => news.trending)[0]?.category || 'general')
                           }`}>
-                            {getCategoryIcon(filteredNews.filter(news => news.trending)[0].category)}
-                            <span>{filteredNews.filter(news => news.trending)[0].category}</span>
+                            {getCategoryIcon(filteredNews.filter(news => news.trending)[0]?.category || 'general')}
+                            <span>{filteredNews.filter(news => news.trending)[0]?.category || 'General'}</span>
                           </div>
                         </div>
                       </div>
                       <div className="p-6 md:w-1/2 flex flex-col">
                         <h3 className={`text-2xl font-bold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                          {filteredNews.filter(news => news.trending)[0].title}
+                          {filteredNews.filter(news => news.trending)[0]?.title || 'Trending News'}
                         </h3>
                         <p className={`mb-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
-                          {filteredNews.filter(news => news.trending)[0].summary}
+                          {filteredNews.filter(news => news.trending)[0]?.summary || 'No summary available'}
                         </p>
-                        {filteredNews.filter(news => news.trending)[0].note && (
+                        {filteredNews.filter(news => news.trending)[0]?.note && (
                           <div className="text-xs text-red-500 mb-4">(not real data)</div>
                         )}
                         <div className="flex items-center gap-4 mb-4 text-sm">
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
                             <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-400'}>
-                              {filteredNews.filter(news => news.trending)[0].date}
+                              {filteredNews.filter(news => news.trending)[0]?.date || 'Unknown Date'}
                             </span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
                             <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-400'}>
-                              {filteredNews.filter(news => news.trending)[0].readTime}
+                              {filteredNews.filter(news => news.trending)[0]?.readTime || '5 min read'}
                             </span>
                           </div>
                         </div>
@@ -326,14 +326,14 @@ const NewsAndUpdates: React.FC<NewsAndUpdatesProps> = () => {
                                 <User className="w-full h-full p-1.5 text-purple-400" />
                               </div>
                               <span className={`text-sm font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                                {filteredNews.filter(news => news.trending)[0].author}
+                                {filteredNews.filter(news => news.trending)[0]?.author || 'Unknown Author'}
                               </span>
                             </div>
                             <div className="flex items-center gap-3">
                               <button 
-                                onClick={() => handleSaveArticle(filteredNews.filter(news => news.trending)[0].id)}
+                                onClick={() => handleSaveArticle(filteredNews.filter(news => news.trending)[0]?.id || '')}
                                 className={`p-2 rounded-full transition-colors ${
-                                  savedArticles.includes(filteredNews.filter(news => news.trending)[0].id)
+                                  savedArticles.includes(filteredNews.filter(news => news.trending)[0]?.id || '')
                                     ? (theme === 'light' ? 'bg-purple-100 text-purple-700' : 'bg-purple-900/30 text-purple-400')
                                     : (theme === 'light' ? 'text-gray-500 hover:bg-gray-100' : 'text-gray-400 hover:bg-gray-800')
                                 }`}

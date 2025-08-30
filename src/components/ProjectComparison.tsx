@@ -25,7 +25,7 @@ import { useTheme } from './ThemeContext';
 
 interface ProjectComparisonProps {
   initialProjects?: Project[];
-  onProjectSelect?: (_project: Project, _tab?: 'overview' | 'invest') => void;
+  onProjectSelect?: (project: Project, tab?: 'overview' | 'invest') => void; // eslint-disable-line no-unused-vars
 }
 
 const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, onProjectSelect }) => {
@@ -172,7 +172,7 @@ const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, 
         }
       }
       
-      setCompareProjects(randomProjects);
+      setCompareProjects(randomProjects.filter((p): p is Project => p !== undefined));
     }
   }, [compareProjects.length]);
 

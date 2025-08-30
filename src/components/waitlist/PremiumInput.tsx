@@ -20,7 +20,7 @@ interface PremiumInputProps {
   validation?: {
     pattern?: RegExp;
     message?: string;
-    validate?: (value: string) => boolean;
+    validate?: (_value: string) => boolean;
   };
   showCountryCode?: boolean;
   className?: string;
@@ -43,7 +43,7 @@ const PremiumInput: React.FC<PremiumInputProps> = ({
   type,
   label,
   placeholder,
-  value,
+  value: _value,
   onChange,
   required = false,
   validation,
@@ -53,7 +53,7 @@ const PremiumInput: React.FC<PremiumInputProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [showCountrySelector, setShowCountrySelector] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<CountryCode>(countryCodes[0]); // India default
+  const [selectedCountry, setSelectedCountry] = useState<CountryCode>((countryCodes[0] || 'IN') as CountryCode);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -104,8 +104,8 @@ const PremiumInput: React.FC<PremiumInputProps> = ({
     setSelectedCountry(country);
     setShowCountrySelector(false);
     // Trigger onChange with the full phone number
-    if (type === 'tel' && value) {
-      const phoneWithoutCode = value.replace(/^\+?\d+\s*/, '');
+    if (type === 'tel' && _value) {
+      const phoneWithoutCode = _value.replace(/^\+?\d+\s*/, '');
       onChange(`${country.dialCode} ${phoneWithoutCode}`);
     }
   };
@@ -246,7 +246,7 @@ const PremiumInput: React.FC<PremiumInputProps> = ({
             <input
               ref={inputRef}
               type={type}
-              value={value}
+              value={_value}
               onChange={handleInputChange}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -258,7 +258,7 @@ const PremiumInput: React.FC<PremiumInputProps> = ({
 
           {/* Validation Icon */}
           <AnimatePresence>
-            {value.trim() && (
+            {_value.trim() && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -279,7 +279,7 @@ const PremiumInput: React.FC<PremiumInputProps> = ({
 
         {/* Validation Message */}
         <AnimatePresence>
-          {value.trim() && (
+          {_value.trim() && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
