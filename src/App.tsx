@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
-
-import LaunchNotification from './components/LaunchNotification';
+import InfoBanner from './components/InfoBanner';
 import { QueryProvider } from './providers/QueryProvider';
 
 
@@ -397,11 +396,13 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 transition-colors duration-500">
-              <LaunchNotification />
+        <InfoBanner />
         {currentView !== 'admin' && <Navigation {...navigationProps} />}
         <QueryProvider>
           <React.Suspense fallback={
-            <EntertainmentLoading />
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="w-8 h-8 border-2 border-gray-300 border-t-indigo-600 rounded-full animate-spin" />
+            </div>
           }>
             {renderCurrentView}
           </React.Suspense>

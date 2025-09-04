@@ -1,6 +1,6 @@
 import { DevicePhoneMobileIcon, ComputerDesktopIcon, DeviceTabletIcon, ChartBarIcon } from '@heroicons/react/24/outline';
 import React from 'react';
-import LoadingSpinner from '../LoadingSpinner';
+import FastLoadingSpinner from '../FastLoadingSpinner';
 
 interface DeviceData {
   deviceBreakdown: Record<string, number>;
@@ -17,7 +17,7 @@ const DeviceAnalytics: React.FC<DeviceAnalyticsProps> = ({ data, loading = false
     return (
       <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50">
         <div className="text-center">
-          <LoadingSpinner 
+          <FastLoadingSpinner 
             variant="premium" 
             size="lg" 
             text="Loading device data..." 

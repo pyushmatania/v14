@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 
-import InView from './InView';
-import RouteLoader from './RouteLoader';
+// Direct imports for critical sections to avoid RouteLoader overhead
+const Hero = lazy(() => import('./Hero'));
+const ProblemSolution = lazy(() => import('./ProblemSolution'));
+const HowItWorks = lazy(() => import('./HowItWorks'));
+const LiveProjects = lazy(() => import('./LiveProjects'));
+const WhyThisMatters = lazy(() => import('./WhyThisMatters'));
+const TechTrust = lazy(() => import('./TechTrust'));
+const Rewards = lazy(() => import('./Rewards'));
+const Testimonials = lazy(() => import('./Testimonials'));
+const AboutUs = lazy(() => import('./AboutUs'));
+const FAQ = lazy(() => import('./FAQ'));
+const CallToAction = lazy(() => import('./CallToAction'));
+
+import { FastSkeletonHero } from './FastSkeletons';
 
 type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics';
 
@@ -13,79 +25,63 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ setCurrentView, onProjectSelect }) => {
   return (
     <>
-      {/* Hero Section */}
-      <RouteLoader 
-        route="hero" 
-        props={{ setCurrentView }} 
-      />
+      {/* Hero Section - Load immediately */}
+      <Suspense fallback={<FastSkeletonHero />}>
+        <Hero setCurrentView={setCurrentView} />
+      </Suspense>
       
       {/* Problem Solution Section */}
-      <InView>
-        <RouteLoader 
-          route="problem-solution" 
-          props={{ setCurrentView }} 
-        />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <ProblemSolution setCurrentView={setCurrentView} />
+      </Suspense>
       
       {/* How It Works Section */}
-      <InView>
-        <RouteLoader 
-          route="how-it-works" 
-          props={{ setCurrentView }} 
-        />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <HowItWorks setCurrentView={setCurrentView} />
+      </Suspense>
       
       {/* Rewards Section */}
-      <InView>
-        <RouteLoader route="rewards" />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <Rewards />
+      </Suspense>
       
       {/* Live Projects Section */}
-      <InView>
-        <RouteLoader 
-          route="live-projects" 
-          props={{ 
-            onViewAll: () => setCurrentView('projects'), 
-            onProjectSelect 
-          }} 
+      <Suspense fallback={<div className="h-32" />}>
+        <LiveProjects 
+          onViewAll={() => setCurrentView('projects')} 
+          onProjectSelect={onProjectSelect} 
         />
-      </InView>
+      </Suspense>
       
       {/* Why This Matters Section */}
-      <InView>
-        <RouteLoader 
-          route="why-this-matters" 
-          props={{ onJoin: () => setCurrentView('waitlist') }} 
-        />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <WhyThisMatters onJoin={() => setCurrentView('waitlist')} />
+      </Suspense>
       
       {/* Tech Trust Section */}
-      <InView>
-        <RouteLoader route="tech-trust" />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <TechTrust />
+      </Suspense>
       
       {/* Testimonials Section */}
-      <InView>
-        <RouteLoader route="testimonials" />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <Testimonials />
+      </Suspense>
       
       {/* About Us Section */}
-      <InView>
-        <RouteLoader route="about-us" />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <AboutUs />
+      </Suspense>
       
       {/* FAQ Section */}
-      <InView>
-        <RouteLoader route="faq" />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <FAQ />
+      </Suspense>
       
       {/* Call to Action Section */}
-      <InView>
-        <RouteLoader 
-          route="call-to-action" 
-          props={{ setCurrentView }} 
-        />
-      </InView>
+      <Suspense fallback={<div className="h-32" />}>
+        <CallToAction setCurrentView={setCurrentView} />
+      </Suspense>
     </>
   );
 };

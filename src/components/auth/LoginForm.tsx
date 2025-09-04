@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useTheme } from '../ThemeContext';
 
 import { useAuth } from './useAuth';
-import LoadingSpinner from '../LoadingSpinner';
+import FastLoadingSpinner from '../FastLoadingSpinner';
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;
@@ -248,7 +248,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onClose }) =>
         >
           {isLoading ? (
             <div className="flex items-center gap-2">
-              <LoadingSpinner 
+              <FastLoadingSpinner 
                 variant="entertainment" 
                 size="sm" 
                 text="" 

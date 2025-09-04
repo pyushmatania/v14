@@ -207,44 +207,41 @@ const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ currentView, setCurre
         {/* Gesture indicator - visible when collapsed */}
         {isCollapsed && (
           <motion.button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               setIsCollapsed(false);
               resetAutoCollapseTimer();
             }}
-            className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-12 h-2 bg-red-500/80 rounded-full cursor-pointer border border-red-400/60 hover:bg-red-500 transition-colors shadow-[0_0_12px_rgba(239,68,68,0.8)]"
+            className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-12 h-6 bg-gradient-to-r from-red-500 to-red-600 rounded-full cursor-pointer border-2 border-red-400/60 hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg shadow-red-500/30 z-50"
             initial={{ opacity: 0, scale: 0.8, y: -5 }}
-            animate={{ opacity: 1, scale: 1, y: 0, boxShadow: [
-              '0 0 8px rgba(239,68,68,0.4)',
-              '0 0 14px rgba(239,68,68,0.9)',
-              '0 0 8px rgba(239,68,68,0.4)'
-            ] }}
-            transition={{ delay: 0.1, duration: 0.6, repeat: Infinity, repeatType: 'mirror' }}
-            whileHover={{ scale: 1.1, opacity: 0.8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
+            whileHover={{ scale: 1.1, y: -1 }}
             whileTap={{ scale: 0.95 }}
+            aria-label="Expand bottom bar"
           >
-            <ChevronUp className="w-5 h-5 text-white/80 mx-auto -mt-1.5" />
+            <ChevronUp className="w-4 h-4 text-white mx-auto" />
           </motion.button>
         )}
 
         {/* Manual collapse arrow - visible when expanded */}
         {!isCollapsed && (
           <motion.button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               setIsCollapsed(true);
             }}
-            className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-12 h-2 bg-red-500/80 rounded-full cursor-pointer border border-red-400/60 hover:bg-red-500 transition-colors shadow-[0_0_12px_rgba(239,68,68,0.8)]"
+            className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-12 h-6 bg-gradient-to-r from-red-500 to-red-600 rounded-full cursor-pointer border-2 border-red-400/60 hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg shadow-red-500/30 z-50"
             initial={{ opacity: 0, scale: 0.8, y: -5 }}
-            animate={{ opacity: 1, scale: 1, y: 0, boxShadow: [
-              '0 0 8px rgba(239,68,68,0.4)',
-              '0 0 14px rgba(239,68,68,0.9)',
-              '0 0 8px rgba(239,68,68,0.4)'
-            ] }}
-            transition={{ delay: 0.1, duration: 0.6, repeat: Infinity, repeatType: 'mirror' }}
-            whileHover={{ scale: 1.1, opacity: 0.8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
+            whileHover={{ scale: 1.1, y: -1 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Collapse bottom bar"
           >
-            <ChevronDown className="w-5 h-5 text-white/80 mx-auto -mt-1.5" />
+            <ChevronDown className="w-4 h-4 text-white mx-auto" />
           </motion.button>
         )}
         

@@ -13,7 +13,7 @@ import { shuffleArray } from '../utils/commonUtils';
 import ElasticSlider from './ElasticSlider';
 import ProjectCard from './ProjectCard';
 import { ThemeContext } from './ThemeContext';
-import LoadingSpinner from './LoadingSpinner';
+import FastLoadingSpinner from './FastLoadingSpinner';
 
 // import { useMemoryOptimization } from '../hooks/useMemoryOptimization';
 // import { animationOptimizations } from '../utils/animationOptimizations';
@@ -701,7 +701,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = memo(({ onProjectSelect })
       <div className={`min-h-screen pb-[100px] ${
         theme === 'light' ? 'bg-pink-100' : 'bg-black'
       } flex items-center justify-center`}>
-        <LoadingSpinner 
+        <FastLoadingSpinner 
           variant="entertainment" 
           size="lg" 
           text="Loading Browse Page..." 

@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { collectDeviceInfo, getIPInfo } from '../../utils/deviceDetection';
 
 import { handleWaitlistSignup } from '../../api/waitlistSupabase';
-import LoadingSpinner from '../LoadingSpinner';
+import FastLoadingSpinner from '../FastLoadingSpinner';
 
 import PremiumInput from './PremiumInput';
 
@@ -215,7 +215,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess, onError }) => {
         >
           {isSubmitting ? (
             <div className="flex items-center gap-2">
-              <LoadingSpinner 
+              <FastLoadingSpinner 
                 variant="entertainment" 
                 size="sm" 
                 text="" 

@@ -19,7 +19,7 @@ import {
   CpuChipIcon
 } from '@heroicons/react/24/outline';
 import React, { useState, useEffect } from 'react';
-import LoadingSpinner from '../LoadingSpinner';
+import FastLoadingSpinner from '../FastLoadingSpinner';
 
 import type { Database } from '../../config/database.types';
 import { supabase } from '../../config/supabase';
@@ -195,7 +195,7 @@ const ModernWaitlistTab: React.FC = () => {
       <div className="space-y-6">
         <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50">
           <div className="flex items-center justify-center h-64">
-            <LoadingSpinner 
+            <FastLoadingSpinner 
               variant="premium" 
               size="lg" 
               text="Loading waitlist data..." 

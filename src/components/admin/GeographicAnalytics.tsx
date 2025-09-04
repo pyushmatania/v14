@@ -1,6 +1,6 @@
 import { MapPinIcon, GlobeAltIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 import React from 'react';
-import LoadingSpinner from '../LoadingSpinner';
+import FastLoadingSpinner from '../FastLoadingSpinner';
 
 interface GeographicData {
   countryBreakdown: Record<string, number>;
@@ -22,7 +22,7 @@ const GeographicAnalytics: React.FC<GeographicAnalyticsProps> = ({ data, loading
     return (
       <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50">
         <div className="text-center">
-          <LoadingSpinner 
+          <FastLoadingSpinner 
             variant="premium" 
             size="lg" 
             text="Loading geographic data..." 

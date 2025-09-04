@@ -1,8 +1,16 @@
 /* stylelint-disable at-rule-no-unknown */
+/* stylelint-disable at-rule-allowed-list */
+/* stylelint-disable function-no-unknown */
+/* stylelint-disable property-no-vendor-prefix */
+/* stylelint-disable value-no-vendor-prefix */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 /* stylelint-enable at-rule-no-unknown */
+/* stylelint-enable at-rule-allowed-list */
+/* stylelint-enable function-no-unknown */
+/* stylelint-enable property-no-vendor-prefix */
+/* stylelint-enable value-no-vendor-prefix */
 
 /* CSS Variables for Tailwind */
 :root {
@@ -89,6 +97,22 @@
     backface-visibility: hidden;
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
+    /* Ensure buttons are clickable */
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+  
+  /* Specific styling for close/collapse buttons */
+  .mobile-bottom-bar button[aria-label*="Collapse"],
+  .mobile-bottom-bar button[aria-label*="Expand"] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 100 !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: rgba(239, 68, 68, 0.3) !important;
   }
   
   /* Optimize animations during scroll */
@@ -148,6 +172,15 @@
     .mobile-bottom-bar * {
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
+    }
+    
+    /* Ensure close buttons work on mobile */
+    .mobile-bottom-bar button[aria-label*="Collapse"],
+    .mobile-bottom-bar button[aria-label*="Expand"] {
+      min-height: 24px !important;
+      min-width: 48px !important;
+      touch-action: manipulation !important;
+      -webkit-tap-highlight-color: rgba(239, 68, 68, 0.3) !important;
     }
   }
 }

@@ -27,7 +27,7 @@ import { portfolioService } from '../../data/portfolio';
 import { getUserAvatar } from '../../utils/imageUtils';
 import { useAuth } from '../auth/useAuth';
 import { useTheme } from '../ThemeContext';
-import LoadingSpinner from '../LoadingSpinner';
+import FastLoadingSpinner from '../FastLoadingSpinner';
 
 
 // User type definition for ProfilePage
@@ -72,7 +72,7 @@ const ProfilePage: React.FC = () => {
   if (!user) {
     return (
       <div className="min-h-screen pt-20 pb-[100px] flex items-center justify-center">
-        <LoadingSpinner 
+        <FastLoadingSpinner 
           variant="entertainment" 
           size="lg" 
           text="Loading profile..." 

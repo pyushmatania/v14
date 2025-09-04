@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 
-import { SkeletonHero } from './Skeletons';
+import { FastSkeletonHero } from './FastSkeletons';
 
 // 🚀 Route-based lazy loading for complete code splitting
 const Hero = lazy(() => import('./Hero'));
@@ -106,7 +106,7 @@ const RouteLoader: React.FC<RouteLoaderProps> = ({ route, props = {} }) => {
   };
 
   return (
-    <Suspense fallback={<SkeletonHero />}>
+    <Suspense fallback={<FastSkeletonHero />}>
       {renderRoute()}
     </Suspense>
   );

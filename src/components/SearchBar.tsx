@@ -14,7 +14,7 @@ import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { projects } from '../data/projects';
 // REMOVED: Unused import (useDebounce)
 import { Project } from '../types';
-import LoadingSpinner from './LoadingSpinner';
+import FastLoadingSpinner from './FastLoadingSpinner';
 
 import { useTheme } from './ThemeContext';
 
@@ -476,7 +476,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
               <div className="p-4">
                 {isLoading ? (
                   <div className="flex items-center justify-center py-4">
-                    <LoadingSpinner 
+                    <FastLoadingSpinner 
                       variant="entertainment" 
                       size="sm" 
                       text="" 

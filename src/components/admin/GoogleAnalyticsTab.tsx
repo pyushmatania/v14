@@ -12,7 +12,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 import DeviceAnalytics from './DeviceAnalytics';
 import GeographicAnalytics from './GeographicAnalytics';
-import LoadingSpinner from '../LoadingSpinner';
+import FastLoadingSpinner from '../FastLoadingSpinner';
 
 // Google Analytics Configuration
 const GA_MEASUREMENT_ID = import.meta.env['VITE_GA_MEASUREMENT_ID'];
@@ -136,7 +136,7 @@ const GoogleAnalyticsTab: React.FC = () => {
       <div className="space-y-6">
         <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50">
           <div className="flex items-center justify-center h-64">
-            <LoadingSpinner 
+            <FastLoadingSpinner 
               variant="premium" 
               size="lg" 
               text="Loading Google Analytics..." 

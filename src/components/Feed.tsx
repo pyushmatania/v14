@@ -19,7 +19,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { celebrityService, CelebrityInfo } from '../services/celebrityService';
 import { getUserAvatar } from '../utils/imageUtils';
 
-import OptimizedImage from './OptimizedImage';
+import FastOptimizedImage from './FastOptimizedImage';
 import './Feed.css';
 
 interface Comment {
@@ -1164,7 +1164,7 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
         >
           <div className="post-creator-header">
             <div className="post-creator-user">
-              <OptimizedImage
+              <FastOptimizedImage
                 src={celebrityInfo.get('You')?.avatar || getUserAvatar('You')}
                 alt="Your avatar"
                 width={40}
@@ -1412,7 +1412,7 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
             {/* Post Header */}
             <div className="post-header">
               <div className="post-user">
-                <OptimizedImage
+                <FastOptimizedImage
                   src={post.user.avatar}
                   alt={post.user.name}
                   width={40}
@@ -1438,7 +1438,7 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
               {post.media && (
                 <div className="post-media">
                   {post.media.type === 'image' ? (
-                    <OptimizedImage
+                    <FastOptimizedImage
                       src={post.media.url}
                       alt="Post content"
                       width={600}
@@ -1593,7 +1593,7 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.1 }}
                       >
-                        <OptimizedImage
+                        <FastOptimizedImage
                           src={comment.user.avatar}
                           alt={comment.user.name}
                           width={36}

@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import * as React from 'react';
 import { useState, useEffect, lazy, Suspense } from 'react';
-import LoadingSpinner from '../LoadingSpinner';
+import FastLoadingSpinner from '../FastLoadingSpinner';
 
 import { supabase } from '../../config/supabase';
 
@@ -452,7 +452,7 @@ const ModernAdminDashboard: React.FC = () => {
       {gaLoading && (
         <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-4 md:p-6 lg:p-8 border border-gray-800/50">
           <div className="text-center">
-            <LoadingSpinner 
+            <FastLoadingSpinner 
               variant="premium" 
               size="lg" 
               text="Loading Google Analytics..." 

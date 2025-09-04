@@ -60,7 +60,7 @@ interface EmojiData {
   native?: string;
   unified?: string;
 }
-import OptimizedImage from './OptimizedImage';
+import FastOptimizedImage from './FastOptimizedImage';
 import { getSpotifyArtistData } from '../data/spotifyArtistImages';
 import './CommunityGenZ.css';
 import DecryptedText from './TextAnimations/DecryptedText/DecryptedText';
@@ -3128,7 +3128,7 @@ const Community: React.FC = memo(() => {
                           )}
                           
                           {/* Background Image */}
-                          <OptimizedImage 
+                          <FastOptimizedImage 
                             src={getValidImageUrl(item.avatar, item.name, item.type)}
                             alt={item.name}
                             width={120}
@@ -3244,7 +3244,7 @@ const Community: React.FC = memo(() => {
           >
             {/* Cover Image with Parallax Effect */}
             <div className="relative h-64 overflow-hidden">
-              <OptimizedImage 
+              <FastOptimizedImage 
                 src={getValidImageUrl(selectedItem.cover || selectedItem.avatar, selectedItem.name, selectedItem.type)}
                 alt={selectedItem.name}
                 width={400}
@@ -3291,7 +3291,7 @@ const Community: React.FC = memo(() => {
                   {/* Left Column - Image */}
                   <div className="flex items-center gap-6">
                     <div className="relative">
-                      <OptimizedImage 
+                      <FastOptimizedImage 
                         src={getValidImageUrl(selectedItem.avatar, selectedItem.name, selectedItem.type)}
                         alt={selectedItem.name}
                         width={80}
