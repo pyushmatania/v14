@@ -21,3 +21,4 @@ const SimplePreloader: React.FC<SimplePreloaderProps> = ({ text = 'Loading...' }
 };
 
 export default SimplePreloader;
+

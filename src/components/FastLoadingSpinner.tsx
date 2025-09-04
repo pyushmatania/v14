@@ -37,3 +37,4 @@ const FastLoadingSpinner: React.FC<FastLoadingSpinnerProps> = ({
 };
 
 export default FastLoadingSpinner;
+

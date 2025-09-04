@@ -71,3 +71,4 @@ const FastOptimizedImage: React.FC<FastOptimizedImageProps> = memo(({
 FastOptimizedImage.displayName = 'FastOptimizedImage';
 
 export default FastOptimizedImage;
+
