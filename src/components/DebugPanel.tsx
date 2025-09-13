@@ -86,7 +86,16 @@ const DebugPanel: React.FC = () => {
   useEffect(() => {
     if (!import.meta.env.DEV) return;
 
+    let lastMemoryCheck = 0;
+    const MEMORY_CHECK_INTERVAL = 3000; // Increased interval for better performance
+
     const interval = setInterval(() => {
+      const now = Date.now();
+      
+      // Throttle memory checks
+      if (now - lastMemoryCheck < MEMORY_CHECK_INTERVAL) return;
+      lastMemoryCheck = now;
+
       // Monitor memory usage with throttling
       if ('memory' in performance) {
         const memory = (performance as { memory?: MemoryInfo }).memory;
@@ -98,19 +107,20 @@ const DebugPanel: React.FC = () => {
               jsHeapSizeLimit: Math.round(memory.jsHeapSizeLimit / 1024 / 1024)
             };
             
-            // Only update if memory usage changed significantly
-            if (prev.memory?.usedJSHeapSize !== newMemory.usedJSHeapSize) {
+            // Only update if memory usage changed significantly (5MB threshold)
+            const memoryDiff = Math.abs((prev.memory?.usedJSHeapSize || 0) - newMemory.usedJSHeapSize);
+            if (memoryDiff > 5) {
               return {
                 ...prev,
                 memory: newMemory,
-          timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString()
               };
             }
             return prev;
           });
         }
       }
-    }, 2000); // Reduced frequency for better performance
+    }, 1000); // Check every second but throttle actual updates
 
     return () => clearInterval(interval);
   }, []);

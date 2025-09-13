@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback, useMemo } from 'react';
 
 interface FastOptimizedImageProps {
   src: string;
@@ -7,6 +7,10 @@ interface FastOptimizedImageProps {
   width?: number;
   height?: number;
   priority?: boolean;
+  sizes?: string;
+  quality?: number;
+  placeholder?: 'blur' | 'empty';
+  blurDataURL?: string;
 }
 
 const FastOptimizedImage: React.FC<FastOptimizedImageProps> = memo(({
@@ -16,34 +20,79 @@ const FastOptimizedImage: React.FC<FastOptimizedImageProps> = memo(({
   width,
   height,
   priority = false,
+  sizes = '100vw',
+  quality = 75,
+  placeholder = 'empty',
+  blurDataURL,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const handleLoad = () => {
-    setIsLoading(false);
-  };
+  // Memoize optimized src for better performance
+  const optimizedSrc = useMemo(() => {
+    if (!src) return '';
+    
+    // For TMDB images, optimize the URL
+    if (src.includes('image.tmdb.org')) {
+      const baseUrl = src.split('?')[0];
+      const params = new URLSearchParams();
+      if (width) params.set('w', width.toString());
+      if (quality) params.set('q', quality.toString());
+      return `${baseUrl}?${params.toString()}`;
+    }
+    
+    return src;
+  }, [src, width, quality]);
 
-  const handleError = () => {
+  // Memoize srcSet for responsive images
+  const srcSet = useMemo(() => {
+    if (!src || !src.includes('image.tmdb.org')) return undefined;
+    
+    const baseUrl = src.split('?')[0];
+    const sizes = ['300', '500', '780', '1280', '1920'];
+    return sizes
+      .map(size => `${baseUrl}?w=${size}&q=${quality} ${size}w`)
+      .join(', ');
+  }, [src, quality]);
+
+  const handleLoad = useCallback(() => {
+    setIsLoading(false);
+  }, []);
+
+  const handleError = useCallback(() => {
     setHasError(true);
     setIsLoading(false);
-  };
+  }, []);
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
+      {/* Blur placeholder */}
+      {placeholder === 'blur' && blurDataURL && isLoading && (
+        <div 
+          className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
+          style={{ backgroundImage: `url(${blurDataURL})` }}
+        />
+      )}
+      
       <img
-        src={src}
+        src={optimizedSrc}
+        srcSet={srcSet}
+        sizes={sizes}
         alt={alt}
         width={width}
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
         draggable={false}
-        className={`transition-opacity duration-200 ${
+        className={`transition-opacity duration-300 ${
           isLoading ? 'opacity-0' : 'opacity-100'
         } ${hasError ? 'opacity-50' : ''}`}
         onLoad={handleLoad}
         onError={handleError}
+        style={{
+          willChange: 'opacity',
+          transform: 'translateZ(0)', // Hardware acceleration
+        }}
       />
       
       {/* Simple loading state */}

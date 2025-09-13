@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ArrowRight, Search, Filter, MessageCircle, Lightbulb, Shield, Users, Star, Zap, Globe, Target, Award } from 'lucide-react';
+import { ChevronDown, ArrowRight } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 
 import ErrorBoundary from './ErrorBoundary';
@@ -101,8 +101,8 @@ const FAQ: React.FC = () => {
   const { theme } = useTheme();
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'relevance' | 'popularity' | 'priority'>('relevance');
+  const [searchQuery] = useState('');
+  const [sortBy] = useState<'relevance' | 'popularity' | 'priority'>('relevance');
 
   const categories = ['All', ...Array.from(new Set(faqData.map(item => item.category)))];
 
@@ -129,10 +129,11 @@ const FAQ: React.FC = () => {
       case 'popularity':
         filtered = filtered.sort((a, b) => (b.views || 0) - (a.views || 0));
         break;
-      case 'priority':
+      case 'priority': {
         const priorityOrder = { high: 3, medium: 2, low: 1 };
         filtered = filtered.sort((a, b) => priorityOrder[b.priority] - priorityOrder[a.priority]);
         break;
+      }
       default: // relevance - keep original order
         break;
     }
@@ -150,14 +151,7 @@ const FAQ: React.FC = () => {
     setExpandedItems(newExpanded);
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return theme === 'light' ? 'text-red-600 bg-red-50' : 'text-red-400 bg-red-900/20';
-      case 'medium': return theme === 'light' ? 'text-yellow-600 bg-yellow-50' : 'text-yellow-400 bg-yellow-900/20';
-      case 'low': return theme === 'light' ? 'text-green-600 bg-green-50' : 'text-green-400 bg-green-900/20';
-      default: return theme === 'light' ? 'text-gray-600 bg-gray-50' : 'text-gray-400 bg-gray-900/20';
-    }
-  };
+  // Removed unused getPriorityColor function
 
   return (
     <ErrorBoundary>

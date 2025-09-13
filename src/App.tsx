@@ -38,7 +38,7 @@ const NotificationCenter = React.lazy(() => import('./components/NotificationCen
 const EnhancedSearch = React.lazy(() => import('./components/EnhancedSearch'));
 const ProjectCatalog = React.lazy(() => import('./components/ProjectCatalog'));
 import HomePage from './components/HomePage';
-import EntertainmentLoading from './components/EntertainmentLoading';
+// Removed unused import: EntertainmentLoading
 
 
 // 🛡️ Type definitions for better type safety

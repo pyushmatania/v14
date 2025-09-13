@@ -3,11 +3,13 @@ import React from 'react';
 interface FastLoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
   text?: string;
+  variant?: 'default' | 'premium' | 'entertainment';
 }
 
 const FastLoadingSpinner: React.FC<FastLoadingSpinnerProps> = ({ 
   size = 'md', 
-  text = 'Loading...'
+  text = 'Loading...',
+  variant = 'default'
 }) => {
   const sizeClasses = {
     sm: 'w-6 h-6',
@@ -21,10 +23,16 @@ const FastLoadingSpinner: React.FC<FastLoadingSpinnerProps> = ({
     lg: 'text-base'
   };
 
+  const variantClasses = {
+    default: 'border-gray-300 border-t-indigo-600',
+    premium: 'border-gray-300 border-t-yellow-500',
+    entertainment: 'border-gray-300 border-t-purple-600'
+  };
+
   return (
     <div className="flex flex-col items-center justify-center space-y-2 p-4">
       {/* Simple spinning circle */}
-      <div className={`${sizeClasses[size]} border-2 border-gray-300 border-t-indigo-600 rounded-full animate-spin`} />
+      <div className={`${sizeClasses[size]} border-2 ${variantClasses[variant]} rounded-full animate-spin`} />
       
       {/* Simple text */}
       {text && (

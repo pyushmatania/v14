@@ -777,6 +777,21 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
     }
   }, [mediaPreview, isRecording]);
 
+  // 🚀 Enhanced cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanupMediaResources();
+      // Clear any remaining timeouts
+      const timeouts = document.querySelectorAll('[data-timeout-id]');
+      timeouts.forEach(element => {
+        const timeoutId = element.getAttribute('data-timeout-id');
+        if (timeoutId) {
+          clearTimeout(parseInt(timeoutId));
+        }
+      });
+    };
+  }, [cleanupMediaResources]);
+
   // 🚀 Optimized loading with immediate feedback
   useEffect(() => {
     const loadPostsWithCelebrities = async () => {

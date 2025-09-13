@@ -85,10 +85,20 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
     };
   }, [searchTerm]);
 
+  // 🚀 Search cache for better performance
+  const searchCache = useRef<Map<string, any[]>>(new Map());
+
   // 🚀 Optimized search function with enhanced relevance scoring and performance
   const performSearch = useCallback((term: string) => {
     if (term.length < 2) {
       setSearchResults([]);
+      return;
+    }
+
+    // Check cache first
+    const cacheKey = term.toLowerCase();
+    if (searchCache.current.has(cacheKey)) {
+      setSearchResults(searchCache.current.get(cacheKey)!);
       return;
     }
 
@@ -145,6 +155,17 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
         .sort((a, b) => b.relevance - a.relevance)
         .slice(0, 5)
         .map(result => result.project);
+
+      // Cache results
+      searchCache.current.set(cacheKey, sortedResults);
+      
+      // Limit cache size
+      if (searchCache.current.size > 50) {
+        const firstKey = searchCache.current.keys().next().value;
+        if (firstKey) {
+          searchCache.current.delete(firstKey);
+        }
+      }
 
       setSearchResults(sortedResults);
       setIsLoading(false);

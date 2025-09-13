@@ -3,8 +3,7 @@ import { Search, CreditCard, TrendingUp, Users, Shield, Award } from 'lucide-rea
 import React, { useState } from 'react';
 
 import { useTheme } from './ThemeContext';
-
-type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search';
+import { ViewType } from '../types/viewTypes';
 
 interface HowItWorksProps {
   setCurrentView?: (view: ViewType) => void; // eslint-disable-line no-unused-vars

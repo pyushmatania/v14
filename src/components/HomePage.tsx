@@ -14,12 +14,12 @@ const FAQ = lazy(() => import('./FAQ'));
 const CallToAction = lazy(() => import('./CallToAction'));
 
 import { FastSkeletonHero } from './FastSkeletons';
-
-type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail' | 'waitlist' | 'analytics';
+import { Project } from '../types';
+import { ViewType } from '../types/viewTypes';
 
 interface HomePageProps {
-  setCurrentView: (view: ViewType) => void; // eslint-disable-line no-unused-vars
-  onProjectSelect?: (project: any) => void; // eslint-disable-line no-unused-vars
+  setCurrentView: (_view: ViewType) => void;
+  onProjectSelect?: (_project: Project, _tab?: 'overview' | 'invest') => void;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ setCurrentView, onProjectSelect }) => {
@@ -49,7 +49,7 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentView, onProjectSelect }) 
       <Suspense fallback={<div className="h-32" />}>
         <LiveProjects 
           onViewAll={() => setCurrentView('projects')} 
-          onProjectSelect={onProjectSelect} 
+          {...(onProjectSelect && { onProjectSelect })} 
         />
       </Suspense>
       

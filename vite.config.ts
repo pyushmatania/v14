@@ -17,15 +17,38 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'ui-vendor': ['framer-motion', 'lucide-react', '@heroicons/react'],
-          'data-vendor': ['@supabase/supabase-js'],
+          'data-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
           'utils-vendor': ['canvas-confetti', 'react-csv'],
+          'emoji-vendor': ['@emoji-mart/data', '@emoji-mart/react'],
         },
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
+    chunkSizeWarningLimit: 1000,
+  },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'framer-motion',
+      'lucide-react',
+      '@heroicons/react',
+      '@supabase/supabase-js',
+      '@tanstack/react-query',
+    ],
   },
 })
