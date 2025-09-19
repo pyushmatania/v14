@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 
 // Direct imports for critical sections to avoid RouteLoader overhead
 const Hero = lazy(() => import('./Hero'));
@@ -23,6 +23,46 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ setCurrentView, onProjectSelect }) => {
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const preloadSections = () => {
+      const loaders: Array<() => Promise<unknown>> = [
+        () => import('./ProblemSolution'),
+        () => import('./HowItWorks'),
+        () => import('./LiveProjects'),
+        () => import('./WhyThisMatters'),
+        () => import('./TechTrust'),
+        () => import('./Rewards'),
+        () => import('./Testimonials'),
+        () => import('./AboutUs'),
+        () => import('./FAQ'),
+        () => import('./CallToAction'),
+      ];
+
+      loaders.forEach(loader => {
+        loader().catch(() => undefined);
+      });
+    };
+
+    if (typeof window.requestAnimationFrame === 'function') {
+      const frameId = window.requestAnimationFrame(() => {
+        preloadSections();
+      });
+
+      return () => {
+        if (typeof window.cancelAnimationFrame === 'function') {
+          window.cancelAnimationFrame(frameId);
+        }
+      };
+    }
+
+    preloadSections();
+    return undefined;
+  }, []);
+
   return (
     <>
       {/* Hero Section - Load immediately */}

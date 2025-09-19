@@ -46,6 +46,8 @@ type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'pro
 type ProjectDetailTab = 'overview' | 'invest';
 type AuthModalMode = 'login' | 'register';
 
+const PROTECTED_VIEWS: ReadonlySet<ViewType> = new Set(['profile', 'portfolio']);
+
 /**
  * 🎯 AppContent - Main application content with optimized state management
  * @description Handles view navigation, authentication, and component rendering
@@ -125,22 +127,23 @@ function AppContent() {
   }, []);
 
 
-  // 🚀 Memoized constants for performance
-  const protectedViews = useMemo(() => ['profile', 'portfolio'] as const, []);
-  const isCurrentViewProtected = useMemo(() => 
-    protectedViews.includes(currentView as 'profile' | 'portfolio'), 
-    [currentView, protectedViews]
-  );
+  const isCurrentViewProtected = PROTECTED_VIEWS.has(currentView);
 
   // 🛡️ Handle logout redirect with proper cleanup
   useEffect(() => {
-    const logoutTimestamp = localStorage.getItem('logout_timestamp');
-    if (logoutTimestamp && !isAuthenticated) {
-      // Redirect to home if on protected views
-      if (isCurrentViewProtected) {
-        setCurrentView('home');
+    if (typeof window === 'undefined') return;
+
+    try {
+      const logoutTimestamp = window.localStorage.getItem('logout_timestamp');
+      if (logoutTimestamp && !isAuthenticated) {
+        // Redirect to home if on protected views
+        if (isCurrentViewProtected) {
+          setCurrentView('home');
+        }
+        window.localStorage.removeItem('logout_timestamp');
       }
-      localStorage.removeItem('logout_timestamp');
+    } catch {
+      // Ignore storage access issues (e.g., privacy mode)
     }
   }, [isAuthenticated, isCurrentViewProtected]);
 
@@ -153,10 +156,16 @@ function AppContent() {
 
   // 🛡️ Check for admin view in sessionStorage after reload
   useEffect(() => {
-    const adminView = sessionStorage.getItem('admin_view');
-    if (adminView === 'true') {
-      setCurrentView('admin');
-      sessionStorage.removeItem('admin_view'); // Clear it after use
+    if (typeof window === 'undefined') return;
+
+    try {
+      const adminView = window.sessionStorage.getItem('admin_view');
+      if (adminView === 'true') {
+        setCurrentView('admin');
+        window.sessionStorage.removeItem('admin_view'); // Clear it after use
+      }
+    } catch {
+      // Ignore session storage access issues
     }
   }, []);
 
@@ -172,8 +181,12 @@ function AppContent() {
 
   // 🚀 Optimized view state management
   const saveCurrentViewState = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const currentScrollY = window.scrollY ?? window.pageYOffset ?? 0;
+
     setViewScrollPositions(prev => ({
       ...prev,
       [currentView]: currentScrollY
@@ -185,11 +198,13 @@ function AppContent() {
     if (view === currentView) return;
 
     const enteringHeavy = view === 'projects' || view === 'community';
+    const docElement = typeof document !== 'undefined' ? document.documentElement : null;
+
     if (enteringHeavy) {
-      document.documentElement.classList.add('force-dark-bg');
+      docElement?.classList.add('force-dark-bg');
     }
 
-    if (protectedViews.includes(view as 'profile' | 'portfolio')) {
+    if (PROTECTED_VIEWS.has(view)) {
       if (!handleAuthRequired()) {
         toast.info('Please sign in', 'You need to be logged in to access this page');
         return;
@@ -202,33 +217,45 @@ function AppContent() {
       setCurrentView(view);
     };
 
-    if (view === 'projects' || view === 'community') {
+    if (enteringHeavy) {
       updates();
-    } else {
-      requestAnimationFrame(updates);
+      return;
     }
-  }, [handleAuthRequired, toast, currentView, protectedViews, saveCurrentViewState]);
+
+    if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(updates);
+    } else {
+      updates();
+    }
+  }, [handleAuthRequired, toast, currentView, saveCurrentViewState]);
 
   // Remove force-dark once the heavy views have rendered at least once
   useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const docElement = document.documentElement;
+    const removeForceDark = () => {
+      docElement.classList.remove('force-dark-bg');
+    };
+
     if (currentView === 'projects' || currentView === 'community') {
-      // Allow a frame for Suspense fallback to mount
-      requestAnimationFrame(() => {
-        document.documentElement.classList.remove('force-dark-bg');
-      });
+      if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+        window.requestAnimationFrame(removeForceDark);
+      } else {
+        removeForceDark();
+      }
     } else {
-      document.documentElement.classList.remove('force-dark-bg');
+      removeForceDark();
     }
   }, [currentView]);
 
   // 🚀 Optimized project selection handler
-  const handleProjectSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
-    // Save current view's scroll position and state before opening project detail
+  const openProjectDetail = useCallback((project: Project, tab: ProjectDetailTab = 'overview') => {
     saveCurrentViewState();
-    
+
     setPreviousView(currentView);
     setSelectedProject(project);
-    setProjectDetailTab(tab || 'overview');
+    setProjectDetailTab(tab);
     setCurrentView('project-detail');
   }, [currentView, saveCurrentViewState]);
 
@@ -236,11 +263,15 @@ function AppContent() {
   const handleProjectDetailClose = useCallback(() => {
     // Restore previous view
     setCurrentView(previousView);
-    
+
     // Restore scroll position after a short delay to ensure view is rendered
     setTimeout(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
       const savedScrollY = viewScrollPositions[previousView];
-      if (savedScrollY !== undefined) {
+      if (typeof savedScrollY === 'number') {
         window.scrollTo({
           top: savedScrollY,
           behavior: 'smooth'
@@ -248,39 +279,6 @@ function AppContent() {
       }
     }, 100);
   }, [previousView, viewScrollPositions]);
-
-  // 🚀 Optimized project selection from navigation
-  const handleNavigationProjectSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
-    // Save current view's scroll position and state
-    saveCurrentViewState();
-    
-    setPreviousView(currentView);
-    setSelectedProject(project);
-    setProjectDetailTab(tab || 'overview');
-    setCurrentView('project-detail');
-  }, [currentView, saveCurrentViewState]);
-
-  // 🚀 Optimized project selection from comparison
-  const handleComparisonProjectSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
-    // Save current view's scroll position and state
-    saveCurrentViewState();
-    
-    setPreviousView(currentView);
-    setSelectedProject(project);
-    setProjectDetailTab(tab || 'overview');
-    setCurrentView('project-detail');
-  }, [currentView, saveCurrentViewState]);
-
-  // 🚀 Optimized project selection from live projects
-  const handleLiveProjectsSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
-    // Save current view's scroll position and state
-    saveCurrentViewState();
-    
-    setPreviousView(currentView);
-    setSelectedProject(project);
-    setProjectDetailTab(tab || 'overview');
-    setCurrentView('project-detail');
-  }, [currentView, saveCurrentViewState]);
 
   // 🚀 Optimized search view handler
   const handleSearchViewAll = useCallback((term: string) => {
@@ -298,8 +296,8 @@ function AppContent() {
     switch (currentView) {
       case 'projects':
         return (
-          <ProjectCatalog 
-            onProjectSelect={handleProjectSelect}
+          <ProjectCatalog
+            onProjectSelect={openProjectDetail}
           />
         );
       case 'dashboard':
@@ -314,8 +312,8 @@ function AppContent() {
         return isAuthenticated ? <PortfolioAnalytics /> : null;
       case 'compare':
         return (
-          <ProjectComparison 
-            onProjectSelect={handleComparisonProjectSelect}
+          <ProjectComparison
+            onProjectSelect={openProjectDetail}
           />
         );
       case 'news':
@@ -347,9 +345,9 @@ function AppContent() {
       default:
         return (
           <>
-            <HomePage 
-              setCurrentView={handleViewChange} 
-              onProjectSelect={handleLiveProjectsSelect}
+            <HomePage
+              setCurrentView={handleViewChange}
+              onProjectSelect={openProjectDetail}
             />
           </>
         );
@@ -357,9 +355,7 @@ function AppContent() {
   }, [
     currentView,
     handleViewChange,
-    handleProjectSelect,
-    handleComparisonProjectSelect,
-    handleLiveProjectsSelect,
+    openProjectDetail,
     handleProjectDetailClose,
     isAuthenticated,
     selectedProject,
@@ -373,11 +369,11 @@ function AppContent() {
     currentView,
     setCurrentView: handleViewChange,
     onAuthRequired: handleAuthRequired,
-    onProjectSelect: handleNavigationProjectSelect,
+    onProjectSelect: openProjectDetail,
     onSearchViewAll: handleSearchViewAll,
     previousView
-   
-  }), [currentView, handleViewChange, handleAuthRequired, handleNavigationProjectSelect, handleSearchViewAll, previousView]);
+
+  }), [currentView, handleViewChange, handleAuthRequired, openProjectDetail, handleSearchViewAll, previousView]);
 
   // 🚀 Memoized auth modal props
   const authModalProps = useMemo(() => ({
