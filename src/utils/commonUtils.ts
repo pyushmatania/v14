@@ -7,6 +7,9 @@
  * Replaces multiple window.innerWidth < 768 checks across components
  */
 export const isMobile = (): boolean => {
+  if (typeof window === 'undefined') {
+    return false;
+  }
   return window.innerWidth < 768;
 };
 
@@ -14,6 +17,10 @@ export const isMobile = (): boolean => {
  * Get device type based on screen width
  */
 export const getDeviceType = (): 'mobile' | 'tablet' | 'desktop' => {
+  if (typeof window === 'undefined') {
+    return 'desktop';
+  }
+
   const width = window.innerWidth;
   if (width < 768) return 'mobile';
   if (width < 1024) return 'tablet';
@@ -213,10 +220,15 @@ export const debounce = <T extends (..._args: any[]) => any>(
   func: T,
   delay: number
 ): ((..._args: Parameters<T>) => void) => {
-  let timeoutId: NodeJS.Timeout;
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
   return (..._args: Parameters<T>) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func(..._args), delay);
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      timeoutId = undefined;
+      func(..._args);
+    }, delay);
   };
 };
 
@@ -314,6 +326,10 @@ export const removeLocalStorage = (key: string): boolean => {
  * Get URL parameters as object
  */
 export const getUrlParams = (): Record<string, string> => {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
   const params = new URLSearchParams(window.location.search);
   const result: Record<string, string> = {};
   params.forEach((value, key) => {
@@ -326,6 +342,10 @@ export const getUrlParams = (): Record<string, string> => {
  * Set URL parameter without page reload
  */
 export const setUrlParam = (key: string, value: string): void => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
   const url = new URL(window.location.href);
   url.searchParams.set(key, value);
   window.history.pushState({}, '', url.toString());
@@ -335,6 +355,10 @@ export const setUrlParam = (key: string, value: string): void => {
  * Remove URL parameter without page reload
  */
 export const removeUrlParam = (key: string): void => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
   const url = new URL(window.location.href);
   url.searchParams.delete(key);
   window.history.pushState({}, '', url.toString());

@@ -10,8 +10,28 @@ interface PerformanceMetrics {
 interface UsePerformanceMonitorOptions {
   componentName: string;
   enabled?: boolean;
-  onMetric?: (metric: PerformanceMetrics) => void;
+  onMetric?: (_metric: PerformanceMetrics) => void;
 }
+
+const getNow = () => {
+  if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+    return performance.now();
+  }
+  return Date.now();
+};
+
+const getMemoryUsage = () => {
+  if (typeof performance === 'undefined' || !('memory' in performance)) {
+    return 0;
+  }
+
+  const memory = (performance as { memory?: { usedJSHeapSize: number } }).memory;
+  if (!memory || typeof memory.usedJSHeapSize !== 'number') {
+    return 0;
+  }
+
+  return Math.round(memory.usedJSHeapSize / 1024 / 1024);
+};
 
 export const usePerformanceMonitor = ({
   componentName,
@@ -24,14 +44,12 @@ export const usePerformanceMonitor = ({
   const measureRender = useCallback(() => {
     if (!enabled) return;
 
-    const renderTime = performance.now() - renderStartTime.current;
-    const memoryUsage = 'memory' in performance 
-      ? (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0
-      : 0;
+    const renderTime = getNow() - renderStartTime.current;
+    const memoryUsage = getMemoryUsage();
 
     const metric: PerformanceMetrics = {
       renderTime,
-      memoryUsage: Math.round(memoryUsage / 1024 / 1024), // Convert to MB
+      memoryUsage,
       componentName,
       timestamp: Date.now(),
     };
@@ -51,7 +69,7 @@ export const usePerformanceMonitor = ({
   useEffect(() => {
     if (!enabled) return;
 
-    renderStartTime.current = performance.now();
+    renderStartTime.current = getNow();
     renderCount.current += 1;
 
     // Measure after render
